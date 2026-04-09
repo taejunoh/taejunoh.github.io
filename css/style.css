@@ -312,6 +312,23 @@ a { color: inherit; text-decoration: none; }
   min-height: 110px;
 }
 
+/* Sketch illustration area */
+.thumb-sketch {
+  background: rgba(240, 235, 222, 0.4);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0.5rem;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-sketch svg {
+  width: 100%;
+  height: auto;
+  max-height: 110px;
+}
+
 .wire-bar {
   height: 8px;
   background: rgba(0, 0, 0, 0.08);
