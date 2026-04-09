@@ -193,67 +193,140 @@ img {
 }
 
 /* ========================================
-   Blog Post List
+   Intro
    ======================================== */
-.posts {
-  padding: var(--space-md) 0;
+.intro {
+  padding: var(--space-md) 0 var(--space-sm);
 }
 
-.post-item {
-  padding: 1.5rem 0;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+.intro p {
+  font-family: var(--font-hand-alt);
+  font-size: 1.25rem;
+  color: var(--ink-light);
+  line-height: 1.8;
+  max-width: 550px;
+}
+
+/* ========================================
+   Project List — hybrid cards
+   ======================================== */
+.project-list {
+  padding: var(--space-sm) 0 var(--space-lg);
+}
+
+.list-heading {
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink-faded);
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.project-entry {
+  display: block;
+  padding: 1.3rem 1.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.45);
+  border-left: 3px solid var(--ink-blue);
+  border-radius: 2px;
+  transition: var(--transition);
+  cursor: pointer;
+  text-decoration: none;
   position: relative;
 }
 
-.post-item:last-child {
-  border-bottom: none;
+.project-entry:nth-child(3) {
+  border-left-color: var(--ink-green);
 }
 
+.project-entry:nth-child(4) {
+  border-left-color: var(--ink-purple);
+}
+
+.project-entry:hover {
+  background: rgba(255, 255, 255, 0.75);
+  transform: translateX(4px);
+}
+
+.project-entry-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.project-entry-meta time {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faded);
+}
+
+.project-entry-arrow {
+  font-family: var(--font-hand-alt);
+  font-size: 1rem;
+  color: var(--ink-faded);
+  transition: var(--transition);
+}
+
+.project-entry:hover .project-entry-arrow {
+  color: var(--ink-blue);
+  transform: translateX(3px);
+}
+
+.project-entry-title {
+  font-family: var(--font-hand);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+  line-height: 1.2;
+  transition: var(--transition);
+}
+
+.project-entry:hover .project-entry-title {
+  color: var(--ink-blue);
+}
+
+.project-entry:nth-child(3):hover .project-entry-title {
+  color: var(--ink-green);
+}
+
+.project-entry:nth-child(4):hover .project-entry-title {
+  color: var(--ink-purple);
+}
+
+.project-entry-desc {
+  font-family: var(--font-hand-alt);
+  font-size: 1rem;
+  color: var(--ink-light);
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+
+.project-entry-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Tag color variants */
+.tag--green {
+  background: rgba(100, 180, 120, 0.15);
+}
+
+.tag--purple {
+  background: rgba(160, 120, 200, 0.15);
+}
+
+/* ========================================
+   Post date (used in project detail pages)
+   ======================================== */
 .post-date {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--ink-faded);
-  display: block;
-  margin-bottom: 0.3rem;
-}
-
-.post-link {
-  display: block;
-  transition: var(--transition);
-}
-
-.post-link:hover .post-title {
-  color: var(--ink-blue);
-}
-
-.post-title {
-  font-family: var(--font-hand);
-  font-size: 1.7rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 0.4rem;
-  line-height: 1.3;
-  transition: var(--transition);
-}
-
-.post-summary {
-  font-family: var(--font-hand-alt);
-  font-size: 1.05rem;
-  color: var(--ink-light);
-  line-height: 1.7;
-  margin-bottom: 0.5rem;
-}
-
-.post-read-more {
-  font-family: var(--font-hand-alt);
-  font-size: 0.95rem;
-  color: var(--ink-blue);
-  transition: var(--transition);
-}
-
-.post-link:hover .post-read-more {
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 /* ========================================
