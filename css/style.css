@@ -243,6 +243,14 @@ a { color: inherit; text-decoration: none; }
   line-height: 1;
 }
 
+.tech-svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--ink-light);
+  margin: 0 auto 0.2rem;
+  display: block;
+}
+
 .tech-item span {
   font-family: var(--font-mono);
   font-size: 0.65rem;
