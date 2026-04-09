@@ -3,96 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taejun Oh</title>
-  <meta name="description" content="Taejun Oh - Software Developer. Projects and notes on building products.">
+  <title>Taejun Oh | Full-Stack Developer</title>
+  <meta name="description" content="Taejun Oh - Full-Stack Developer. Building products that solve real problems.">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
 <body>
 
-  <div class="notebook">
+  <div class="page">
 
-    <!-- Header -->
-    <header class="site-header">
-      <div class="site-header-left">
-        <a href="/" class="site-title">Taejun Oh</a>
-        <span class="site-subtitle">Software Developer</span>
-      </div>
-      <nav class="site-nav">
-        <a href="/about.html">About</a>
-        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
-      </nav>
-    </header>
+    <!-- Nav -->
+    <nav class="topnav">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#tech">Tech Stack</a>
+      <a href="#contact">Contact</a>
+    </nav>
 
-    <hr class="divider">
-
-    <!-- Intro -->
-    <section class="intro">
-      <p>I build products that solve real problems &mdash; from mobile fitness apps to AI-powered tools.</p>
+    <!-- Hero -->
+    <section class="hero-banner">
+      <h1 class="hero-name">Taejun Oh</h1>
+      <p class="hero-role">Full-Stack Developer</p>
+      <p class="hero-tagline">I build products that solve real problems &mdash; from mobile fitness apps to AI-powered tools. Focused on clean architecture and shipping things people want to use.</p>
     </section>
 
+    <!-- About + Tech Stack row -->
+    <div class="two-col" id="about">
+
+      <section class="card about-card">
+        <div class="card-tape"></div>
+        <h2 class="card-heading">About Me</h2>
+        <p>I'm a software developer who enjoys building products from the ground up. I work across the stack &mdash; React Native mobile apps, full-stack web with Next.js and Supabase, and AI integrations with Claude.</p>
+        <p>Currently focused on <a href="projects/kirok.html">Kirok</a> (workout tracker) and <a href="projects/doeveryday.html">DoEveryday</a> (habit tracker).</p>
+      </section>
+
+      <section class="card tech-card" id="tech">
+        <div class="card-tape"></div>
+        <h2 class="card-heading">Tech Stack</h2>
+        <div class="tech-icons">
+          <div class="tech-item">
+            <div class="tech-icon">&#9883;</div>
+            <span>React</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">&#9883;</div>
+            <span>React Native</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">&#9670;</div>
+            <span>Next.js</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">&#9649;</div>
+            <span>Node.js</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">&#9671;</div>
+            <span>TypeScript</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">&#9678;</div>
+            <span>Supabase</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">&#9638;</div>
+            <span>Prisma</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">&#9881;</div>
+            <span>Python</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
     <!-- Projects -->
-    <section class="project-list">
-      <h2 class="list-heading">Projects</h2>
+    <section class="projects-section" id="projects">
+      <h2 class="section-heading">Projects</h2>
+      <div class="projects-grid">
 
-      <a href="projects/kirok.html" class="project-entry">
-        <div class="project-entry-meta">
-          <time>2026.04</time>
-          <span class="project-entry-arrow">&rarr;</span>
-        </div>
-        <h3 class="project-entry-title">Kirok</h3>
-        <p class="project-entry-desc">Offline-first workout tracker for lifters. React Native + Expo, local-first with WatermelonDB, cloud sync, PR detection, Apple Watch.</p>
-        <div class="project-entry-tags">
-          <span class="tag">React Native</span>
-          <span class="tag">Expo</span>
-          <span class="tag">Supabase</span>
-          <span class="tag">TypeScript</span>
-        </div>
-      </a>
+        <a href="projects/kirok.html" class="project-thumb">
+          <div class="thumb-wireframe">
+            <div class="wire-bar"></div>
+            <div class="wire-content">
+              <div class="wire-block-lg"></div>
+              <div class="wire-lines">
+                <div class="wire-line"></div>
+                <div class="wire-line short"></div>
+              </div>
+            </div>
+          </div>
+          <h3>Kirok</h3>
+          <p>Offline-first workout tracker for lifters with PR detection and Apple Watch support.</p>
+        </a>
 
-      <a href="projects/doeveryday.html" class="project-entry">
-        <div class="project-entry-meta">
-          <time>2026.03</time>
-          <span class="project-entry-arrow">&rarr;</span>
-        </div>
-        <h3 class="project-entry-title">DoEveryday</h3>
-        <p class="project-entry-desc">Habit tracking web app with streak tracking, heatmaps, Stripe billing, and bilingual support (EN/KO). Deployed on Vercel.</p>
-        <div class="project-entry-tags">
-          <span class="tag tag--green">React</span>
-          <span class="tag tag--green">Vite</span>
-          <span class="tag tag--green">Supabase</span>
-          <span class="tag tag--green">Stripe</span>
-        </div>
-      </a>
+        <a href="projects/doeveryday.html" class="project-thumb">
+          <div class="thumb-wireframe">
+            <div class="wire-bar"></div>
+            <div class="wire-content">
+              <div class="wire-cols">
+                <div class="wire-block-sm"></div>
+                <div class="wire-block-sm"></div>
+              </div>
+              <div class="wire-lines">
+                <div class="wire-line"></div>
+                <div class="wire-line short"></div>
+              </div>
+            </div>
+          </div>
+          <h3>DoEveryday</h3>
+          <p>Habit tracking web app with streaks, heatmaps, and bilingual support.</p>
+        </a>
 
-      <a href="projects/job-tracker.html" class="project-entry">
-        <div class="project-entry-meta">
-          <time>2026.02</time>
-          <span class="project-entry-arrow">&rarr;</span>
-        </div>
-        <h3 class="project-entry-title">JobTracker</h3>
-        <p class="project-entry-desc">AI-powered job application tracker with Chrome extension. Auto-extracts from LinkedIn, Indeed, Glassdoor using Claude, GPT, Gemini.</p>
-        <div class="project-entry-tags">
-          <span class="tag tag--purple">Next.js</span>
-          <span class="tag tag--purple">Prisma</span>
-          <span class="tag tag--purple">Claude AI</span>
-          <span class="tag tag--purple">Chrome Ext</span>
-        </div>
-      </a>
+        <a href="projects/job-tracker.html" class="project-thumb">
+          <div class="thumb-wireframe">
+            <div class="wire-bar"></div>
+            <div class="wire-content">
+              <div class="wire-lines">
+                <div class="wire-line"></div>
+                <div class="wire-line"></div>
+                <div class="wire-line short"></div>
+              </div>
+              <div class="wire-block-lg"></div>
+            </div>
+          </div>
+          <h3>JobTracker</h3>
+          <p>AI-powered job application tracker with Chrome extension.</p>
+        </a>
 
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section" id="contact">
+      <div class="card contact-card">
+        <div class="card-tape"></div>
+        <h2 class="card-heading">Contact</h2>
+        <ul class="contact-list">
+          <li><a href="mailto:allinsimple@gmail.com">allinsimple@gmail.com</a></li>
+          <li><a href="https://github.com/taejunoh" target="_blank" rel="noopener">github.com/taejunoh</a></li>
+          <li><a href="https://www.linkedin.com/in/taejunoh" target="_blank" rel="noopener">linkedin.com/in/taejunoh</a></li>
+        </ul>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="site-footer">
-      <hr class="divider">
-      <div class="footer-inner">
-        <p class="footer-text">&copy; 2026 Taejun Oh</p>
-        <p class="footer-text"><a href="mailto:allinsimple@gmail.com">allinsimple@gmail.com</a></p>
-      </div>
+      <p>&copy; 2026 Taejun Oh</p>
     </footer>
 
   </div>
 
-  <script src="js/main.js"></script>
 </body>
 </html>
