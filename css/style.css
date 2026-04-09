@@ -251,6 +251,15 @@ a { color: inherit; text-decoration: none; }
   display: block;
 }
 
+.tech-img {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 0.2rem;
+  display: block;
+  /* Make black SVGs match ink-light color */
+  filter: brightness(0) saturate(100%) invert(32%) sepia(8%) saturate(1000%) hue-rotate(350deg) brightness(95%);
+}
+
 .tech-item span {
   font-family: var(--font-mono);
   font-size: 0.65rem;
