@@ -11,100 +11,66 @@
 <body>
 
   <div class="notebook">
-    <div class="hole hole--top"></div>
-    <div class="hole hole--mid"></div>
-    <div class="hole hole--bot"></div>
 
-    <nav class="nav">
-      <a href="../" class="nav-logo">Taejun's Notes</a>
-      <ul class="nav-links">
-        <li><a href="../#projects">Projects</a></li>
-        <li><a href="../#about">About</a></li>
-        <li><a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a></li>
-      </ul>
-    </nav>
-
-    <section class="project-hero">
-      <a href="../" class="back-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back to Notes
-      </a>
-      <h1 class="project-hero-title">Kirok</h1>
-      <p class="project-hero-desc">
-        An offline-first mobile workout tracker built for serious lifters. Record sets, detect personal records, manage routines, and sync seamlessly across devices.
-      </p>
-      <div class="project-cta">
-        <a href="https://github.com/taejunoh/kirok" target="_blank" rel="noopener" class="btn btn-primary">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          View on GitHub
-        </a>
-        <a href="#features" class="btn btn-secondary">Learn More</a>
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Developer</span>
       </div>
-    </section>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
 
     <hr class="divider">
 
-    <section class="features" id="features">
-      <div class="section-header fade-in" style="text-align: center;">
-        <p class="section-label">// features</p>
-        <h2 class="section-title">Built for the Gym</h2>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card fade-in">
-          <div class="feature-icon">&#9889;</div>
-          <h3 class="feature-title">Set Recording</h3>
-          <p class="feature-desc">Log exercises, weights, reps, and RPE with a fast, minimal interface designed for between-set use.</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">&#127942;</div>
-          <h3 class="feature-title">PR Detection</h3>
-          <p class="feature-desc">Automatically detects personal records across exercises and celebrates your new bests.</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">&#128260;</div>
-          <h3 class="feature-title">Routine Management</h3>
-          <p class="feature-desc">Create, save, and reuse workout routines. Start any session from a template or go freestyle.</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">&#128225;</div>
-          <h3 class="feature-title">Offline-First</h3>
-          <p class="feature-desc">Works without internet using local SQLite storage. Syncs to cloud when you're back online.</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">&#9000;</div>
-          <h3 class="feature-title">Apple Watch</h3>
-          <p class="feature-desc">Log workouts directly from your wrist with Apple Watch and Health integration.</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">&#128200;</div>
-          <h3 class="feature-title">Analytics</h3>
-          <p class="feature-desc">Custom SVG charts for volume, frequency, and strength progression over time.</p>
-        </div>
-      </div>
-    </section>
+    <main class="page-content">
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All posts
+      </a>
 
-    <section class="tech-stack">
-      <div class="section-header fade-in">
-        <p class="section-label">// built with</p>
-      </div>
-      <div class="tech-list fade-in">
-        <span class="tag">React Native</span>
-        <span class="tag">Expo</span>
-        <span class="tag">TypeScript</span>
-        <span class="tag">WatermelonDB</span>
-        <span class="tag">SQLite</span>
-        <span class="tag">Supabase</span>
-        <span class="tag">Apple HealthKit</span>
-        <span class="tag">OAuth</span>
-      </div>
-    </section>
+      <article class="prose">
+        <h1 class="page-title">Kirok &mdash; Offline-First Workout Tracker</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">April 2026</time>
 
-    <footer class="footer">
+        <p>
+          Kirok is a mobile workout tracker built for serious lifters who want something fast, reliable, and works without internet. The core idea: your workout data should live on your phone first, and sync when it can.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://github.com/taejunoh/kirok" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>Log exercises, weights, reps, and RPE with a fast interface designed for between-set use</li>
+          <li>Automatically detects personal records across exercises</li>
+          <li>Create, save, and reuse workout routines</li>
+          <li>Works fully offline using local SQLite, syncs to cloud when back online</li>
+          <li>Apple Watch integration for wrist-based logging</li>
+          <li>Custom SVG charts for volume, frequency, and strength progression</li>
+        </ul>
+
+        <h2>Tech stack</h2>
+        <p>
+          Built with React Native and Expo, using WatermelonDB (SQLite) for local-first storage. Supabase handles authentication (Apple/Google OAuth) and cloud sync. Custom SVG-based analytics charts, Apple HealthKit integration, and TypeScript throughout.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
       <div class="footer-inner">
         <p class="footer-text">&copy; 2026 Taejun Oh</p>
-        <p class="footer-text"><a href="../" style="color: var(--ink-blue);">Back to Notes</a></p>
+        <p class="footer-text"><a href="mailto:allinsimple@gmail.com">allinsimple@gmail.com</a></p>
       </div>
     </footer>
+
   </div>
 
   <script src="../js/main.js"></script>

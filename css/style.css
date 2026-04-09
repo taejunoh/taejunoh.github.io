@@ -124,143 +124,62 @@ img {
 .hole { display: none; }
 
 /* ========================================
-   Navigation — top of page, like a header
+   Site Header — blog style
    ======================================== */
-.nav {
-  padding: 1.5rem 0 0.5rem;
+.site-header {
+  padding: 2.5rem 0 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  border-bottom: none;
   position: relative;
   z-index: 10;
 }
 
-.nav-logo {
+.site-header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+}
+
+.site-title {
   font-family: var(--font-hand);
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: var(--ink);
   transition: var(--transition);
 }
 
-.nav-logo:hover {
+.site-title:hover {
   color: var(--ink-blue);
 }
 
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-  list-style: none;
+.site-subtitle {
+  font-family: var(--font-hand-alt);
+  font-size: 0.95rem;
+  color: var(--ink-faded);
 }
 
-.nav-links a {
+.site-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.site-nav a {
   font-family: var(--font-hand-alt);
   font-size: 1.1rem;
   color: var(--ink-light);
   transition: var(--transition);
 }
 
-.nav-links a:hover {
+.site-nav a:hover,
+.site-nav a.active {
   color: var(--ink-blue);
+}
+
+.site-nav a.active {
   text-decoration: underline;
   text-decoration-style: wavy;
   text-underline-offset: 4px;
-}
-
-/* ========================================
-   Hero — like the top of the first page
-   ======================================== */
-.hero {
-  padding: var(--space-xl) 0 var(--space-lg);
-  position: relative;
-}
-
-.hero-date {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-faded);
-  margin-bottom: var(--space-sm);
-}
-
-.hero-title {
-  font-family: var(--font-hand);
-  font-size: clamp(2.8rem, 7vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  margin-bottom: var(--space-sm);
-}
-
-.hero-title .underline {
-  text-decoration: underline;
-  text-decoration-color: var(--ink-red);
-  text-decoration-thickness: 3px;
-  text-underline-offset: 6px;
-  text-decoration-style: wavy;
-}
-
-.hero-title .circled {
-  position: relative;
-  display: inline-block;
-}
-
-.hero-title .circled::after {
-  content: '';
-  position: absolute;
-  inset: -8px -12px;
-  border: 2.5px solid var(--ink-red);
-  border-radius: 50% 45% 55% 40%;
-  transform: rotate(-2deg);
-  opacity: 0.7;
-}
-
-.hero-description {
-  font-family: var(--font-hand-alt);
-  font-size: 1.3rem;
-  color: var(--ink-light);
-  line-height: 1.9;
-  max-width: 520px;
-  margin-bottom: var(--space-md);
-}
-
-.hero-links {
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-}
-
-.hero-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-hand-alt);
-  font-size: 1.1rem;
-  color: var(--ink-blue);
-  transition: var(--transition);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.hero-link:hover {
-  color: var(--ink-red);
-}
-
-.hero-link svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* Doodle arrow */
-.doodle-arrow {
-  position: absolute;
-  right: 0;
-  bottom: 1rem;
-  font-size: 2rem;
-  color: var(--ink-faded);
-  transform: rotate(20deg);
-  opacity: 0.4;
 }
 
 /* ========================================
@@ -274,7 +193,132 @@ img {
 }
 
 /* ========================================
-   Section Headers
+   Blog Post List
+   ======================================== */
+.posts {
+  padding: var(--space-md) 0;
+}
+
+.post-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-faded);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.post-link {
+  display: block;
+  transition: var(--transition);
+}
+
+.post-link:hover .post-title {
+  color: var(--ink-blue);
+}
+
+.post-title {
+  font-family: var(--font-hand);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+  transition: var(--transition);
+}
+
+.post-summary {
+  font-family: var(--font-hand-alt);
+  font-size: 1.05rem;
+  color: var(--ink-light);
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.post-read-more {
+  font-family: var(--font-hand-alt);
+  font-size: 0.95rem;
+  color: var(--ink-blue);
+  transition: var(--transition);
+}
+
+.post-link:hover .post-read-more {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ========================================
+   Page Content (About, etc.)
+   ======================================== */
+.page-content {
+  padding: var(--space-md) 0 var(--space-xl);
+}
+
+.page-title {
+  font-family: var(--font-hand);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--space-md);
+}
+
+.prose {
+  font-family: var(--font-hand-alt);
+  font-size: 1.15rem;
+  color: var(--ink-light);
+  line-height: 1.9;
+}
+
+.prose p {
+  margin-bottom: var(--space-sm);
+}
+
+.prose h2 {
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: var(--space-md);
+  margin-bottom: 0.5rem;
+}
+
+.prose a {
+  color: var(--ink-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: var(--transition);
+}
+
+.prose a:hover {
+  color: var(--ink-red);
+}
+
+.prose ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: var(--space-sm);
+}
+
+.prose li {
+  padding: 0.2rem 0;
+}
+
+.prose li::before {
+  content: '- ';
+  color: var(--ink-faded);
+}
+
+/* ========================================
+   Section Headers (project pages)
    ======================================== */
 .section-header {
   margin-bottom: var(--space-md);
@@ -295,93 +339,11 @@ img {
   font-size: clamp(2rem, 4vw, 2.8rem);
   font-weight: 700;
   color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--highlight-yellow);
-  text-decoration-thickness: 12px;
-  text-underline-offset: -4px;
-  text-decoration-skip-ink: none;
 }
 
 /* ========================================
-   Project Cards — like sticky notes
+   Tags
    ======================================== */
-.projects {
-  padding: var(--space-md) 0;
-}
-
-.project-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.project-card {
-  display: block;
-  padding: 1.2rem 1.5rem;
-  background: rgba(255, 255, 255, 0.5);
-  border-left: 3px solid var(--ink-blue);
-  border-radius: 2px;
-  transition: var(--transition);
-  cursor: pointer;
-  text-decoration: none;
-  position: relative;
-}
-
-.project-card:nth-child(2) {
-  border-left-color: var(--ink-green);
-}
-
-.project-card:nth-child(3) {
-  border-left-color: var(--ink-purple);
-}
-
-.project-card:hover {
-  background: rgba(255, 255, 255, 0.8);
-  transform: translateX(4px);
-}
-
-.project-card-number {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--ink-faded);
-  margin-bottom: 0.3rem;
-}
-
-.project-card-title {
-  font-family: var(--font-hand);
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 0.2rem;
-  transition: var(--transition);
-}
-
-.project-card:hover .project-card-title {
-  color: var(--ink-blue);
-}
-
-.project-card:nth-child(2):hover .project-card-title {
-  color: var(--ink-green);
-}
-
-.project-card:nth-child(3):hover .project-card-title {
-  color: var(--ink-purple);
-}
-
-.project-card-desc {
-  font-family: var(--font-hand-alt);
-  font-size: 1.05rem;
-  color: var(--ink-light);
-  line-height: 1.7;
-  margin-bottom: 0.6rem;
-}
-
-.project-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
 .tag {
   font-family: var(--font-mono);
   font-size: 0.65rem;
@@ -393,82 +355,35 @@ img {
   white-space: nowrap;
 }
 
-.project-card:nth-child(2) .tag {
-  background: rgba(100, 180, 120, 0.15);
-}
-
-.project-card:nth-child(3) .tag {
-  background: rgba(160, 120, 200, 0.15);
-}
-
-.project-card-arrow {
-  position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
-  color: var(--ink-faded);
-  transition: var(--transition);
-  font-family: var(--font-hand);
-  font-size: 1.2rem;
-}
-
-.project-card:hover .project-card-arrow {
-  color: var(--ink-blue);
-  transform: translate(2px, -2px);
-}
-
 /* ========================================
-   About Section
+   Site Footer
    ======================================== */
-.about {
-  padding: var(--space-lg) 0 var(--space-xl);
-}
-
-.about-content {
-  max-width: 600px;
-}
-
-.about-text {
-  font-family: var(--font-hand-alt);
-  font-size: 1.15rem;
-  color: var(--ink-light);
-  line-height: 1.9;
-  margin-bottom: var(--space-sm);
-}
-
-.about-contact {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--ink-blue);
-  transition: var(--transition);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.about-contact:hover {
-  color: var(--ink-red);
-}
-
-/* ========================================
-   Footer — bottom of the page
-   ======================================== */
-.footer {
-  padding: var(--space-md) 0 var(--space-sm);
-  border-top: 1px dashed rgba(0,0,0,0.1);
+.site-footer {
+  padding-bottom: var(--space-md);
 }
 
 .footer-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 0.5rem;
 }
 
 .footer-text {
   font-family: var(--font-hand-alt);
   font-size: 0.9rem;
   color: var(--ink-faded);
+}
+
+.footer-text a {
+  color: var(--ink-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: var(--transition);
+}
+
+.footer-text a:hover {
+  color: var(--ink-red);
 }
 
 /* ========================================
@@ -703,12 +618,6 @@ img {
   transform: translateY(0);
 }
 
-/* Animation delays for hero */
-.hero-date { opacity: 0; animation: fadeSlideUp 0.6s ease forwards 0.1s; }
-.hero-title { opacity: 0; animation: fadeSlideUp 0.6s ease forwards 0.25s; }
-.hero-description { opacity: 0; animation: fadeSlideUp 0.6s ease forwards 0.4s; }
-.hero-links { opacity: 0; animation: fadeSlideUp 0.6s ease forwards 0.55s; }
-
 /* ========================================
    Responsive
    ======================================== */
@@ -726,18 +635,19 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .nav {
+  .site-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
 
-  .nav-links {
-    gap: 1rem;
+  .site-header-left {
+    flex-direction: column;
+    gap: 0;
   }
 
-  .margin-note {
-    display: none;
+  .site-nav {
+    gap: 1rem;
   }
 
   .footer-inner {
@@ -747,10 +657,6 @@ img {
 }
 
 @media (max-width: 480px) {
-  .hero-links {
-    flex-direction: column;
-  }
-
   .project-cta {
     flex-direction: column;
     align-items: center;
