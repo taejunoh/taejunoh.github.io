@@ -36,7 +36,7 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">March 2026</time>
 
         <p>
-          DoEveryday is a habit tracking web app for people who want to stay consistent. Log daily activities, build streaks, and see your progress through heatmaps and charts. Available in both English and Korean.
+          DoEveryday is a cross-platform habit tracker &mdash; web app, iOS, Android, and Chrome extension. Log daily activities, build streaks, and see your progress through heatmaps and charts. Available in English and Korean.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
@@ -51,17 +51,21 @@
 
         <h2>What it does</h2>
         <ul>
-          <li>Log workouts, reading, journaling, and any custom habit with a single tap</li>
-          <li>Streak tracking with current and longest streak display</li>
-          <li>Heatmaps and charts for visualizing consistency over time</li>
-          <li>Full i18n support: English and Korean</li>
-          <li>Supabase authentication with cloud sync</li>
-          <li>Stripe-integrated subscription with free and premium tiers</li>
+          <li>Daily habit grid with drag-to-reorder</li>
+          <li>Streaks, completion rate, and 4-week history</li>
+          <li>Community: trending habits, templates, and 30-day challenges (Pro)</li>
+          <li>Web push and email reminders, timezone-aware</li>
+          <li>PWA with service worker and offline shell</li>
+          <li>Chrome extension for quick logging</li>
+          <li>iOS and Android native apps (React Native)</li>
+          <li>Stripe subscriptions with billing portal</li>
+          <li>Full i18n: English and Korean</li>
+          <li>Auth: email, Google, and Apple (via Supabase)</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          React 18 with Vite for fast development. React Router v6 for navigation, Supabase for auth and database, Stripe for payments, Resend for transactional emails. Deployed on Vercel.
+          React 18 + Vite for the web app, React Native (Expo) for iOS and Android. React Router v7, Supabase for auth/database/edge functions, Stripe for payments, Resend for email, Web Push + VAPID for notifications. Chrome extension for quick habit logging. Deployed on Vercel.
         </p>
       </article>
     </main>
