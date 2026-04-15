@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClaudeTokenUsage - macOS Menu Bar App | Taejun Oh</title>
+  <title>ClaudeBeat - macOS Menu Bar App | Taejun Oh</title>
   <meta name="description" content="Real-time Claude AI token usage monitor for macOS menu bar.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
@@ -32,18 +32,18 @@
       </a>
 
       <article class="prose">
-        <h1 class="page-title">ClaudeTokenUsage</h1>
-        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">April 2026</time>
+        <h1 class="page-title">ClaudeBeat</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          A native macOS menu bar app that monitors your Claude AI token usage in real-time. See your current session (5h) and weekly (7d) limits at a glance, with configurable alerts before you hit the cap.
+          A native macOS menu bar app that monitors your Claude AI token usage in real-time. See your 5-hour session and 7-day weekly limits at a glance with circular gauges, get notified on session resets, and track usage across all models or Sonnet-only.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
-          <a href="https://taejunoh.com/ClaudeTokenUsage/" target="_blank" rel="noopener" class="btn btn-primary">
+          <a href="https://claudebeat.com/" target="_blank" rel="noopener" class="btn btn-primary">
             Website
           </a>
-          <a href="https://github.com/taejunoh/ClaudeTokenUsage" target="_blank" rel="noopener" class="btn btn-primary">
+          <a href="https://github.com/taejunoh/ClaudeBeat" target="_blank" rel="noopener" class="btn btn-primary">
             <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
             GitHub
           </a>
@@ -51,17 +51,19 @@
 
         <h2>What it does</h2>
         <ul>
-          <li>Real-time token usage display in the macOS menu bar</li>
-          <li>Popover dashboard with session (5h) and weekly (7d) limit tracking</li>
-          <li>Configurable notifications before hitting usage caps</li>
+          <li>Real-time 5-hour session and 7-day weekly usage display in the menu bar</li>
+          <li>Popover dashboard with circular gauges for detailed usage breakdown</li>
+          <li>Separate tracking for all models and Sonnet-only usage</li>
+          <li>Session reset notifications and customizable threshold alerts</li>
           <li>Secure API key storage via macOS Keychain</li>
-          <li>Auto-refresh with customizable intervals</li>
+          <li>Configurable auto-refresh (15 seconds to 5 minutes)</li>
+          <li>Supports both session cookie and Claude Code OAuth authentication</li>
           <li>Lightweight, zero third-party dependencies</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          Built entirely in Swift 5.10 with SwiftUI for the dashboard UI and AppKit (NSStatusItem, NSPopover) for menu bar integration. Uses macOS Keychain for secure credential storage, UserNotifications for alerts, and Swift Concurrency (async/await) for background polling. Requires macOS 14.0 Sonoma or later.
+          Built entirely in Swift with SwiftUI for the dashboard UI and AppKit (NSStatusItem, NSPopover) for menu bar integration. Uses macOS Keychain for secure credential storage, UserNotifications for alerts, and Swift Concurrency (async/await) for thread-safe background polling. Requires macOS 14.0 Sonoma or later.
         </p>
       </article>
     </main>
