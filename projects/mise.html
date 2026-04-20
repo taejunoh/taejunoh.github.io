@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mise - Restaurant P&L Automation | Taejun Oh</title>
-  <meta name="description" content="Automated daily P&L reporting for restaurant owners using Toast POS and MarginEdge.">
+  <title>Mise - Daily P&L Automation SaaS | Taejun Oh</title>
+  <meta name="description" content="SaaS platform automating daily P&L reporting for restaurant operators. Active pilot in NYC.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -36,7 +36,7 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          Mise automates daily P&L reporting for restaurant owners. It syncs sales data from Toast POS and cost data from MarginEdge, calculates key financial metrics, and sends a daily email summary with KPIs.
+          Mise is a SaaS platform that automates daily P&L reporting for restaurant operators, currently running an active pilot in NYC. It ingests and normalizes data across POS, accounting, scheduling, and payment systems, resolves conflicts between sources, and delivers a daily financial snapshot with KPIs.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
@@ -48,17 +48,17 @@
 
         <h2>What it does</h2>
         <ul>
-          <li>Syncs daily sales data from Toast POS automatically</li>
-          <li>Pulls cost data from MarginEdge for food and labor costs</li>
-          <li>Calculates P&L metrics: revenue, COGS, labor %, net profit</li>
-          <li>Sends scheduled daily email reports via SendGrid</li>
-          <li>Dashboard for viewing historical trends and KPIs</li>
-          <li>Multi-restaurant support with owner-level access</li>
+          <li>Multi-source ingestion across POS, accounting, scheduling, and payment systems</li>
+          <li>Normalizes heterogeneous data into a unified financial schema</li>
+          <li>Conflict resolution when sources disagree (e.g., POS sales vs. payment deposits)</li>
+          <li>Calculates daily P&L metrics: revenue, COGS, labor %, net profit</li>
+          <li>Delivers daily email reports and a dashboard for historical trends</li>
+          <li>Multi-location support with operator-level access</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          Python backend with FastAPI for the API layer and SQLAlchemy for ORM. PostgreSQL for data storage. APScheduler for automated daily sync and report generation. React frontend for the dashboard. SendGrid for transactional email delivery. Integrates with Toast POS and MarginEdge APIs.
+          React frontend. Python + FastAPI backend. Supabase (Postgres, auth, storage) as the primary data layer. AWS Lambda for scheduled ingestion jobs and background processing across integrated POS, accounting, scheduling, and payment APIs.
         </p>
       </article>
     </main>
