@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpotTrove - Street Parking + Garage Pricing on One Map | Taejun Oh</title>
+  <meta name="description" content="Street parking legality and garage pricing on one map. Launching in NYC, expanding across the US.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All projects
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">SpotTrove</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
+
+        <p>
+          Street parking legality and garage pricing, on one map. Launching in NYC, expanding across the US. Phase 1 ships on 320K parsed signs, 635K legality rules, 1,719 indexed garages, and 130 with real-time pricing. The same engine &mdash; parser, legality solver, scrapers, OCR validator &mdash; generalizes to every U.S. city with open sign data. Boston, Chicago, San Francisco, and LA are next.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="https://spottrove.com" target="_blank" rel="noopener" class="btn btn-primary">
+            Visit spottrove.com
+          </a>
+          <a href="https://github.com/taejunoh/spottrove" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>Parses 320K NYC parking signs into 635K machine-readable legality rules</li>
+          <li>Tells you whether a given curb is legal to park on right now &mdash; and when it stops being legal</li>
+          <li>Indexes 1,719 garages with 130 streaming real-time pricing from ProPark and iPark</li>
+          <li>OCR validator cross-checks parsed rules against the source sign image</li>
+          <li>Native iOS/Android app with live map, plus a marketing site and lightweight web demo</li>
+        </ul>
+
+        <h2>Architecture</h2>
+        <p>
+          Monorepo with three apps and one service: a Next.js 14 marketing site on Vercel, a React Native + Expo mobile app shipping via EAS / TestFlight, a single-file Mapbox GL web demo, and a FastAPI service backed by Supabase (Postgres + PostGIS) for the API. A shared TypeScript types package keeps mobile and web in sync.
+        </p>
+
+        <h2>Tech stack</h2>
+        <p>
+          <strong>Backend:</strong> FastAPI, Pydantic, SQLAlchemy + GeoAlchemy2, APScheduler, Supabase (Postgres + PostGIS, Auth, Storage).<br>
+          <strong>Mobile:</strong> Expo SDK 51, React Native 0.74, RNMapbox, Sentry, Supabase auth, RevenueCat, expo-notifications.<br>
+          <strong>Marketing:</strong> Next.js 14 App Router, Tailwind, custom typography via <code>next/font/google</code>.<br>
+          <strong>Data:</strong> Tesseract OCR, custom NYC sign parser, NYC Open Data + DOT permits ingest, ProPark + iPark scrapers, Yelp.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
