@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeLeague - Competitive Typing Leaderboards | Taejun Oh</title>
+  <meta name="description" content="One typing test feeds many leaderboards — global, country, city, and school. Built with Next.js, FastAPI, and Redis.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All projects
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">TypeLeague</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
+
+        <p>
+          TypeLeague turns a single typing test into many competitions at once &mdash; "How fast is your community?" One run ranks you globally and against your country, city, and school, so every test is a race on multiple fronts. Seasonal play, multiple race formats, and real-time WPM/accuracy scoring are backed by a FastAPI service with Redis-powered leaderboards.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://typeleague.gg" target="_blank" rel="noopener" class="btn btn-primary">
+            Visit typeleague.gg
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>One typing test simultaneously feeds global, country, city, and school leaderboards</li>
+          <li>Multiple race formats: Sprint (15s), Standard (30/60s), and Marathon (120s)</li>
+          <li>Real-time WPM and accuracy scoring with category options (punctuation, numbers, language)</li>
+          <li>Seasonal competition with rolling seasons and countdowns</li>
+          <li>Accounts, profiles, and auth via Clerk</li>
+          <li>Redis-backed leaderboards for fast ranking reads and writes</li>
+        </ul>
+
+        <h2>Tech stack</h2>
+        <p>
+          Next.js 14 (App Router) with TypeScript on the frontend. FastAPI (Python) backend with PostgreSQL for persistence and Redis for real-time leaderboard ranking. Authentication and user management via Clerk.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
