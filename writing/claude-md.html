@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My actual CLAUDE.md, annotated | Taejun Oh</title>
+  <meta name="description" content="The real global CLAUDE.md I run for Claude Code, with commentary on why each rule exists.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">My actual CLAUDE.md, annotated</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">July 2026</time>
+
+        <p>
+          This is my actual global CLAUDE.md, the file Claude Code reads at the start of every session across every project. Not a cleaned-up example — the real one, in the original Korean, with commentary under each block on why the rule exists.
+        </p>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>너는 오케스트레이터다. 추론은 deep-reasoner, 잡일은 fast-worker, 새 관점은 Codex에게.</pre></div>
+          <p class="explain-p">One line, and everything below just enforces it. The main session isn't supposed to write code itself — it plans, splits work, and judges what comes back. I had to say this explicitly because left alone, the main session will just do everything itself instead of delegating.</p>
+        </div>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>**ultracode** — 모델 effort 레벨이 아니라 Claude Code 설정이다. 내부적으로는 모델에 `xhigh`를 보내면서 그 위에 동적 멀티에이전트 워크플로우를 얹는다. 인터랙티브 `/effort`(슬라이더) 메뉴에는 뜨지만 `--effort` 플래그·`effortLevel` 설정·`CLAUDE_CODE_EFFORT_LEVEL` 환경변수에는 존재하지 않는다.</pre></div>
+          <p class="explain-p">Ultracode sits in the same slider as the real effort levels, so it looks like a sixth option. It isn't — it's xhigh plus a multi-agent workflow bolted on top, and it doesn't exist as a value anywhere in the API or config. I kept picking the wrong thing when scripting against the Agent/Workflow interface because I assumed the slider and the API shared a vocabulary. They don't.</p>
+        </div>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>Agent/Workflow 같은 프로그래밍 인터페이스의 effort 파라미터에는 "ultracode"가 없으므로 그때는 최상위 실제 레벨인 `max`를 지정한다.</pre></div>
+          <p class="explain-p">Direct consequence of the last section: interactively I set the slider to Ultracode, but any time I'm calling Agent or Workflow programmatically I have to remember to pass max instead, because that value simply isn't offered there. Two different defaults for what feels like the same setting, which is exactly the kind of thing that's cheap to write down once and expensive to rediscover mid-task.</p>
+        </div>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>## deep-reasoner (Opus 고정)
+머리 쓰는 일은 전부 여기로:
+- 아키텍처 설계 및 트레이드오프 분석
+- 어려운 디버깅 (원인이 불분명한 버그, 레이스 컨디션 등)
+- 알고리즘 설계 및 복잡한 로직
+
+## fast-worker (Sonnet 고정)
+잡일은 전부 여기로:
+- 보일러플레이트 작성
+- 테스트 작성/수정
+- 포맷팅, 린트 수정
+- 단순 수정 (오타, 리네임, 명확한 소규모 변경)</pre></div>
+          <p class="explain-p">Both pinned to a specific model instead of left to auto-routing. I don't trust a router to tell 'unclear-cause bug' from 'rename this variable' as reliably as I can tell it myself, and a wrong guess on that call is expensive — it means redoing the work on the other model. The actual test I use isn't the bullet list, it's one question: does this step require judgment, or just correct execution.</p>
+        </div>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>## Codex (다른 관점의 동료)
+- 설계 검토나 막힌 문제에서 두 번째 의견이 필요할 때 `/codex` 계열 명령으로 의견을 구한다.</pre></div>
+          <p class="explain-p">Opus and Sonnet come from the same lab and likely share blind spots. Codex doesn't fit into the deep-reasoner/fast-worker tiering at all — I don't send it routine work — it only comes in for design review or when I'm stuck, specifically because I want a model with different training, not just a different amount of compute.</p>
+        </div>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>- 독립적인 작업은 서브에이전트를 병렬로 띄운다.
+- 서브에이전트 결과는 검증 후 종합해서 사용자에게 보고한다.
+- 사소한 한 줄 답변이나 대화성 질문까지 위임할 필요는 없다.</pre></div>
+          <p class="explain-p">Three failure modes I'd already hit before writing these down: independent tasks queued sequentially for no reason, subagent output trusted and forwarded without a check, and a one-line question routed through the whole delegation apparatus for no benefit. Each line here maps to a specific time that happened.</p>
+        </div>
+
+        <p>
+          That's the whole file, unedited. If you run Claude Code across projects and keep re-explaining the same delegation logic in every session, this is what putting it in one file looks like.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
