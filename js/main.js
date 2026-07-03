@@ -17,3 +17,19 @@ document.querySelectorAll('.project-card').forEach(card => {
     card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
   });
 });
+
+// Copy-to-clipboard for raw file buttons
+document.querySelectorAll('[data-copy-file]').forEach(btn => {
+  const original = btn.textContent;
+  btn.addEventListener('click', async () => {
+    try {
+      const res = await fetch(btn.getAttribute('data-copy-file'));
+      const text = await res.text();
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+    } catch (e) {
+      btn.textContent = 'Copy failed';
+    }
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  });
+});

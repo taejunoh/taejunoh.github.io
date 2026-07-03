@@ -40,6 +40,11 @@
           This is my actual global CLAUDE.md, the file Claude Code reads at the start of every session across every project. Not a cleaned-up example — the real one, with commentary under each block on why the rule exists.
         </p>
 
+        <div class="file-actions">
+          <button type="button" class="btn btn-primary" data-copy-file="../claude.md">Copy full CLAUDE.md</button>
+          <a href="../claude.md" class="file-actions-raw">or curl it: taejunoh.com/claude.md</a>
+        </div>
+
         <div class="rule-block">
           <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>You are the orchestrator. Reasoning goes to deep-reasoner, grunt work goes to fast-worker, a fresh perspective goes to Codex.</pre></div>
           <p class="explain-p">One line, and everything below just enforces it. The main session isn't supposed to write code itself — it plans, splits work, and judges what comes back. I had to say this explicitly because left alone, the main session will just do everything itself instead of delegating.</p>

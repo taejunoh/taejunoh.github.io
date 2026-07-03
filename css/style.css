@@ -648,6 +648,26 @@ a { color: inherit; text-decoration: none; }
 
 .btn svg { width: 16px; height: 16px; }
 
+.file-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 1.5rem 0 2rem;
+  flex-wrap: wrap;
+}
+
+.file-actions-raw {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-faded);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.file-actions-raw:hover {
+  color: var(--ink-blue);
+}
+
 .footer-inner {
   display: flex;
   justify-content: space-between;
