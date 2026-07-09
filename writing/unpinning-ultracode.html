@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Un-pinning Ultracode: a CLAUDE.md update | Taejun Oh</title>
+  <meta name="description" content="Why I stopped running Ultracode as a standing default, the per-stage effort rules that replaced it, and the /model opus fallback when the Fable cap runs out.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Un-pinning Ultracode: a CLAUDE.md update</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">July 2026</time>
+
+        <p>
+          Last week I published <a href="claude-md.html">my global CLAUDE.md, annotated</a>. One section of it is already gone. The old operating rules said: keep the interactive effort slider pinned to Ultracode at all times, and pass <code style="font-family: var(--font-mono); font-size: 0.9em;">max</code> everywhere in programmatic calls, since those interfaces don't offer Ultracode. Both rules turned out to be wrong, and my usage bill is what told me.
+        </p>
+
+        <h2>What the data said</h2>
+        <p>
+          The Fable 5 weekly cap ran out while my overall Weekly allowance still had plenty of room. When I looked at <code style="font-family: var(--font-mono); font-size: 0.9em;">/usage</code>, 94% of recent consumption came from subagent-heavy sessions and 87% from sessions with 150k+ context. That is exactly the fingerprint of always-on Ultracode: every trivial question spinning up a multi-agent workflow, every workflow stage inheriting the biggest model at the highest effort. The official guidance says the same thing outright — for everyday work (single-file edits, simple questions, interactive tasks), Ultracode adds latency and cost without adding quality — and Ultracode resets each session by design, which should have been the hint that it was never meant to be pinned.
+        </p>
+
+        <h2>The new rules</h2>
+        <p>Here is the replacement section, verbatim from the updated file:</p>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>Actual operating rules:
+- Keep the interactive `/model` (or `/effort`) slider at **xhigh** by default. **Do not leave Ultracode on as a standing default** — the official guidance explicitly says that for everyday work (single-file edits, simple questions, interactive tasks) Ultracode only adds latency and cost without adding quality, and it is designed to reset every session, so it was never meant to be pinned. In practice, per `/usage`, 94% of recent usage came from subagent-heavy sessions and 87% from 150k+ context sessions, and the Fable 5 weekly cap ran out while the overall Weekly allowance still had room — exactly the pattern always-on Ultracode produces (verified 2026-07-08).
+- Turn Ultracode on case-by-case, only for work that can't be coordinated in a single conversation: full-codebase audits, large migrations, research that cross-checks multiple sources, hard plans that need review from several angles.
+- In programmatic interfaces (mainly Workflow's `agent()`; the Agent tool has only a model knob, no effort), set the effort parameter **per stage difficulty**. The baseline is `xhigh` (Ultracode's real effort is xhigh, so that's the reference line, and Workflow itself already provides the orchestration). Mechanical stages (dedup, formatting, cheap finders) go down to `low`/`medium`, and `max` is reserved for the genuinely hardest stages (adversarial verification, hard judgment and synthesis). Blanket `max` is banned — especially when the session's default model is Fable 5, an `agent()` call with no model set inherits Fable, so "Fable @ max" running mechanical stages is the worst way to burn the weekly cap and cost. So programmatic calls specify **both model and effort** explicitly and never rely on inheritance.</pre></div>
+          <p class="explain-p">Three changes packed in there. The slider default drops from Ultracode to xhigh, and Ultracode becomes a case-by-case tool for work one conversation genuinely can't coordinate. The blanket <code style="font-family: var(--font-mono); font-size: 0.9em;">max</code> rule flips into a per-stage scale: xhigh as the baseline, low/medium for mechanical stages, max only for adversarial verification and hard synthesis. And model inheritance is banned in programmatic calls, because "no model set" quietly means "Fable," and Fable at max effort doing dedup work is how a weekly cap dies.</p>
+        </div>
+
+        <h2>How it's enforced</h2>
+        <p>
+          Rules in a markdown file are advisory; the model can and does drift from them mid-session. So the model-selection part is enforced with hooks: any Agent tool call is intercepted, and unless it targets deep-reasoner (pinned to Opus) or fast-worker (pinned to Sonnet), it gets blocked if it doesn't name a model explicitly. Workflow's <code style="font-family: var(--font-mono); font-size: 0.9em;">agent()</code> calls stay on the honor system of the written rules, since that's where per-stage judgment lives. The whole arrangement looks like this:
+        </p>
+
+        <figure style="margin: 2rem 0;">
+          <svg viewBox="0 0 760 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: the main session (Fable 5 at xhigh) delegates via Agent tool calls, where a hook enforces model choice, or via Workflow agent() calls, governed by written rules. Below: when the Fable cap is exhausted, the turn stops, you type /model opus, and the session continues on Opus." style="width: 100%; height: auto; font-family: 'Patrick Hand', cursive;">
+            <defs>
+              <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0L10 5L0 10z" fill="#9a8e7f"/>
+              </marker>
+            </defs>
+
+            <!-- Top: main session -->
+            <rect x="230" y="16" width="300" height="66" rx="8" fill="rgba(255,255,255,0.55)" stroke="rgba(42,37,32,0.25)" stroke-width="1.5"/>
+            <text x="380" y="43" text-anchor="middle" font-size="19" fill="#2a2520" font-weight="bold">Main session = orchestrator</text>
+            <text x="380" y="67" text-anchor="middle" font-size="15" fill="#5c5248" font-family="'IBM Plex Mono', monospace">Fable 5 &#183; xhigh (default)</text>
+
+            <!-- Arrows to branches -->
+            <path d="M310 84 L204 134" stroke="#9a8e7f" stroke-width="1.6" fill="none" marker-end="url(#arr)"/>
+            <path d="M450 84 L556 134" stroke="#9a8e7f" stroke-width="1.6" fill="none" marker-end="url(#arr)"/>
+
+            <!-- Left branch: Agent tool (hook-enforced, blue) -->
+            <rect x="42" y="140" width="324" height="66" rx="8" fill="rgba(58,107,140,0.08)" stroke="#3a6b8c" stroke-width="1.6"/>
+            <text x="204" y="167" text-anchor="middle" font-size="18" fill="#3a6b8c" font-weight="bold">Agent tool call</text>
+            <text x="204" y="190" text-anchor="middle" font-size="14.5" fill="#5c5248">hook enforces the model</text>
+            <path d="M204 206 L204 234" stroke="#9a8e7f" stroke-width="1.6" fill="none" marker-end="url(#arr)"/>
+            <rect x="42" y="238" width="324" height="118" rx="8" fill="rgba(255,255,255,0.55)" stroke="rgba(42,37,32,0.15)" stroke-width="1.2"/>
+            <text x="62" y="270" font-size="15" fill="#5c5248">&#183; deep-reasoner &#8594; Opus (exempt)</text>
+            <text x="62" y="300" font-size="15" fill="#5c5248">&#183; fast-worker &#8594; Sonnet (exempt)</text>
+            <text x="62" y="330" font-size="15" fill="#5c5248">&#183; anything else &#8594; blocked if no model given</text>
+
+            <!-- Right branch: Workflow agent() (rules, red) -->
+            <rect x="394" y="140" width="324" height="66" rx="8" fill="rgba(192,80,80,0.07)" stroke="#c05050" stroke-width="1.6"/>
+            <text x="556" y="167" text-anchor="middle" font-size="18" fill="#c05050" font-weight="bold">Workflow agent()</text>
+            <text x="556" y="190" text-anchor="middle" font-size="14.5" fill="#5c5248">explicit, by written rule</text>
+            <path d="M556 206 L556 234" stroke="#9a8e7f" stroke-width="1.6" fill="none" marker-end="url(#arr)"/>
+            <rect x="394" y="238" width="324" height="118" rx="8" fill="rgba(255,255,255,0.55)" stroke="rgba(42,37,32,0.15)" stroke-width="1.2"/>
+            <text x="414" y="270" font-size="15" fill="#5c5248">&#183; model + effort always specified</text>
+            <text x="414" y="300" font-size="15" fill="#5c5248">&#183; baseline = xhigh, mechanical = low/med</text>
+            <text x="414" y="330" font-size="15" fill="#5c5248">&#183; max only for the hardest stages</text>
+
+            <!-- Divider -->
+            <line x1="42" y1="396" x2="718" y2="396" stroke="#9a8e7f" stroke-width="1" stroke-dasharray="6 6" opacity="0.5"/>
+
+            <!-- Bottom flow: cap fallback -->
+            <text x="42" y="432" font-size="16" fill="#2a2520" font-weight="bold">When the Fable weekly cap runs out mid-work:</text>
+
+            <rect x="42" y="450" width="150" height="72" rx="8" fill="rgba(255,255,255,0.55)" stroke="rgba(42,37,32,0.2)" stroke-width="1.3"/>
+            <text x="117" y="481" text-anchor="middle" font-size="15" fill="#2a2520">Fable cap</text>
+            <text x="117" y="503" text-anchor="middle" font-size="15" fill="#2a2520">exhausted</text>
+
+            <path d="M192 486 L222 486" stroke="#9a8e7f" stroke-width="1.6" fill="none" marker-end="url(#arr)"/>
+
+            <rect x="226" y="450" width="130" height="72" rx="8" fill="rgba(255,255,255,0.55)" stroke="rgba(42,37,32,0.2)" stroke-width="1.3"/>
+            <text x="291" y="492" text-anchor="middle" font-size="15" fill="#2a2520">turn stops</text>
+
+            <path d="M356 486 L386 486" stroke="#9a8e7f" stroke-width="1.6" fill="none" marker-end="url(#arr)"/>
+
+            <rect x="390" y="450" width="170" height="72" rx="8" fill="rgba(192,80,80,0.07)" stroke="#c05050" stroke-width="1.6"/>
+            <text x="475" y="479" text-anchor="middle" font-size="16" fill="#c05050" font-weight="bold" font-family="'IBM Plex Mono', monospace">/model opus</text>
+            <text x="475" y="503" text-anchor="middle" font-size="13.5" fill="#5c5248">you type it &#8594; continue</text>
+
+            <path d="M560 486 L590 486" stroke="#9a8e7f" stroke-width="1.6" fill="none" marker-end="url(#arr)"/>
+
+            <rect x="594" y="450" width="124" height="72" rx="8" fill="rgba(255,255,255,0.55)" stroke="rgba(42,37,32,0.2)" stroke-width="1.3"/>
+            <text x="656" y="481" text-anchor="middle" font-size="15" fill="#2a2520">continue</text>
+            <text x="656" y="503" text-anchor="middle" font-size="15" fill="#2a2520">on Opus</text>
+
+            <!-- Legend -->
+            <rect x="42" y="566" width="14" height="14" rx="3" fill="rgba(58,107,140,0.12)" stroke="#3a6b8c" stroke-width="1.4"/>
+            <text x="64" y="578" font-size="14" fill="#5c5248">automatic (hook-enforced)</text>
+            <rect x="268" y="566" width="14" height="14" rx="3" fill="rgba(192,80,80,0.1)" stroke="#c05050" stroke-width="1.4"/>
+            <text x="290" y="578" font-size="14" fill="#5c5248">manual (written rules / typed by me)</text>
+          </svg>
+          <figcaption style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-faded); margin-top: 0.5rem;">How model and effort get decided now — and what to do when the cap hits anyway.</figcaption>
+        </figure>
+
+        <h2>When the cap hits anyway</h2>
+        <p>
+          Even with the new rules, the Fable cap can still run out mid-task. When it does, the current turn just stops — no automatic downgrade, no handoff. The fix is manual and takes two inputs: type <code style="font-family: var(--font-mono); font-size: 0.9em;">/model opus</code>, then <code style="font-family: var(--font-mono); font-size: 0.9em;">continue</code>. The session picks up where it stopped, running on Opus. Worth writing down because in the moment it looks like the session died, and the instinct is to start a new one — which throws away all the context the cap interrupted.
+        </p>
+
+        <p>
+          The updated file is live at <a href="../claude.md">taejunoh.com/claude.md</a>, and the <a href="claude-md.html">annotated walkthrough</a> now carries a note pointing here. The meta-lesson: a CLAUDE.md is not a config you write once. Mine changed within a week of being published, because the usage data disagreed with a rule I was confident about.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
