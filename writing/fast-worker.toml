@@ -1,0 +1,7 @@
+name = "fast-worker"
+description = "Use Luna for boilerplate, tests, formatting, lint fixes, and clear small changes."
+model = "gpt-5.6-luna"
+model_reasoning_effort = "high"
+developer_instructions = """
+You are the fast-worker (Luna). Handle boilerplate, tests, formatting, lint fixes, and simple changes such as typos, renames, and clear small edits.
+"""

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How I Set Up Codex as a Small Model Team | Taejun Oh</title>
+  <meta name="description" content="The small Codex model team setup I use: a Sol orchestrator, Terra for deep reasoning, and Luna for fast implementation work.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">How I Set Up Codex as a Small Model Team</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">July 2026</time>
+
+        <p>
+          I use Codex as a small team rather than asking one session to do every kind of work. Sol is the orchestrator: it plans, splits independent tasks, and checks the results. Terra handles work that needs careful reasoning, while Luna handles the mechanical work that benefits from being quick and focused.
+        </p>
+
+        <p>
+          The setup is deliberately small. There is one global config, one set of team rules, and one custom-agent file for each role. These are the public copies I keep reusable across projects.
+        </p>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">codex-config.toml</div><pre>model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+
+[features]
+multi_agent = true</pre></div>
+          <div class="file-actions">
+            <button type="button" class="btn btn-primary" data-copy-file="codex-config.toml">Copy codex-config.toml</button>
+            <a href="codex-config.toml" class="file-actions-raw">or open raw: taejunoh.com/writing/codex-config.toml</a>
+          </div>
+          <p class="explain-p">Sol starts at <code>high</code>, which is enough for ordinary planning and coordination. I keep higher effort as an exception: <code>xhigh</code> is for a hard single-agent task, and Ultra is only worth using when the work is meaningfully parallel. There is no Max setting in this setup.</p>
+        </div>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">codex-agents.md</div><pre># Codex model team
+
+You are the Sol orchestrator. Use Sol for planning, splitting independent work, and synthesizing verified results. Delegate substantial implementation work instead of doing it in the orchestrator session.
+
+## Roles
+
+### deep-reasoner (Terra)
+
+Use Terra for architecture, trade-off analysis, hard debugging, race conditions, algorithm design, and other complex logic.
+
+### fast-worker (Luna)
+
+Use Luna for boilerplate, tests, formatting, lint fixes, and clear small changes.
+
+## Model and effort rules
+
+- Keep the baseline at `high`.
+- Use `low` or `medium` for mechanical work.
+- Use `xhigh` only for a hard single-agent task that needs extra reasoning.
+- Do not use `max`.
+- Use Ultra only when the work is meaningfully parallel and multi-agent orchestration is worth the overhead.
+- When calling `spawn_agent`, always set both `model` and `reasoning_effort` explicitly.</pre></div>
+          <div class="file-actions">
+            <button type="button" class="btn btn-primary" data-copy-file="codex-agents.md">Copy codex-agents.md</button>
+            <a href="codex-agents.md" class="file-actions-raw">or open raw: taejunoh.com/writing/codex-agents.md</a>
+          </div>
+          <p class="explain-p">The rules define ownership before they define models. Sol owns the decision about what to delegate; Terra and Luna own different kinds of execution. The explicit <code>spawn_agent</code> requirement keeps a later caller from silently changing either the model or its effort level.</p>
+        </div>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">deep-reasoner.toml</div><pre>name = "deep-reasoner"
+description = "Use Terra for architecture, trade-off analysis, hard debugging, algorithms, and complex logic."
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
+developer_instructions = """
+You are the deep-reasoner (Terra). Handle architecture design and trade-off analysis, hard debugging including unclear-cause bugs and race conditions, algorithm design, and complex logic.
+"""</pre></div>
+          <div class="file-actions">
+            <button type="button" class="btn btn-primary" data-copy-file="deep-reasoner.toml">Copy deep-reasoner.toml</button>
+            <a href="deep-reasoner.toml" class="file-actions-raw">or open raw: taejunoh.com/writing/deep-reasoner.toml</a>
+          </div>
+          <p class="explain-p">Terra is the judgment-heavy lane. I send architecture, unclear-cause bugs, race conditions, and algorithm design there because those tasks benefit from spending more effort before making a change.</p>
+        </div>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">fast-worker.toml</div><pre>name = "fast-worker"
+description = "Use Luna for boilerplate, tests, formatting, lint fixes, and clear small changes."
+model = "gpt-5.6-luna"
+model_reasoning_effort = "high"
+developer_instructions = """
+You are the fast-worker (Luna). Handle boilerplate, tests, formatting, lint fixes, and simple changes such as typos, renames, and clear small edits.
+"""</pre></div>
+          <div class="file-actions">
+            <button type="button" class="btn btn-primary" data-copy-file="fast-worker.toml">Copy fast-worker.toml</button>
+            <a href="fast-worker.toml" class="file-actions-raw">or open raw: taejunoh.com/writing/fast-worker.toml</a>
+          </div>
+          <p class="explain-p">Luna is the execution lane: boilerplate, tests, formatting, lint fixes, and small changes with a clear solution. The reusable custom role defaults to <code>high</code> to match the global agent config; mechanical per-call stages can explicitly lower effort to <code>medium</code> or <code>low</code>.</p>
+        </div>
+
+        <p>
+          The useful part is not the names. It is the boundary: one session decides what kind of thinking a task needs, the appropriate specialist does the work, and the orchestrator verifies the result before combining it with anything else. That is enough structure to make a small model team predictable without turning every conversation into a workflow diagram.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
