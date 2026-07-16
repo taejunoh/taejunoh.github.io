@@ -802,3 +802,96 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink-light);
   line-height: 1.8;
 }
+
+/* Usage figure — plan/quota bars redrawn from reported numbers */
+.usage-figure {
+  margin: 2rem 0;
+  padding: 1.4rem 1.6rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  box-shadow: var(--card-shadow);
+}
+
+.usage-figure-head {
+  font-family: var(--font-hand-alt);
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px dashed var(--grid-accent);
+}
+
+.usage-figure-head span {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-faded);
+  margin-left: 0.45rem;
+}
+
+.usage-row {
+  margin-bottom: 1.1rem;
+}
+
+.usage-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.usage-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.usage-label {
+  font-family: var(--font-hand-alt);
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.usage-label small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faded);
+}
+
+.usage-pct {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  white-space: nowrap;
+}
+
+.usage-bar {
+  height: 9px;
+  border-radius: 5px;
+  background: rgba(160, 150, 130, 0.22);
+}
+
+.usage-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: var(--ink-blue);
+}
+
+.usage-row.is-hot .usage-bar-fill {
+  background: var(--ink-red);
+}
+
+.usage-row.is-hot .usage-pct {
+  color: var(--ink-red);
+}
+
+.usage-figure-note {
+  margin-top: 1.2rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--grid-accent);
+  font-family: var(--font-hand-alt);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-light);
+}

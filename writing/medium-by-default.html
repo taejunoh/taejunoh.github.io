@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medium by default: when the token math stops adding up | Taejun Oh</title>
+  <meta name="description" content="An App Store review pass and one policy site burned 69% of a weekly Fable cap in ten hours. I don't know why yet, so the effort default came down to medium as a holding action.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Medium by default: when the token math stops adding up</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">July 2026</time>
+
+        <p>
+          This is the third post in a row about turning the same dial down, and I want to be upfront that it's a different kind of post than the first two. <a href="unpinning-ultracode.html">Un-pinning Ultracode</a> and <a href="effort-economics.html">coming down from xhigh</a> were both corrections: I'd carried a wrong mental model over from an older model generation, I found out, I fixed the default. Tidy stories with an answer at the end.
+        </p>
+        <p>
+          This one has no answer at the end. The dial went from <code style="font-family: var(--font-mono); font-size: 0.9em;">high</code> to <code style="font-family: var(--font-mono); font-size: 0.9em;">medium</code> not because I understood something new, but because the numbers stopped making sense and I wanted a smaller blast radius while I work out why.
+        </p>
+
+        <h2>The number</h2>
+        <p>
+          My plan reports two weekly bars: one for all models, and a separate one for Fable specifically. This week's window opened Thursday at 6am. Ten hours later, the all-models bar read 37% and the Fable bar read 69%.
+        </p>
+        <figure class="usage-figure">
+          <div class="usage-figure-head">Plan usage limits <span>Max (20x)</span></div>
+          <div class="usage-row">
+            <div class="usage-row-top">
+              <div class="usage-label">Current session<small>resets in 4 hr 45 min</small></div>
+              <div class="usage-pct">1% used</div>
+            </div>
+            <div class="usage-bar"><div class="usage-bar-fill" style="width: 1%;"></div></div>
+          </div>
+          <div class="usage-row">
+            <div class="usage-row-top">
+              <div class="usage-label">Weekly &mdash; All models<small>resets Thu 6:00 AM</small></div>
+              <div class="usage-pct">37% used</div>
+            </div>
+            <div class="usage-bar"><div class="usage-bar-fill" style="width: 37%;"></div></div>
+          </div>
+          <div class="usage-row is-hot">
+            <div class="usage-row-top">
+              <div class="usage-label">Weekly &mdash; Fable<small>resets Thu 5:59 AM</small></div>
+              <div class="usage-pct">69% used</div>
+            </div>
+            <div class="usage-bar"><div class="usage-bar-fill" style="width: 69%;"></div></div>
+          </div>
+          <figcaption class="usage-figure-note">Ten hours into the weekly window. The session bar is near-empty because the five-hour window had just rolled over — that one resets all day. The weekly bars don't.</figcaption>
+        </figure>
+
+        <p>
+          Six percent of the week had elapsed. Sixty-nine percent of the Fable allowance was gone. That leaves 31% to cover the remaining six and a half days.
+        </p>
+        <p>
+          Here is everything I did in those ten hours: a review pass over an app I'd submitted to the App Store, and one policy site. That's the whole list. Neither is a large job — the policy site in particular is about as routine as work gets. Last week the same shape of work didn't move the bar anything like this fast.
+        </p>
+
+        <h2>The part that bothers me</h2>
+        <p>
+          The uncomfortable detail is that this burn happened <em>at high</em>. The previous post was about lowering the default from xhigh to high specifically to stop overspending, and the week after that change, consumption got faster rather than slower. Whatever is driving this, the effort dial had already been turned down one notch and it didn't catch it.
+        </p>
+        <p>
+          Which means the honest reading of today's change is not "medium fixes it." It's that medium is the cheapest thing I can do right now that doesn't cost me capability, while the actual cause is still unidentified. If the burn rate stays like this at medium, that's informative too — it would tell me effort was never the variable that mattered, and the answer is somewhere in the shape of the sessions themselves: how much context each turn carries, how far the subagent fan-out spreads. A week ago I noted that 87% of my usage came from sessions above 150k context. A review pass over a submitted app is exactly the sort of job that quietly becomes one of those.
+        </p>
+
+        <h2>Why medium is enough</h2>
+        <p>
+          Cutting the effort default sounds like accepting a worse model to save money. On Fable 5 it mostly isn't, and it's worth being precise about why — because "turn the quality dial down" is the wrong picture of what this setting does.
+        </p>
+        <p>
+          Start with what effort actually controls. It sets thinking depth <em>and</em> overall token spend — meaning it governs how much the model <em>acts</em>, not just how much it ponders. At lower effort you get fewer and more consolidated tool calls, less pre-work context gathering, shorter preambles, terser confirmations. That's also why there's no clean mapping from the old fixed thinking-token budgets onto it. It's a thoroughness dial, not a correctness dial.
+        </p>
+        <p>
+          Then the part that makes medium defensible rather than merely cheap: the floor on this model is unusually high. Anthropic's own guidance is that on Fable 5 the lower effort settings — including <code style="font-family: var(--font-mono); font-size: 0.9em;">low</code> — still perform very well, often exceeding the xhigh or even max performance of previous-generation models. Read that literally and medium isn't perched near a cliff. It sits somewhere above where the last generation's ceiling was. The guidance's own recommendation is high for most tasks, xhigh for the most capability-sensitive work, and <em>medium or low for routine work</em> — and it explicitly says to reduce effort when tasks complete correctly but take longer than necessary. That is a fair description of my last month.
+        </p>
+        <p>
+          The third argument is specific to how I work, and it's the one that does the most lifting. My main session is an orchestrator: it plans, splits work, and synthesizes results. Architecture calls and gnarly debugging go to a subagent pinned to Opus; grunt work goes to one pinned to Sonnet. The expensive reasoning already happens somewhere other than the session I'm setting this dial on. Running the routing layer at high meant paying deliberation rates to decide who should handle a task — and the flip side of high effort, the surplus context-gathering and self-verification, is precisely what an orchestrator has least use for. On routine work at higher effort, Fable will gather context and deliberate past what the task needed. That surplus was most of my bill.
+        </p>
+        <p>
+          The honest caveat, which I don't want to skip past: newer models respect low effort strictly. At low and medium, Fable scopes its work to what was literally asked rather than going beyond it — good for latency and spend, but on a moderately complex task it carries some real risk of under-thinking. That's exactly why medium wasn't the default before today, and it's why "medium is enough" is a claim about my orchestrator sessions, not a claim about everyone's.
+        </p>
+        <p>
+          What makes it a cheap bet anyway is that the downside is one keyword away from fixed. <code style="font-family: var(--font-mono); font-size: 0.9em;">ultrathink</code> in a prompt buys depth for a single turn without touching the session setting, and a genuinely hard session can be moved to high or xhigh on the spot. So the failure mode of setting the default too low is recoverable in seconds, while the failure mode of setting it too high is a quota I only notice when a bar reads 69%. Given an asymmetry like that, the lower default is the right side to be wrong on.
+        </p>
+
+        <h2>The lever I didn't pull</h2>
+        <p>
+          There's a bigger lever available, and it's worth naming even though I haven't reached for it. A Fable turn draws down both the Fable cap and the all-models cap. An Opus 4.8 turn only draws down the latter — and it's half the per-token price on both input and output. Switching the default model would do considerably more for that 69% than any effort setting will.
+        </p>
+        <p>
+          I'm holding off because I want to know what's actually happening first. Swapping the model would make the symptom go away without telling me anything, and I'd rather spend a few more days at medium and learn something than fix the graph and stay ignorant. If the burn doesn't slow down, the model default is the next thing to go.
+        </p>
+
+        <h2>The new rule</h2>
+        <p>Verbatim from the updated file:</p>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>- Keep the interactive `/effort` slider at
+  **medium** by default (lowered 2026-07-16; it was
+  high before that, itself lowered from xhigh on
+  2026-07-09). Reviewing an App Store submission and
+  building one policy site burned 69% of the Fable
+  weekly cap within ten hours of the weekly window
+  opening — All models sat at 37% at the same
+  moment. That is much faster than the same kind of
+  work last week, and the cause is still unknown, so
+  this is not a diagnosis. It is a **holding
+  action** to slow the burn while I narrow the cause
+  down. [...] The bigger lever is dropping the
+  default model to Opus 4.8 — a Fable turn draws
+  down both the Fable cap and the All models cap,
+  while Opus only draws down the latter — but that
+  one isn't pulled yet; it's the next candidate.</pre></div>
+          <p class="explain-p">The ladder is otherwise unchanged from last time, shifted down one rung: <code style="font-family: var(--font-mono); font-size: 0.9em;">medium</code> as the standing default. <code style="font-family: var(--font-mono); font-size: 0.9em;">high</code> and <code style="font-family: var(--font-mono); font-size: 0.9em;">xhigh</code> for sessions that are genuinely hard end to end. And <code style="font-family: var(--font-mono); font-size: 0.9em;">ultrathink</code> — a prompt keyword, not a setting — when one turn needs depth but the session doesn't. Everything else stands: Ultracode stays off except for work a single conversation can't coordinate, and programmatic calls still name both model and effort per stage rather than inheriting either.</p>
+        </div>
+
+        <p>
+          Three posts, three notches down. The first two ended with me understanding the tool better than I had that morning. This one ends with a smaller number on a dial and an open question, which is a less satisfying place to stop — but writing down "I don't know yet, and here's the cheap thing I did about it" is closer to how this actually goes than the tidy version. The updated file is live at <a href="../claude.md">taejunoh.com/claude.md</a>.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
