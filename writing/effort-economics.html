@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Effort economics on Fable 5: coming down from xhigh | Taejun Oh</title>
+  <meta name="description" content="A day after un-pinning Ultracode, the interactive effort default came down another notch — from xhigh to high. Why lower effort on Fable 5 isn't the downgrade it sounds like.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Effort economics on Fable 5: coming down from xhigh</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">July 2026</time>
+
+        <p>
+          Yesterday I <a href="unpinning-ultracode.html">un-pinned Ultracode</a> and set the interactive effort slider to xhigh. Today the slider came down another notch, to <code style="font-family: var(--font-mono); font-size: 0.9em;">high</code>. Same driver as before — token consumption — but this time the fix wasn't about which orchestration mode to run. It was about a wrong mental model of what the effort dial actually does on Fable 5.
+        </p>
+
+        <h2>Lower effort is not the downgrade it sounds like</h2>
+        <p>
+          The mental model I carried over from previous model generations was: xhigh is where the good output lives, and everything below it is a degraded budget mode. Anthropic's own migration guide says that model is obsolete on Fable 5: lower effort settings — including <code style="font-family: var(--font-mono); font-size: 0.9em;">low</code> — still perform very well, often exceeding the xhigh or even max performance of previous-generation models. The guide's advice is to reduce effort when tasks complete correctly but take longer than necessary.
+        </p>
+        <p>
+          What actually changes at lower effort is behavior, not correctness. Fewer and more consolidated tool calls. Less pre-work context gathering. Fewer self-verification loops. Shorter preambles. The gap matters on long-horizon autonomous work — big refactors, multi-hour agentic runs, debugging with no known cause. On everyday interactive work, the main thing xhigh buys is a model that gathers context and deliberates beyond what the task needs. That surplus deliberation was most of my token bill.
+        </p>
+
+        <h2>The orchestrator doesn't need to be the deep thinker</h2>
+        <p>
+          The second realization is specific to my setup. My main session is an orchestrator: it plans, splits work, and synthesizes results. The genuinely hard thinking is delegated — architecture and gnarly debugging go to a subagent pinned to Opus, grunt work goes to one pinned to Sonnet. So the expensive reasoning already happens outside the main session. Running the routing layer at xhigh meant paying deep-thinking rates for decisions like "who should handle this." That's the mismatch the new default fixes: Fable stays the main model for its judgment, but at an effort level matched to the orchestrating role it actually plays.
+        </p>
+
+        <h2>The new rule</h2>
+        <p>Verbatim from the updated file:</p>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">CLAUDE.md</div><pre>- Keep the interactive `/effort` slider at **high** by default. The official
+  guidance is that Fable 5 performs at or above previous-generation xhigh even
+  at lower effort levels, and the main session is an orchestrator (planning,
+  splitting, synthesis), so always-on xhigh is token overspend (lowered
+  2026-07-09). Raise to `xhigh` only for the hardest coding/agentic sessions,
+  and to go deep for a single turn, put the `ultrathink` keyword in the prompt
+  instead of touching the setting.</pre></div>
+          <p class="explain-p">The ladder this leaves me with: <code style="font-family: var(--font-mono); font-size: 0.9em;">high</code> as the standing default. <code style="font-family: var(--font-mono); font-size: 0.9em;">medium</code> as a legitimate per-session economy option for routine sessions — the official caveat is that newer models respect low effort strictly, so judgment-heavy work can come out under-thought, which is why it isn't the default. <code style="font-family: var(--font-mono); font-size: 0.9em;">xhigh</code> reserved for sessions that are genuinely hard end-to-end. And <code style="font-family: var(--font-mono); font-size: 0.9em;">ultrathink</code> — a prompt keyword, not a setting — when one turn needs depth but the session doesn't.</p>
+        </div>
+
+        <p>
+          Everything from yesterday's post still stands: Ultracode stays off except for work one conversation can't coordinate, programmatic calls specify both model and effort per stage, and the hook still blocks any subagent dispatch that doesn't name a model. This change only moves the interactive baseline.
+        </p>
+
+        <p>
+          That's two posts in two days about turning a dial down. The pattern behind both is the same: defaults I chose to maximize quality were really maximizing spend, because on this model generation the quality curve flattens out much earlier than my instincts said. The updated file is live at <a href="../claude.md">taejunoh.com/claude.md</a>.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
