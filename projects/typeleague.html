@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TypeLeague - Competitive Typing Leaderboards | Taejun Oh</title>
-  <meta name="description" content="One typing test feeds many leaderboards — global, country, city, and school. Built with Next.js, FastAPI, and Redis.">
+  <meta name="description" content="One typing test feeds many leaderboards — global, country, city, school, and company. Built with Next.js, FastAPI, and Redis.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -37,7 +37,7 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          TypeLeague turns a single typing test into many competitions at once &mdash; "How fast is your community?" One run ranks you globally and against your country, city, and school, so every test is a race on multiple fronts. Seasonal play, multiple race formats, and real-time WPM/accuracy scoring are backed by a FastAPI service with Redis-powered leaderboards.
+          TypeLeague turns a single typing test into many competitions at once. Instead of only answering "how fast can I type?", every run also answers "how fast is my school, my company, my city, my country?" &mdash; one result ranks you globally and against each of those, so every test is a race on multiple fronts. Affiliations are verified by email, team standings are protected by server-side scoring and anti-cheat signals, and weekly seasons roll over automatically on a FastAPI service with Redis-powered leaderboards.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
@@ -48,17 +48,22 @@
 
         <h2>What it does</h2>
         <ul>
-          <li>One typing test simultaneously feeds global, country, city, and school leaderboards</li>
-          <li>Multiple race formats: Sprint (15s), Standard (30/60s), and Marathon (120s)</li>
-          <li>Real-time WPM and accuracy scoring with category options (punctuation, numbers, language)</li>
-          <li>Seasonal competition with rolling seasons and countdowns</li>
-          <li>Accounts, profiles, and auth via Clerk</li>
-          <li>Redis-backed leaderboards for fast ranking reads and writes</li>
+          <li>One typing test simultaneously feeds global, country, city, school, and company leaderboards</li>
+          <li>Multiple race formats: Sprint (15s), Standard (30/60s), and Marathon (120s) with real-time WPM and accuracy</li>
+          <li>Verified affiliations &mdash; school and company email OTP with MX-record checks, so official team rankings only count real members</li>
+          <li>Team scoring by the average WPM of an organization's top verified members, rather than gameable single-user averages</li>
+          <li>Weekly seasons that reset rankings automatically while preserving historical results</li>
+          <li>Anti-cheat &mdash; server-side scoring plus copy/paste, autofill, and burst-speed signals that flag suspicious sessions for review</li>
+          <li>Punctuation mode serves unmodified literary passages (classics and Wikipedia excerpts) instead of normalized word lists</li>
+          <li>Multi-language practice across several Latin-script languages plus Korean (IME-aware)</li>
+          <li>Auto-generated share cards for X, LinkedIn, Reddit, and Discord</li>
+          <li>Admin dashboard for affiliation verification, session-flag review, organization de-duplication, and reversible bans, with an audit log</li>
+          <li>Accounts, profiles, and privacy controls (hide or remove a verified affiliation) with Clerk auth</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          Next.js 14 (App Router) with TypeScript on the frontend. FastAPI (Python) backend with PostgreSQL for persistence and Redis for real-time leaderboard ranking. Authentication and user management via Clerk.
+          Next.js 14 (App Router) with React 18, TypeScript, Tailwind CSS, and shadcn/ui on the frontend. FastAPI (Python) backend with SQLAlchemy 2.0 and Alembic, PostgreSQL 17 for persistence, and Redis for real-time leaderboard ranking. Clerk handles authentication, Amazon SES sends affiliation OTP email, and APScheduler runs the weekly season rollover and team-score recompute in-process. The frontend deploys on Vercel; the backend and managed Postgres/Redis run on Railway.
         </p>
       </article>
     </main>
