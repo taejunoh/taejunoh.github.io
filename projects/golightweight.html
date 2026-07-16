@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GoLightWeight - Workout Tracker | Taejun Oh</title>
-  <meta name="description" content="Offline-first workout tracker for lifters with PR detection, routine management, and Apple Watch support.">
+  <meta name="description" content="Offline-first workout tracker for lifters with PR detection, 23 built-in training programs, and a 379-exercise library. Built with React Native and Supabase.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -37,7 +37,7 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">April 2026</time>
 
         <p>
-          GoLightWeight is a mobile workout tracker built for serious lifters who want something fast, reliable, and works without internet. The core idea: your workout data should live on your phone first, and sync when it can.
+          GoLightWeight is a mobile workout tracker built for intermediate to advanced lifters who want something fast, reliable, and works without internet. The core idea: your workout data should live on your phone first, and sync when it can. Every set, routine, and personal record is written to local SQLite, so the app stays fully usable in a basement gym with no signal.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
@@ -48,17 +48,22 @@
 
         <h2>What it does</h2>
         <ul>
-          <li>Log exercises, weights, reps, and RPE with a fast interface designed for between-set use</li>
-          <li>Automatically detects personal records across exercises</li>
-          <li>Create, save, and reuse workout routines</li>
-          <li>Works fully offline using local SQLite, syncs to cloud when back online</li>
-          <li>Apple Watch integration for wrist-based logging</li>
-          <li>Custom SVG charts for volume, frequency, and strength progression</li>
+          <li>Log sets with weight, reps, RPE, and tempo across barbell, dumbbell, machine, bodyweight, and cardio exercises</li>
+          <li>Set types (warmup, working, top, drop, failure) and supersets that rename themselves as they grow &mdash; superset, tri-set, giant set</li>
+          <li>23 built-in training programs (StrongLifts 5&times;5, 5/3/1 variants, Texas Method, PHUL/PHAT) with a per-program progression engine, free for everyone</li>
+          <li>Exercise library of 379 exercises &mdash; 277 illustrated, 212 with animated two-frame demos</li>
+          <li>Automatic PR detection across max weight, max volume, and estimated 1RM</li>
+          <li>Routines with smart set templates (pyramid, drop, top+backoff), a plate calculator, and a custom numeric keypad built for between-set entry</li>
+          <li>Rest and interval timers that survive backgrounding and lock</li>
+          <li>Analytics dashboard with custom SVG charts &mdash; volume trends, strength progress, muscle balance, calendar heatmap, and body composition</li>
+          <li>Works fully offline on local SQLite, syncing to the cloud when a connection returns</li>
+          <li>Apple Health sync (bodyweight in, workouts out), English and Korean localization, and workout sharing as an image card</li>
+          <li>Free tier with a daily workout limit and ads; Pro unlocks unlimited workouts, auto-sync, and the full analytics set</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          Built with React Native and Expo, using WatermelonDB (SQLite) for local-first storage. Supabase handles authentication (Apple/Google OAuth) and cloud sync. Custom SVG-based analytics charts, Apple HealthKit integration, and TypeScript throughout.
+          React Native 0.83 on Expo SDK 55 (bare workflow, bridgeless) with TypeScript. WatermelonDB (SQLite, 11 models) handles local-first storage and syncs to Supabase (PostgreSQL, Auth, Edge Functions) with last-write-wins conflict resolution. Auth is Apple and Google OAuth plus a guest mode that migrates data on sign-up. RevenueCat powers Pro subscriptions, AdMob serves the free tier, Sentry catches crashes, HealthKit connects to Apple Health, and the analytics charts are custom-built on react-native-svg. Backed by 599 Jest tests across 56 suites. The marketing site at golightweight.app is a separate Next.js 16 app hosting a 1,512-page exercise library and an evidence-graded supplement reference.
         </p>
       </article>
     </main>
