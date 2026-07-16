@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SpotTrove - Street Parking + Garage Pricing on One Map | Taejun Oh</title>
-  <meta name="description" content="Street parking legality and garage pricing on one map. Launching in NYC, expanding across the US.">
+  <meta name="description" content="Street parking legality and garage pricing on one map, with an AI sign scanner. iOS app live for NYC, expanding across the US.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -37,35 +37,41 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          Street parking legality and garage pricing, on one map. Launching in NYC, expanding across the US. Phase 1 ships on 320K parsed signs, 635K legality rules, 1,719 indexed garages, and 130 with real-time pricing. The same engine &mdash; parser, legality solver, scrapers, OCR validator &mdash; generalizes to every U.S. city with open sign data. Boston, Chicago, San Francisco, and LA are next.
+          Street parking legality and garage pricing, on one map. Launching in NYC, expanding across the US. Phase 1 ships on 320K parsed signs, 635K legality rules, 1,832 indexed garages, and 250 with real posted rates &mdash; per-zone legality live across all five boroughs. On top of the map: an AI sign scanner that reads any pole you photograph, soon-illegal alerts, and a nearest-garage fallback when a block says no. The same engine &mdash; parser, legality solver, scrapers, OCR validator &mdash; generalizes to every U.S. city with open sign data. Boston, Chicago, San Francisco, and LA are next.
         </p>
 
-        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0; gap: 0.75rem; flex-wrap: wrap;">
           <a href="https://www.spottrove.com/" target="_blank" rel="noopener" class="btn btn-primary">
             Visit spottrove.com
+          </a>
+          <a href="https://apps.apple.com/app/spottrove/id6764669814" target="_blank" rel="noopener" class="btn btn-primary">
+            App Store
           </a>
         </div>
 
         <h2>What it does</h2>
         <ul>
-          <li>Parses 320K NYC parking signs into 635K machine-readable legality rules</li>
+          <li>Parses 320K NYC parking signs into 635K machine-readable legality rules, solved per sign zone in NYC-local time across all five boroughs</li>
           <li>Tells you whether a given curb is legal to park on right now &mdash; and when it stops being legal</li>
-          <li>Indexes 1,719 garages with 130 streaming real-time pricing from ProPark and iPark</li>
+          <li>AI sign scanner &mdash; photograph any pole and Claude parses it server-side to answer "can I park here, and until when?"</li>
+          <li>Indexes 1,832 garages, 250 with real posted rates; when a block says no, the sheet surfaces "from $X &middot; N nearby", price-sorted</li>
           <li>OCR validator cross-checks parsed rules against the source sign image</li>
-          <li>Native iOS/Android app with live map, plus a marketing site and lightweight web demo</li>
+          <li>Saved spots (3 free, uncapped on premium), and community reports surfaced as a trust signal</li>
+          <li>Premium alerts before a block turns illegal, plus a real ringing alarm via Apple AlarmKit (iOS 26+) that ships with the next build</li>
+          <li>iOS 1.0 live on the App Store; the Android submission kit is ready, pending store accounts</li>
         </ul>
 
         <h2>Architecture</h2>
         <p>
-          Monorepo with three apps and one service: a Next.js 14 marketing site on Vercel, a React Native + Expo mobile app shipping via EAS / TestFlight, a single-file Mapbox GL web demo, and a FastAPI service backed by Supabase (Postgres + PostGIS) for the API. A shared TypeScript types package keeps mobile and web in sync.
+          Monorepo with three apps and one service: a Next.js 14 marketing site on Vercel, a React Native + Expo mobile app shipping via EAS to the App Store, a single-file Mapbox GL web demo, and a FastAPI service on Railway backed by Supabase (Postgres + PostGIS) for the API. A shared TypeScript types package keeps mobile and web in sync, and the AlarmKit alarm lives in a local Expo native module. CI runs API tests and mobile typechecks on GitHub Actions, with EAS build and submit on tag push.
         </p>
 
         <h2>Tech stack</h2>
         <p>
-          <strong>Backend:</strong> FastAPI, Pydantic, SQLAlchemy + GeoAlchemy2, APScheduler, Supabase (Postgres + PostGIS, Auth, Storage).<br>
-          <strong>Mobile:</strong> Expo SDK 51, React Native 0.74, RNMapbox, Sentry, Supabase auth, RevenueCat, expo-notifications.<br>
-          <strong>Marketing:</strong> Next.js 14 App Router, Tailwind, custom typography via <code>next/font/google</code>.<br>
-          <strong>Data:</strong> Tesseract OCR, custom NYC sign parser, NYC Open Data + DOT permits ingest, ProPark + iPark scrapers, Yelp.
+          <strong>Backend:</strong> FastAPI, Pydantic, SQLAlchemy + GeoAlchemy2, APScheduler, Supabase (Postgres + PostGIS, Auth, Storage), Claude API for the sign scanner (<code>claude-haiku-4-5</code>, swappable by env var), Sentry.<br>
+          <strong>Mobile:</strong> Expo SDK 55, React Native 0.83, RNMapbox, Sentry, Supabase auth, RevenueCat, expo-notifications, Apple AlarmKit via a local native module.<br>
+          <strong>Marketing:</strong> Next.js 14 App Router, Tailwind, Instrument Serif / DM Sans / Overpass / JetBrains Mono via <code>next/font/google</code>.<br>
+          <strong>Data:</strong> Tesseract OCR, custom NYC sign parser, NYC Open Data + DOT permits ingest, garage-rate scrapers (iPark, GMC, GGMC, ProPark, NYC DOT), Yelp.
         </p>
       </article>
     </main>
