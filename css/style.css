@@ -405,6 +405,80 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ========================================
+   Under Wraps — unreleased teasers
+   (reuses .projects-grid / .project-thumb)
+   ======================================== */
+.wraps-note {
+  font-family: var(--font-hand-alt);
+  font-size: 1rem;
+  color: var(--ink-light);
+  max-width: 560px;
+  margin: -0.5rem 0 1.2rem;
+  line-height: 1.6;
+}
+
+/* Non-clickable card: no link affordance */
+.project-thumb.is-locked {
+  cursor: default;
+}
+
+.project-thumb.is-locked:hover {
+  transform: none;
+  box-shadow: var(--card-shadow);
+}
+
+.project-thumb.is-locked:hover h3 {
+  color: var(--ink);
+}
+
+/* Redacted app name */
+.redact {
+  display: inline-block;
+  height: 16px;
+  width: 120px;
+  border-radius: 2px;
+  vertical-align: -2px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(42, 37, 32, 0.82) 0 14px,
+    rgba(42, 37, 32, 0.66) 14px 20px
+  );
+}
+
+/* Status / platform chips */
+.wip-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0 1rem 0.6rem;
+}
+
+.wip-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-light);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 0.12rem 0.6rem;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.wip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-blue);
+  flex-shrink: 0;
+}
+
+.wip-dot.early {
+  background: var(--ink-faded);
+}
+
+/* ========================================
    Contact
    ======================================== */
 .contact-section {
