@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Great Whiskey Narrative - Know the Bottle Before You Pour | Taejun Oh</title>
+  <meta name="description" content="Scan a whisky label and get the distillery, region, tasting notes, and typical price. A 370-bottle library with food pairings, a Whisky 101 guide, and collection tracking. Built with Astro and Expo.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All projects
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Great Whiskey Narrative</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">August 2026</time>
+
+        <p>
+          Know the bottle before you pour. Point a camera at a label and get the distillery, region, tasting notes, and what the bottle typically costs &mdash; then keep track of what you have drunk. The web library is live; the iOS app is in build.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://greatwhiskeynarrative.com" target="_blank" rel="noopener" class="btn btn-primary">
+            Visit greatwhiskeynarrative.com
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>A 370-bottle library, filterable by brand, category, country, region, and flavour, each bottle with its own illustration</li>
+          <li>Label scanner &mdash; send a photo of a label and the API matches it against the catalogue</li>
+          <li>Food pairings and a Whisky 101 guide for people who are still working out what they like</li>
+          <li>Tasting tracks: a game layer where tracks, tiers, badges, XP, rank, the passport, flavour mastery, and the cabinet are all computed from your collection on every render, never stored &mdash; so there is nothing to migrate and no way for the two to disagree</li>
+          <li>Bottles are graded by price rather than banded &mdash; six steps at $50, $100, $200, $600, and $2,500, which splits the shelf evenly instead of dumping a third of it into "legendary"</li>
+        </ul>
+
+        <h2>Nothing about your collection leaves the browser</h2>
+        <p>
+          Bottles you mark owned, tasted, or wishlisted live in <code>localStorage</code>. There are no accounts. To move a collection between devices, the site mints a transfer link that carries the bottles in the URL fragment &mdash; fragments are never sent to a server, so the data passes directly between the two devices. Bottles travel as a hash of their id rather than an index, so an old link keeps working after the library grows.
+        </p>
+
+        <h2>Tech stack</h2>
+        <p>
+          Three pieces ship separately out of one repo. The public site is a static Astro build with React islands &mdash; 121 pages and 326 Vitest tests &mdash; hosted on GitHub Pages, with 370 bottle illustrations served as lazy-loaded WebP. The API is a TypeScript service on Railway handling label scans, the versioned catalogue, and health probes; accounts and collection sync are built but stay off unless configured. The mobile app is Expo and React Native, shipping through EAS, and it reads a built catalogue artifact rather than the site's JSON so the two can version independently.
+        </p>
+        <p>
+          One lesson worth keeping: a green test suite is not proof the server starts. Jest transpiles ESM to CommonJS and <code>tsc --noEmit</code> only reads type declarations, so a package that is CommonJS at runtime can pass both and still fail Node's named-export check the moment the server loads it. A boot test that spawns the real entry point and hits its health endpoint now covers that gap.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
