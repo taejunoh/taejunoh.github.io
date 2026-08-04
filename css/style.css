@@ -445,7 +445,7 @@ a { color: inherit; text-decoration: none; }
   );
 }
 
-/* Status / platform chips */
+/* Status / platform chips — also used on a just-revealed Projects card */
 .wip-meta {
   display: flex;
   flex-wrap: wrap;
