@@ -67,8 +67,11 @@
         <h3>iOS app</h3>
         <ul>
           <li>Native app built with Expo and React Native, with light, dark, and system themes</li>
+          <li>Home-screen widget &mdash; a ring and streak, or today's list, with tap-to-check-in straight from the widget</li>
+          <li>Local reminders &mdash; a daily nudge at a time you pick, plus an optional evening streak-at-risk heads-up, both off by default</li>
+          <li>Share your progress as an image, and export every check-in as CSV (Pro)</li>
           <li>Pro via Apple in-app purchase &mdash; monthly, annual with a 7-day trial, or lifetime</li>
-          <li>v1.0 live on the <a href="https://apps.apple.com/app/id6762887548" target="_blank" rel="noopener">App Store</a>; an Android build is on the way</li>
+          <li>Live on the <a href="https://apps.apple.com/app/id6762887548" target="_blank" rel="noopener">App Store</a>; an Android build is on the way</li>
         </ul>
 
         <h3>Web app and browser extension</h3>
@@ -78,13 +81,13 @@
           <li>Installable PWA with a service worker and an offline shell</li>
           <li>Web push and email reminders, timezone-aware</li>
           <li>Extension turns every new tab into a check-in board, with a toolbar popup for quick toggles from any page</li>
-          <li>Extension is live on the Chrome Web Store, a direct download for Safari, and pending review for Firefox</li>
+          <li>Extension is live on the <a href="https://chromewebstore.google.com/detail/doeveryday-%E2%80%94-build-habits/lfnjhojafagecmadibalpecnfhlobkkp" target="_blank" rel="noopener">Chrome Web Store</a>, <a href="https://microsoftedge.microsoft.com/addons/detail/doeveryday-%E2%80%94-build-habits/gfanlklnofdjgkmgjbjjmhoclekiachh" target="_blank" rel="noopener">Edge Add-ons</a>, and <a href="https://addons.mozilla.org/firefox/addon/doeveryday-habit-tracker/" target="_blank" rel="noopener">Firefox Add-ons</a>, plus a direct download for Safari on Mac</li>
           <li>Pro via Stripe &mdash; monthly or yearly subscription, plus one-time Lifetime and Early Supporter plans, with a billing portal</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          React 18 and Vite (with React Router v7) for the web app; Expo and React Native 0.83 with Expo Router and Zustand for iOS. Both share one Supabase backend &mdash; Postgres, auth, and edge functions &mdash; where row-level security is the authorization boundary and Pro status is only ever written server-side. Payments split by platform: Stripe on the web, RevenueCat for Apple in-app purchases. Resend sends email, Web Push and VAPID drive notifications, and a shared package keeps types and translations in sync across platforms. Deployed on Vercel.
+          React 18 and Vite (with React Router v7) for the web app; Expo and React Native 0.83 with Expo Router and Zustand for iOS. Both share one Supabase backend &mdash; Postgres, auth, and edge functions &mdash; where row-level security is the authorization boundary and Pro status is only ever written server-side. The home-screen widget is a WidgetKit extension in Swift, fed by a local Expo module and authorized by a revocable widget token, so it keeps working after the app's access token expires. Payments split by platform: Stripe on the web, RevenueCat for Apple in-app purchases. Resend sends email, Web Push and VAPID drive notifications, and a shared package keeps types and translations in sync across platforms. Deployed on Vercel.
         </p>
       </article>
     </main>
