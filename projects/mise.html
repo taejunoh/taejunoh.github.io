@@ -37,22 +37,23 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          Mise is a SaaS platform that automates daily P&L reporting for restaurant operators, currently running an active pilot in NYC. It ingests and normalizes data across POS, accounting, scheduling, and payment systems, resolves conflicts between sources, and delivers a daily financial snapshot with KPIs.
+          Mise is a SaaS platform that automates daily P&L reporting for independent restaurant operators, currently running an active pilot in NYC. Most owners don't see their P&L until the end of the month &mdash; weeks after the money has already been lost. Mise connects directly to Toast POS and MarginEdge and delivers the numbers the next morning: no spreadsheets, no manual data entry.
         </p>
 
         <h2>What it does</h2>
         <ul>
-          <li>Multi-source ingestion across POS, accounting, scheduling, and payment systems</li>
-          <li>Normalizes heterogeneous data into a unified financial schema</li>
-          <li>Conflict resolution when sources disagree (e.g., POS sales vs. payment deposits)</li>
-          <li>Calculates daily P&L metrics: revenue, COGS, labor %, net profit</li>
-          <li>Delivers daily email reports and a dashboard for historical trends</li>
-          <li>Multi-location support with operator-level access</li>
+          <li>Daily P&amp;L delivered automatically &mdash; revenue, COGS, labor, and prime cost calculated every morning from live POS and invoice data</li>
+          <li>Pulls sales, labor, and menu data from Toast POS, and food/beverage cost and invoice data from MarginEdge</li>
+          <li>Real-time dashboard &mdash; overview, sales, costs, labor, menu performance, vendor spend, and check analysis in one place</li>
+          <li>Anomaly alerts when food cost spikes, labor exceeds targets, or voids and comps look unusual</li>
+          <li>Budget vs. actual tracking with period-over-period comparisons</li>
+          <li>Menu and loss-prevention metrics &mdash; item profitability, sales mix, contribution margin, and voids/discounts/comps as a share of revenue</li>
+          <li>Morning email report alongside the dashboard</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          React frontend. Python + FastAPI backend. Supabase (Postgres, auth, storage) as the primary data layer. AWS Lambda for scheduled ingestion jobs and background processing across integrated POS, accounting, scheduling, and payment APIs.
+          React frontend. Python + FastAPI backend. Supabase (Postgres, auth, storage) as the primary data layer. AWS Lambda for scheduled ingestion jobs and background processing across the Toast POS and MarginEdge APIs.
         </p>
       </article>
     </main>
