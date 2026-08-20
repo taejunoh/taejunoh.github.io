@@ -37,7 +37,7 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          Street parking legality and garage pricing, on one map. Live in NYC, expanding across the US. Phase 1 ships on 320K parsed signs, 635K legality rules, 1,836 indexed garages, and 269 with real posted rates &mdash; per-zone legality live across all five boroughs. On top of the map: an AI sign scanner that reads any pole you photograph, soon-illegal alerts, a real ringing alarm before your block turns illegal, and a nearest-garage fallback when a block says no. The same engine &mdash; parser, legality solver, scrapers, OCR validator &mdash; generalizes to every U.S. city with open sign data. Boston, Chicago, San Francisco, and LA are next.
+          Street parking legality and garage pricing, on one map. Live in NYC, expanding across the US. Phase 1 ships on 79,650 block faces with parsed signs, 561,642 legality rules, 10,955 metered block faces with posted DOT rates, 1,837 indexed garages, and 263 with real posted rates &mdash; per-zone legality live across all five boroughs. On top of the map: street meter prices on the block (with the ParkNYC zone number to pay from the car), an AI sign scanner that reads any pole you photograph, soon-illegal alerts, a real ringing alarm before your block turns illegal, and a nearest-garage fallback when a block says no. The same engine &mdash; parser, legality solver, scrapers, OCR validator &mdash; generalizes to every U.S. city with open sign data. Boston, Chicago, San Francisco, and LA are next.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0; gap: 0.75rem; flex-wrap: wrap;">
@@ -52,16 +52,17 @@
         <h2>What it does</h2>
         <ul>
           <li>No account needed to look &mdash; the map, legality, search, and the garage fallback all work as a guest, and signing in is asked for at the point of use rather than at the door</li>
-          <li>Parses 320K NYC parking signs into 635K machine-readable legality rules, solved per sign zone in NYC-local time across all five boroughs</li>
+          <li>Parses the signs on 79,650 block faces into 561,642 machine-readable legality rules, solved per sign zone in NYC-local time across all five boroughs</li>
           <li>Tells you whether a given curb is legal to park on right now &mdash; and when it stops being legal</li>
           <li>AI sign scanner &mdash; photograph any pole and Claude parses it server-side to answer "can I park here, and until when?"</li>
-          <li>Indexes 1,836 garages, 269 with real posted rates; when a block says no, the sheet surfaces "from $X &middot; N nearby", price-sorted</li>
+          <li>Street meter prices on 10,955 metered block faces &mdash; the posted DOT rate appears while the meter is actually running, and tapping the block gives the full-stay ladder, the time limit, and a tap-to-copy ParkNYC zone number</li>
+          <li>Indexes 1,837 garages, 263 with real posted rates; when a block says no, the sheet surfaces "from $X &middot; N nearby", price-sorted</li>
           <li>Alternate-side suspension banner &mdash; when ASP is suspended today, the map says so; every other state renders nothing, so it can claim a suspension but never that rules are in effect</li>
           <li>OCR validator cross-checks parsed rules against the source sign image</li>
           <li>Saved spots (3 free, uncapped on premium), and community reports surfaced as a trust signal</li>
           <li>Premium alerts before a block turns illegal, plus a real ringing alarm via Apple AlarmKit (iOS 26+) &mdash; an actual alarm, not just a notification</li>
           <li>Save a vehicle size class (sedan / SUV / oversized), captured in context rather than at onboarding</li>
-          <li>iOS 1.3 live on the App Store; the Android submission kit is ready, pending store accounts</li>
+          <li>iOS 1.5 live on the App Store; the Android submission kit is ready, pending store accounts</li>
         </ul>
 
         <h2>Architecture</h2>
