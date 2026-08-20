@@ -37,7 +37,7 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          A native macOS menu bar app that monitors your Claude AI token usage in real-time. See your 5-hour session and 7-day weekly limits at a glance with circular gauges, get notified on session resets, and track usage across all models or Sonnet-only.
+          A native macOS menu bar app that monitors your Claude AI token usage in real-time. See your 5-hour session and 7-day weekly limits at a glance with circular gauges, get notified on session resets, and watch a gauge for every model the API reports &mdash; plus your Extra Usage credits.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
@@ -54,12 +54,11 @@
         <ul>
           <li>Real-time 5-hour session and 7-day weekly usage display in the menu bar</li>
           <li>Popover dashboard with circular gauges for detailed usage breakdown</li>
-          <li>Separate tracking for all models and Sonnet-only usage</li>
+          <li>Weekly breakdown across all models, plus a gauge per model the API reports (e.g. Fable) and an Extra Usage credits bar</li>
           <li>Session reset notifications and customizable threshold alerts</li>
-          <li>Secure API key storage via macOS Keychain</li>
+          <li>In-app Claude sign-in &mdash; the session lives in the macOS Keychain, never plaintext, with session-key paste as a fallback</li>
           <li>Configurable auto-refresh (15 seconds to 5 minutes)</li>
-          <li>Supports both session cookie and Claude Code OAuth authentication</li>
-          <li>Lightweight, zero third-party dependencies</li>
+          <li>Install via Homebrew (<code>brew install --cask taejunoh/tap/claudebeat</code>) or just unzip and run &mdash; verified by Apple</li>
         </ul>
 
         <h2>Tech stack</h2>

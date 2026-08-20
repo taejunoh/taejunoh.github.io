@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JobTracker - AI Job Application Tracker | Taejun Oh</title>
-  <meta name="description" content="AI-powered job application tracker with Chrome extension for auto-extracting job details.">
+  <meta name="description" content="Self-hosted job application tracker with a Chrome extension, resume keyword matching, and optional AI-assisted extraction.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -33,11 +33,11 @@
       </a>
 
       <article class="prose">
-        <h1 class="page-title">JobTracker &mdash; AI-Powered Application Tracker</h1>
+        <h1 class="page-title">JobTracker &mdash; Self-Hosted Application Tracker</h1>
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">February 2026</time>
 
         <p>
-          Job hunting is tedious. JobTracker makes it less painful by auto-extracting job details from posting URLs and organizing everything in one dashboard. It comes with a Chrome extension for one-click capture from LinkedIn, Indeed, and Glassdoor.
+          Job hunting is tedious. JobTracker keeps every application in one dashboard you run yourself: a Chrome extension reads the posting from the tab you are viewing, and your own server stores it &mdash; search, status tracking, and resume matching included.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
@@ -49,17 +49,17 @@
 
         <h2>What it does</h2>
         <ul>
-          <li>Paste a job URL and AI extracts title, company, location, and description</li>
-          <li>Chrome extension for one-click capture from job boards</li>
-          <li>Dashboard with status tracking, notes, and filtering</li>
-          <li>Auto-fills profile URLs on application forms</li>
-          <li>All data stored locally with PostgreSQL</li>
-          <li>Supports multiple LLM providers: Claude, GPT, Gemini</li>
+          <li>Save jobs from LinkedIn, Indeed, Glassdoor, Lever, Greenhouse, Workday, and other career pages in one click</li>
+          <li>Dashboard to review, search, filter, edit, and delete applications</li>
+          <li>Compare a job description against your saved resume &mdash; matched and missing keywords</li>
+          <li>Fill saved LinkedIn and GitHub profile URLs into supported application forms</li>
+          <li>Standard page-metadata extraction, with optional AI assist (Claude, GPT, or Gemini)</li>
+          <li>Self-hosted &mdash; your data stays in your own PostgreSQL</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          Next.js 16 with React 19 and TypeScript. Prisma 7 ORM with PostgreSQL. Anthropic Claude SDK for AI extraction, with fallback to OpenAI and Google Generative AI. Tailwind CSS v4 for styling. Chrome extension built with standard Web Extensions API.
+          Next.js 16 with React 19 and TypeScript on a Node.js 22 server. Prisma 7 ORM with PostgreSQL. Tailwind CSS v4 for styling, and a Chrome extension built on the standard Web Extensions API. AI-assisted extraction is optional, supporting Anthropic, OpenAI, and Google Generative AI.
         </p>
       </article>
     </main>
