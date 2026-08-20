@@ -53,7 +53,7 @@
 
         <h2>Tech stack</h2>
         <p>
-          React frontend. Python + FastAPI backend. Supabase (Postgres, auth, storage) as the primary data layer. AWS Lambda for scheduled ingestion jobs and background processing across the Toast POS and MarginEdge APIs.
+          Next.js 16 frontend with React 19, TypeScript, and Tailwind CSS. Python + FastAPI backend with SQLAlchemy 2 (async) and PostgreSQL, migrated with Alembic. APScheduler runs the daily ingestion jobs against the Toast POS and MarginEdge APIs, Resend sends the morning report, and the service deploys on Railway.
         </p>
       </article>
     </main>
