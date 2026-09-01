@@ -1,41 +1,24 @@
 # Role Split Rules (applies to all projects)
 
-You are the orchestrator. Reasoning goes to deep-reasoner, grunt work goes to fast-worker, a fresh perspective goes to Codex.
+You are the orchestrator. Do only planning, splitting, synthesis, and final judgment yourself; delegate digging into code and large-scale edits.
+- Reasoning (architecture, debugging with an unclear cause, algorithms, trade-off analysis) → **deep-reasoner** (Opus 5, effort pinned to xhigh)
+- Grunt work (boilerplate, tests, formatting/lint, clear small changes like typos and renames) → **fast-worker** (Sonnet 5, effort pinned to medium)
+- Second opinion → the **Codex** plugin: `/codex:adversarial-review` to challenge a design or implementation approach, `/codex:rescue` to investigate a problem I'm stuck on (same as the `codex:codex-rescue` type on the Agent tool). There is no bare `/codex` command.
+- Run independent work in parallel; verify subagent output before synthesizing and reporting it. Don't delegate one-line answers or conversational questions.
 
-## Model / Effort Settings
+## Model / Effort
+
+- Always the latest version for each role: main session **Fable 5.1**, deep-reasoner **Opus 5**, fast-worker **Sonnet 5**.
+- Session `/effort` default is **high**. Raise to `xhigh` only for the hardest coding/agentic sessions; to go deep for a single turn, put `ultrathink` in the prompt instead of touching the setting.
+  - If cost has to come down, medium is the safe line — Fable 5.1 performs at previous-generation xhigh level even at lower effort, and the deep thinking lives in deep-reasoner, whose effort is pinned. Caveat: Explore, Plan, general-purpose, and untyped Agent calls still inherit the session effort.
+  - The bigger lever is switching the default model to Opus 5. Fable is a 50% sub-cap of the weekly limit and metering is per request model family (documented), so an Opus session doesn't draw down the Fable cap. Subagent requests are metered by their own model and don't draw down the Fable cap either (observed via `/usage` on 2026-09-01, low resolution). So keeping deep-reasoner on Opus genuinely spares the Fable cap. Switching the session itself to Opus hasn't been pulled yet; it's the next candidate.
+- **Don't leave Ultracode on as a standing default.** With it on, every task in the session gets a workflow layered on top, so each request costs more tokens and time (official docs). That it isn't worth it for everyday work is my operating judgment. Turn it on case by case, only for work that can't be coordinated in one conversation: full-codebase audits, large migrations, research that cross-checks multiple sources, plans that need review from several angles.
+- Programmatic calls like Workflow `agent()` specify **both model and effort** (unset, they inherit the session's Fable). Baseline `xhigh`; mechanical stages (dedup, formatting, finders) at `low`/`medium`; `max` only for the hardest stages, like adversarial verification and hard synthesis. Blanket `max` is banned.
 
 Terminology (easy to mix up):
-- The **real effort levels** are the values the model (API) actually accepts, and there are exactly five: `low / medium / high (default) / xhigh / max`. Same for the CLI and Claude Code — there is no name outside this list. The effort scale is calibrated per model, so the same level name can mean a different actual value on different models.
-- **ultracode** — not a model effort level but a Claude Code setting. Internally it sends `xhigh` to the model while layering a dynamic multi-agent workflow on top of it. It shows up in the interactive `/effort` (slider) menu, but it does not exist in the `--effort` flag, the `effortLevel` setting, or the `CLAUDE_CODE_EFFORT_LEVEL` environment variable.
-- **ultrathink** — not a setting but a one-turn prompt keyword. Put it anywhere in the prompt and it leaves the session's effort setting alone, only making that one turn reason more deeply.
-- **xhigh** — this one is a real level, added relatively recently. On older models that don't support it, it falls back to `high`.
+- There are exactly five effort levels: `low / medium / high (default) / xhigh / max`. The scale is calibrated per model, so the same name doesn't mean the same value across models. Models without xhigh fall back to high.
+- **ultracode** is a Claude Code setting, not an effort level (it sends xhigh to the model and layers a multi-agent workflow on top). Turn it on with `/effort ultracode`, `--effort ultracode` (v2.1.203+), or `"ultracode": true` in a settings file. The `effortLevel` setting and the `CLAUDE_CODE_EFFORT_LEVEL` env var don't accept it. Pinning it is possible; I've chosen not to.
+- **ultrathink** is a one-turn prompt keyword, not a setting.
+- The Agent tool's parameters have no effort knob, but the `effort` key in `~/.claude/agents/*.md` frontmatter pins it per agent. Without it, the agent inherits the session value.
 
-Actual operating rules:
-- Keep the interactive `/effort` slider at **medium** by default (lowered 2026-07-16; it was high before that, itself lowered from xhigh on 2026-07-09). Reviewing an App Store submission and building one policy site burned 69% of the Fable weekly cap within ten hours of the weekly window opening — All models sat at 37% at the same moment. That is much faster than the same kind of work last week, and the cause is still unknown, so this is not a diagnosis. It is a **holding action** to slow the burn while I narrow the cause down. What makes medium a safe line to fall back to is the same reasoning as the previous step down: Fable 5 performs at or above previous-generation xhigh even at lower effort levels, and the main session is an orchestrator (planning, splitting, synthesis), so the deep thinking is already delegated out to subagents. Raise to `high`/`xhigh` only for the hardest coding/agentic sessions, and to go deep for a single turn, put the `ultrathink` keyword in the prompt instead of touching the setting. The bigger lever is dropping the default model to Opus 4.8 — a Fable turn draws down both the Fable cap and the All models cap, while Opus only draws down the latter — but that one isn't pulled yet; it's the next candidate. **Do not leave Ultracode on as a standing default** — the official guidance explicitly says that for everyday work (single-file edits, simple questions, interactive tasks) Ultracode only adds latency and cost without adding quality, and it is designed to reset every session, so it was never meant to be pinned. In practice, per `/usage`, 94% of recent usage came from subagent-heavy sessions and 87% from 150k+ context sessions, and the Fable 5 weekly cap ran out while the overall Weekly allowance still had room — exactly the pattern always-on Ultracode produces (verified 2026-07-08).
-- Turn Ultracode on case-by-case, only for work that can't be coordinated in a single conversation: full-codebase audits, large migrations, research that cross-checks multiple sources, hard plans that need review from several angles.
-- In programmatic interfaces (mainly Workflow's `agent()`; the Agent tool has only a model knob, no effort), set the effort parameter **per stage difficulty**. The baseline is `xhigh` (Ultracode's real effort is xhigh, so that's the reference line, and Workflow itself already provides the orchestration). Mechanical stages (dedup, formatting, cheap finders) go down to `low`/`medium`, and `max` is reserved for the genuinely hardest stages (adversarial verification, hard judgment and synthesis). Blanket `max` is banned — especially when the session's default model is Fable 5, an `agent()` call with no model set inherits Fable, so "Fable @ max" running mechanical stages is the worst way to burn the weekly cap and cost. So programmatic calls specify **both model and effort** explicitly and never rely on inheritance.
-
-## Orchestrator (main session)
-- What it does directly: planning, splitting work, synthesizing subagent results, final judgment calls.
-- Don't dig into code directly or make large-scale edits — delegate that to the subagents below.
-
-## deep-reasoner (pinned to Opus)
-Everything that requires real thinking goes here:
-- Architecture design and trade-off analysis
-- Hard debugging (bugs with an unclear cause, race conditions, etc.)
-- Algorithm design and complex logic
-
-## fast-worker (pinned to Sonnet)
-All the grunt work goes here:
-- Writing boilerplate
-- Writing/fixing tests
-- Formatting, lint fixes
-- Simple changes (typos, renames, clear small edits)
-
-## Codex (a colleague with a different perspective)
-- For design review or when stuck on a problem and a second opinion is needed, ask via a `/codex`-family command.
-
-## Operating Principles
-- Launch subagents in parallel for independent tasks.
-- Verify subagent output before synthesizing it and reporting to the user.
-- No need to delegate trivial one-line answers or conversational questions.
+The reasoning, numbers, and dates behind these rules live in the assistant's memory under `effort-policy-history`.

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The dial that moved the wrong thing | Taejun Oh</title>
+  <meta name="description" content="For six weeks my session effort dial was also, silently, my deep-reasoning subagent's dial. The argument for turning it down assumed it wasn't. One line of frontmatter, and a free way to check which usage cap your subagents actually bill.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">The dial that moved the wrong thing</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">September 2026</time>
+
+        <p>
+          In July I wrote <a href="medium-by-default.html">Medium by default</a>, about turning my session effort down as a holding action while a weekly cap burned faster than I could explain. The argument for why medium was safe went like this: the main session is an orchestrator. It plans, splits work, and synthesizes. The deep thinking is already delegated to a subagent pinned to Opus. So the session dial only touches the cheap part.
+        </p>
+        <p>
+          That argument was false for the entire six weeks it was in effect, and I found out this afternoon.
+        </p>
+
+        <h2>Inherits from session</h2>
+        <p>
+          My two custom subagents live in <code style="font-family: var(--font-mono); font-size: 0.9em;">~/.claude/agents/</code>. Each has a <code style="font-family: var(--font-mono); font-size: 0.9em;">model</code> line in its frontmatter and nothing else about how hard to think. I had read that as "no knob exists." The docs say something different: the definition file supports an <code style="font-family: var(--font-mono); font-size: 0.9em;">effort</code> key, and when it's absent the value is <em>inherits from session</em>.
+        </p>
+        <p>
+          So on July 16, when I turned the session down to medium, deep-reasoner went to medium with it. The subagent whose whole job was to be the place the deep thinking lived was thinking exactly as hard as the orchestrator I'd just told to think less. The justification for the change was undone by the change. Nothing warned me, because nothing was wrong from the system's point of view. Inheritance is the documented default.
+        </p>
+        <p>
+          When I came back up to high on September 1, the loss flipped direction. Now fast-worker, whose job is renames, formatting, and boilerplate, was inheriting high, while my own rules file said mechanical stages get low or medium. Whichever way I turned the dial, the wrong agent followed it.
+        </p>
+
+        <h2>The wrong fix I almost kept</h2>
+        <p>
+          The first diagnosis, from an earlier session, was that per-agent effort was impossible with the Agent tool and the only way to get it was to move to Workflow scripts, whose <code style="font-family: var(--font-mono); font-size: 0.9em;">agent()</code> call takes an effort option. That's a big migration for a small problem, and it was wrong. It came from a real observation, "there is no effort parameter on the Agent tool," followed by a bad jump, "therefore there is no way to set it." The tool's parameters and the agent's definition file are two different places, and the second one has the key.
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">agents/deep-reasoner.md</div><pre>---
+name: deep-reasoner
+model: opus
+effort: xhigh
+---</pre></div>
+          <div class="code-panel"><div class="code-tab">agents/fast-worker.md</div><pre>---
+name: fast-worker
+model: sonnet
+effort: medium
+---</pre></div>
+          <p class="explain-p">One line each. Opus 5 and Sonnet 5 both accept xhigh and max, so nothing falls back. I went with medium rather than low for fast-worker on purpose: its instructions include writing tests and, more importantly, stopping to report when a task turns out harder than it looked. That second behavior needs some reasoning to trigger. A single frontmatter value applies to every call, so it has to be safe for the hardest thing the agent is allowed to do, not the easiest.</p>
+        </div>
+        <p>
+          With those two lines, the sentence "the deep thinking is already elsewhere" is finally true, and the session dial does what I thought it did in July. Almost. The built-in agents, Explore, Plan, and general-purpose, still inherit the session value, so the dial moves them too. I wrote that caveat into the rules file, because the previous version of the rules file is what let me believe the argument in the first place.
+        </p>
+        <p>
+          One honest limit: there is no runtime readout of the effort a subagent actually ran at. The evidence that the frontmatter works is the documentation and the tool's own description of where an agent's settings come from. I can't watch it happen. That's uncomfortable for a fix to a six-week silent failure, and I'd rather say so than pretend the loop is closed.
+        </p>
+
+        <h2>Does the Opus subagent actually spare the Fable cap?</h2>
+        <p>
+          The other half of the July argument was about caps, not quality: a Fable turn draws down the Fable weekly cap and the all-models cap together, while an Opus turn only draws down the latter, so pushing the heavy thinking to an Opus subagent should protect the cap that keeps running out. I had written that as fact. Today I went looking for whether it was.
+        </p>
+        <p>
+          Half of it is documented. On Max plans, Fable is a sub-cap: up to 50% of the weekly limit can go to Fable models, inside the shared pool. And the per-model limits "each apply only to requests to that model family," which is stated for switching the session's model with <code style="font-family: var(--font-mono); font-size: 0.9em;">/model</code>. What no page says is what happens when a Fable session <em>spawns</em> an Opus subagent. Is that request billed as Opus, because that's what served it, or as Fable, because that's the session it came from?
+        </p>
+        <p>
+          My first instinct was to run an experiment: read the caps, hand deep-reasoner something big, read them again. Then I noticed I'd be spending usage to find out about usage, and that the 50% structure already gives a free answer. The Fable bar is Fable tokens over half the weekly limit. The all-models bar is all tokens over the whole limit. If every request in the window were Fable, the Fable bar would read exactly twice the all-models bar, always. Any gap below 2× is non-Fable usage being metered on its own.
+        </p>
+        <figure class="usage-figure">
+          <div class="usage-figure-head">Plan usage limits <span>Sep 1, 8:55 PM UTC</span></div>
+          <div class="usage-row">
+            <div class="usage-row-top">
+              <div class="usage-label">Current session<small>resets in 2 hr 35 min</small></div>
+              <div class="usage-pct">9% used</div>
+            </div>
+            <div class="usage-bar"><div class="usage-bar-fill" style="width: 9%;"></div></div>
+          </div>
+          <div class="usage-row">
+            <div class="usage-row-top">
+              <div class="usage-label">Weekly &mdash; All models<small>resets Thu 10:00 AM UTC</small></div>
+              <div class="usage-pct">2% used</div>
+            </div>
+            <div class="usage-bar"><div class="usage-bar-fill" style="width: 2%;"></div></div>
+          </div>
+          <div class="usage-row">
+            <div class="usage-row-top">
+              <div class="usage-label">Weekly &mdash; Fable<small>resets Thu 10:00 AM UTC</small></div>
+              <div class="usage-pct">2% used</div>
+            </div>
+            <div class="usage-bar"><div class="usage-bar-fill" style="width: 2%;"></div></div>
+          </div>
+          <figcaption class="usage-figure-note">If subagent requests counted as Fable, the Fable bar would read 4% here. Worst-case integer rounding puts the ratio's ceiling at 1.66, still short of 2.</figcaption>
+        </figure>
+        <p>
+          Two and two. My default model is pinned to Fable 5.1 in settings and I haven't switched it, so the non-Fable half of this week's usage has to be the subagents: Opus for deep-reasoner, Sonnet for fast-worker and for the documentation-checking agent that ran today. Subagent requests are metered by the model that serves them. The July argument holds, on this half at least.
+        </p>
+        <p>
+          The resolution is bad, and I want to be precise about what two integers can and can't say. They can say the ratio is clearly under 2. They can't say what it is. I'll look again when the bars are past 10%, which will happen on its own by midweek. The lesson I'm keeping is the shape of the check, not the number: when a limit is defined as a fraction of another limit, the two readings carry a relationship you can test without spending anything.
+        </p>
+        <p>
+          And in July, the reading was 69% and 37%. That's 1.86, close enough to 2 that nearly everything that week was billed as Fable. I'd love to say that proves subagents were inheriting Fable back then, but I don't have a record of what model they were on, so it proves nothing. It's just suggestive in a way I wish I'd noticed at the time.
+        </p>
+
+        <h2>A rules file that was mostly its own history</h2>
+        <p>
+          The last thing I did was the thing I'd been putting off. My global CLAUDE.md was 6.6 KB, and one line of it, the effort rule, was 2.5 KB. Almost none of that was rule. It was cache prices, the July 16 percentages, the dates each default changed, a quote from a guide, a usage breakdown by session type. Every session, and every subagent call, loaded the full story of how I'd arrived at "high" in order to learn that the answer was "high."
+        </p>
+        <p>
+          The rules went into the file. The history went into the assistant's memory directory, where it's recalled when a rule is being reconsidered and not otherwise. 3.9 KB now, and the actual instruction in each line is the first thing on the line instead of something you find at the end of a paragraph.
+        </p>
+        <p>
+          While I was in there I had every remaining claim checked against the current docs, and two things I'd written as fact were wrong. <code style="font-family: var(--font-mono); font-size: 0.9em;">--effort ultracode</code> is a valid flag, and has been for a while. And ultracode <em>can</em> be pinned as a standing default, through a dedicated setting. I had written that it resets every session and was designed not to be pinned. It was a constraint I'd invented to make a decision feel forced. The decision is fine. I still don't want it on all day. But "I chose not to" and "it isn't possible" are different sentences, and the file now says the true one.
+        </p>
+
+        <h2>What I'd tell myself in July</h2>
+        <p>
+          A dial that does nothing is annoying. A dial that moves the wrong thing is worse, because you keep turning it and drawing conclusions from what happens. For six weeks I was reasoning about cost and quality from a model of my own setup that had one wrong edge in it, and the wrong edge was the one the whole argument leaned on.
+        </p>
+        <p>
+          Every "that concern is handled elsewhere" needs one more question: where does <em>elsewhere</em> get its settings from? If the answer is "from here," it isn't elsewhere.
+        </p>
+        <p>
+          I also kept the wrong diagnosis in memory alongside the right one, with a note about the exact bad jump that produced it. The next session that reads "there's no effort parameter on the Agent tool" should not get to conclude "so there's no way to set it" without seeing that someone already did, and was wrong.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
