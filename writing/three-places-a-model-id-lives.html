@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fable 5.1: three places a model ID lives | Taejun Oh</title>
+  <meta name="description" content="I changed one line to move to Fable 5.1 and thought I was done. A shell wrapper I'd written myself was quietly overriding it — and the same class of silent failure was waiting in my app code.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Fable 5.1: three places a model ID lives</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">September 2026</time>
+
+        <p>
+          Fable 5.1 shipped this morning. I opened my global settings, changed one string, and considered the migration done. It was not done. The session kept launching on Fable 5, and the reason was a shell function I had written myself a few weeks earlier and completely forgotten about.
+        </p>
+        <p>
+          That's the whole post, really — but the same shape showed up twice more before the afternoon was over, once in my shell and once in application code, and the common thread is worth writing down: <strong>a model ID swap looks like a one-line change and behaves like a behavior change, and every way it goes wrong is silent.</strong>
+        </p>
+
+        <h2>Layer one: the setting</h2>
+        <p>
+          The obvious one. <code style="font-family: var(--font-mono); font-size: 0.9em;">~/.claude/settings.json</code> had <code style="font-family: var(--font-mono); font-size: 0.9em;">"model": "claude-fable-5[1m]"</code>. The new ID is <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-fable-5-1</code> — same 1M context, same $10/$50, with cache reads at a quarter of what Fable 5 charged. The <code style="font-family: var(--font-mono); font-size: 0.9em;">[1m]</code> suffix is the one-hour prompt cache TTL, which I kept.
+        </p>
+        <p>
+          One thing I want to flag about how I got that ID: I didn't recall it, I looked it up. My assistant's own cached model table stopped at <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-fable-5</code>, and the model had been out for a matter of hours. Model IDs are exactly the kind of fact where a confident guess and a correct answer are indistinguishable until something 400s.
+        </p>
+
+        <h2>Layer two: the wrapper I wrote and forgot</h2>
+        <p>
+          Back in July I wrote about <a href="medium-by-default.html">the Fable weekly cap running out ahead of the all-models cap</a>. One of the things I did about it was a small zsh function that checks the cap before launching and falls back to Opus when Fable is exhausted. It lives in <code style="font-family: var(--font-mono); font-size: 0.9em;">~/.claude/fable-model-selector.zsh</code> and <code style="font-family: var(--font-mono); font-size: 0.9em;">.zshrc</code> sources it.
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">fable-model-selector.zsh</div><pre>local fable="${CLAUDE_FABLE_MODEL:-claude-fable-5}"
+local opus="${CLAUDE_OPUS_MODEL:-claude-opus-4-8}"
+...
+"$real" --model "$model" "$@"</pre></div>
+          <p class="explain-p">The last line is the problem. The wrapper doesn't read my settings file — it decides on a model itself and passes <code style="font-family: var(--font-mono); font-size: 0.9em;">--model</code> explicitly, and an explicit flag beats the config file every time. So the hardcoded default on line one was the model I actually got, and editing <code style="font-family: var(--font-mono); font-size: 0.9em;">settings.json</code> did nothing at all.</p>
+        </div>
+        <p>
+          Nothing errors when this happens. There's no warning that two layers disagree. The session just starts on the old model, reports the old model if you ask it, and everything works — which is precisely why I'd have kept believing I was on 5.1 indefinitely. The fix was two default strings, plus the fallback target, which I moved from Opus 4.8 to Opus 5 while I was in there.
+        </p>
+
+        <h2>Layer three: the binary</h2>
+        <p>
+          The third place is the CLI itself. I checked the installed binary for the new ID and it wasn't there — 2.1.238 knew <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-opus-5</code> and <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-sonnet-5</code> but had never heard of <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-fable-5-1</code>, which is what you'd expect for a model released after that build.
+        </p>
+        <p>
+          This one resolved itself: by the time I ran the update it had already moved to 2.1.257 on its own, and the new binary has the ID. So layer three was a false alarm. I'm including it anyway because I didn't know it was a false alarm when I found it, and "the binary predates the model" is a real failure mode on a day-of release — just not the one that bit me.
+        </p>
+
+        <h2>The scan that found nothing</h2>
+        <p>
+          Fable 5.1 has three breaking changes from Fable 5: forced tool use now errors, thinking blocks are tied to the model that produced them, and editing earlier turns invalidates them. So I swept every project I have for code that calls Fable.
+        </p>
+        <p>
+          Nothing. Zero callers. The only hits in the entire tree were test fixtures and doc comments inside a vendored pricing table, and that table gets its actual numbers from a remote feed, so it'll pick up the new model on its own. My usage-tracking tools read model labels dynamically rather than hardcoding them, so they were fine too.
+        </p>
+        <p>
+          A scan that finds nothing feels like wasted work and isn't. Before it I had a vague worry about breaking changes across an unknown number of projects; after it I had a bounded answer. The cost was a few minutes of grep.
+        </p>
+
+        <h2>The same bug, one layer down</h2>
+        <p>
+          What the scan <em>did</em> turn up was three projects pinned to Opus 4.8. Opus 5 is the same price — $5 in, $25 out — so moving up looked like another free one-line change.
+        </p>
+        <p>
+          It isn't, and here's where the day rhymed. On Opus 4.8, omitting the <code style="font-family: var(--font-mono); font-size: 0.9em;">thinking</code> parameter means no thinking. On Opus 5, omitting it means adaptive thinking is <em>on</em>. The wire format didn't change; the default did.
+        </p>
+        <p>
+          One of those projects reads bid amounts off photographed court-auction bid slips and returns structured JSON. It never set <code style="font-family: var(--font-mono); font-size: 0.9em;">thinking</code>, and it had <code style="font-family: var(--font-mono); font-size: 0.9em;">max_tokens: 1024</code> — sized comfortably around a small JSON object, back when that was all the model produced. But <code style="font-family: var(--font-mono); font-size: 0.9em;">max_tokens</code> caps thinking <em>plus</em> response. Swap the model ID alone and the ceiling that used to hold only the answer now has to hold the reasoning too.
+        </p>
+        <p>
+          The failure mode is the one I keep describing in this post: nothing raises. The request succeeds, the JSON comes back cut off mid-object, the parser returns null, and the app reports a parse failure on a call that was actually fine. For a tool whose entire job is catching a mistyped bid price, a read that silently stops working is worse than one that visibly breaks.
+        </p>
+
+        <h2>What I changed, and what I deliberately didn't</h2>
+        <p>
+          I raised the ceiling and left the quality dial alone. Thinking-on costs more output tokens, and the obvious offset is to lower <code style="font-family: var(--font-mono); font-size: 0.9em;">effort</code> — but this is a safety-critical read where a confident misread costs more than thousands of API calls, so I wasn't going to quietly trade accuracy for tokens on my own judgment. Instead the effort level became an environment variable defaulting to the model's own default, so it changes nothing until someone decides to change it, without a deploy.
+        </p>
+        <p>
+          I also skipped disabling thinking to restore the old behavior, which was my first instinct. On Opus 5, thinking-off has two documented failure modes — tool calls occasionally arrive as plain text instead of structured calls, and internal XML tags can leak into responses. Lower effort with thinking on is the better lever in every direction.
+        </p>
+        <p>
+          Then I wrote tests for both halves, because both halves fail silently and silent failures need something watching them: assertions that the outgoing request carries the model and effort I think it does, that <code style="font-family: var(--font-mono); font-size: 0.9em;">max_tokens</code> is above the old value, and that a classifier refusal is reported as a refusal rather than a parse error. I checked the refusal test actually catches the regression by removing the branch and confirming it went red.
+        </p>
+
+        <h2>The thing I'd tell myself this afternoon</h2>
+        <p>
+          Changing a model ID is not a config edit. It's a behavior change wearing a config edit's clothes, and the interesting failures are all silent ones: a wrapper that overrides your setting, a binary that predates your model, a token ceiling that used to be generous and isn't anymore. None of them throw. You find them by going and looking.
+        </p>
+        <p>
+          The one I'm least happy about is the wrapper, because I wrote it. It was a good fix for a real problem two months ago, and it quietly became the thing standing between me and the model I thought I'd switched to. Every optimization you hardcode is a fact about the world you've promised to keep updating.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
