@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kalshi-arb - Prediction Market Trading System | Taejun Oh</title>
+  <meta name="description" content="An automated trading system for Kalshi and sportsbook value betting. Five months, 1,983 real-money trades, archived September 2026 with the measurement lessons that outlived it.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All projects
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">kalshi-arb</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">April &ndash; September 2026 &middot; Retired</time>
+
+        <p>
+          An automated trading system for prediction markets and sports betting. It ran for five and a half months, 1,278 commits, 24 strategies, and 1,983 real-money trades, and finished at &minus;$2,004.37. I archived it because the system worked and the answer it gave was no.
+        </p>
+        <p>
+          Two numbers explain almost all of the loss. Strip the exchange fees out and the same trades lose $969. Hold the bet size flat at the $2.75 I started with, changing no decision, and they lose $254 &mdash; size scaling accounts for 87% of it.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://github.com/taejunoh/kalshi-arb" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+
+        <h2>What it did</h2>
+        <ul>
+          <li><strong>Kalshi trading</strong> &mdash; automated orders against Kalshi's event contracts (sports winners, crypto price ranges, economic releases) through the v2 API, with position management, fill tracking, and settlement reconciliation</li>
+          <li><strong>Soft-book +EV alerts</strong> &mdash; compared eight New York-legal sportsbooks against Pinnacle every 10 minutes and pushed mispricings to a companion app and Telegram for manual placement</li>
+          <li>Published its own track record publicly, scored under whichever rule was live on each pick's date</li>
+          <li>Ran unattended on a single EC2 instance with ~40 systemd timers, a FastAPI ops dashboard, and a React Native (Expo) app on TestFlight</li>
+        </ul>
+
+        <h2>Results</h2>
+        <ul>
+          <li>1,983 Kalshi trades, &minus;$2,004.37 net, of which $1,035 was fees</li>
+          <li>No strategy decayed. The first two weeks made $171 and everything after lost $2,175, but the same strategies ran in both periods with no significant change. What changed was bet size: $2.75 to $27 in six weeks, each increase following a winning week</li>
+          <li>Kalshi's taker fee is steepest exactly where underdog strategies live. At 25&ndash;35&cent; the gross edge was +5.2% against a 4.8&ndash;5.3% fee: right about direction, wrong by less than the cost of transacting</li>
+          <li>Soft-book record at retirement: 677 picks, 309&ndash;368, +$19.15. Closing-line value of +0.30% with a 95% CI of [&minus;0.45, +1.04] &mdash; entry prices sat at the closing line, not ahead of it</li>
+        </ul>
+
+        <h2>The part worth keeping</h2>
+        <p>
+          Most of the code that survived contact with reality is not strategy logic. It is the apparatus that stops you from believing a strategy that isn't there.
+        </p>
+        <ul>
+          <li><strong>Era-scored history.</strong> A published track record that re-derives itself from source will rewrite the past every time a rule changes, and the rewrite always flatters. One tier change would have moved the record from +2.1% to +13.9% overnight with no bet settling. The fix was a dated tuple of rules, with history scored under whatever was true at the time, and a CI test that fails on a new era without a disclosure</li>
+          <li><strong>One definition of "a bet."</strong> Five surfaces (Telegram, app, push worker, paper ledger, public export) once disagreed about what counted. A single function with a required, un-defaulted policy argument turned silent divergence into an import error</li>
+          <li><strong>Closing-line value, and the confound that ruined it.</strong> Per-bet standard deviation was ~120%, so confirming a +5% edge on P&amp;L needs about 4,500 bets. CLV resolves far faster, and it produced a beautiful monotone result that reproduced in both halves of the data and beat 2,000 placebo cuts. It was an artifact: entry EV and CLV shared a term. Measured cleanly, the correlation vanished. Reproducibility and placebo survival are not evidence of causation</li>
+          <li><strong>Pre-registration in code.</strong> Thresholds for a hypothesis test committed before the data existed, with a test that duplicates the constants so moving one takes two files in a single diff</li>
+        </ul>
+
+        <h2>Why it stopped</h2>
+        <p>
+          The economics stopped closing. Odds data cost $120 a month, monthly handle was about $9,600, so break-even needed a 1.25% edge. The measured edge was +0.30% with the entire confidence interval below break-even. The project's own rule was no size increase until forward CLV confirmed an edge, but the edge only pays for itself at much larger size. You cannot afford the proof without the size, and you cannot justify the size without the proof.
+        </p>
+        <p>
+          Kalshi trading stopped for a simpler reason: seven distinct edge vectors were tested and closed, and the exchange priced sports better than Pinnacle did.
+        </p>
+
+        <h2>Tech stack</h2>
+        <p>
+          Python 3.12 with FastAPI for the dashboard, SQLite as the only database (9.9M odds observations in one 7.2 GB file), systemd timers instead of a queue, and a React Native (Expo) companion app. One box, no ORM, no container. The Odds API subscription is cancelled, the EC2 host is gone, and the repository is published as a record.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
