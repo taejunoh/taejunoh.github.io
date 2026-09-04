@@ -55,14 +55,19 @@
           <li>Parses the signs on 79,650 block faces into 561,642 machine-readable legality rules, solved per sign zone in NYC-local time across all five boroughs</li>
           <li>Tells you whether a given curb is legal to park on right now &mdash; and when it stops being legal</li>
           <li>AI sign scanner &mdash; photograph any pole and Claude parses it server-side to answer "can I park here, and until when?"</li>
-          <li>Street meter prices on 10,955 metered block faces &mdash; the posted DOT rate appears while the meter is actually running, and tapping the block gives the full-stay ladder, the time limit, and a tap-to-copy ParkNYC zone number</li>
+          <li>Street meter prices on 10,955 metered block faces &mdash; the posted DOT rate appears while the meter is actually running, and tapping the block gives the full-stay ladder and the time limit</li>
           <li>Indexes 1,837 garages, 263 with real posted rates; when a block says no, the sheet surfaces "from $X &middot; N nearby", price-sorted</li>
           <li>Alternate-side suspension banner &mdash; when ASP is suspended today, the map says so; every other state renders nothing, so it can claim a suspension but never that rules are in effect</li>
           <li>OCR validator cross-checks parsed rules against the source sign image</li>
           <li>Saved spots (3 free, uncapped on premium), and community reports surfaced as a trust signal</li>
           <li>Premium alerts before a block turns illegal, plus a real ringing alarm via Apple AlarmKit (iOS 26+) &mdash; an actual alarm, not just a notification</li>
           <li>Save a vehicle size class (sedan / SUV / oversized), captured in context rather than at onboarding</li>
-          <li>iOS 1.5 live on the App Store; the Android submission kit is ready, pending store accounts</li>
+          <li>iOS 1.6 is live on the App Store; the Android submission kit is ready, pending store accounts</li>
+          <li>Posted meter rates on the map, with what a stay of any length costs</li>
+          <li>Tap-to-copy ParkNYC pay code</li>
+          <li>Map hierarchy that shows free parking first, then legal parking</li>
+          <li>Garage rate card and Google Sign-In</li>
+          <li>Block reminders without an account, and a profile screen with subscription management</li>
         </ul>
 
         <h2>Architecture</h2>

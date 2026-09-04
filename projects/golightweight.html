@@ -65,12 +65,17 @@
           <li>Works fully offline on local SQLite, syncing to the cloud when a connection returns</li>
           <li>Apple Health sync (bodyweight in, workouts out), English and Korean localization, and a share-card carousel &mdash; a Story card shading the muscles worked, a transparent Instagram-sticker variant, and a PR card on days that earned one, with a share row straight to Stories, Messages, and Photos</li>
           <li>Free tier with a daily workout limit and ads; Pro unlocks unlimited workouts, auto-sync, and the full analytics set</li>
-          <li>iOS live on the <a href="https://apps.apple.com/app/id6781628893" target="_blank" rel="noopener">App Store</a>; Android is in closed testing on Google Play</li>
+          <li>iOS 1.5 is on the <a href="https://apps.apple.com/app/id6781628893" target="_blank" rel="noopener">App Store</a>; Android is in closed testing on Google Play</li>
+          <li>Full Korean exercise library (124 badged exercises) and a Korean Science Library</li>
+          <li>Home, Analytics, Settings, and exercise-library redesign in 1.5</li>
+          <li>Instagram Story sharing of finished workouts</li>
+          <li>Apple Health workout location and an in-app rating prompt</li>
+          <li>2026 evidence refresh of the Science Library (creatine, ashwagandha, three new topics)</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          React Native 0.83 on Expo SDK 55 (bare workflow, bridgeless) with TypeScript. WatermelonDB (SQLite, 12 models) handles local-first storage and syncs to Supabase (PostgreSQL, Auth, Edge Functions) with last-write-wins conflict resolution. Auth is Apple and Google OAuth plus a guest mode that migrates data on sign-up. RevenueCat powers Pro subscriptions, AdMob serves the free tier, Sentry catches crashes, HealthKit connects to Apple Health, and the analytics charts are custom-built on react-native-svg. The Apple Watch target ships via <code>@bacons/apple-targets</code>. Backed by 4,100+ Jest tests across 330+ suites. The marketing site at golightweight.app is a separate Next.js 16 app hosting a 1,512-page exercise library and an evidence-graded supplement reference.
+          React Native 0.83 on Expo SDK 55 (bare workflow, bridgeless) with TypeScript. WatermelonDB (SQLite, 12 models) handles local-first storage and syncs to Supabase (PostgreSQL, Auth, Edge Functions) with last-write-wins conflict resolution. Auth is Apple and Google OAuth plus a guest mode that migrates data on sign-up. RevenueCat powers Pro subscriptions, AdMob serves the free tier, Sentry catches crashes, HealthKit connects to Apple Health, and the analytics charts are custom-built on react-native-svg. The Apple Watch target ships via <code>@bacons/apple-targets</code>. Backed by 349 test files. The marketing site at golightweight.app is a separate Next.js 16 app hosting a 1,512-page exercise library and an evidence-graded supplement reference.
         </p>
       </article>
     </main>
