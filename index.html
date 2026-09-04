@@ -17,6 +17,7 @@
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#wraps">Under Wraps</a>
+      <a href="#retired">Retired</a>
       <a href="#tech">Tech Stack</a>
       <a href="#contact">Contact</a>
       <a href="writing.html">Writing</a>
@@ -87,6 +88,10 @@
             <img class="tech-img" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/swift.svg" alt="Swift">
             <span>Swift</span>
           </div>
+          <div class="tech-item">
+            <img class="tech-img" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/rust.svg" alt="Rust">
+            <span>Rust</span>
+          </div>
         </div>
       </section>
 
@@ -136,7 +141,7 @@
             </svg>
           </div>
           <h3>SpotTrove</h3>
-          <p>Street parking legality and garage pricing on one map, with an AI sign scanner. iOS app live for NYC, expanding across the US.</p>
+          <p>Street parking legality, posted meter rates, and garage pricing on one map, with an AI sign scanner. iOS 1.6 live for NYC.</p>
         </a>
 
         <a href="projects/doeveryday.html" class="project-thumb">
@@ -165,7 +170,7 @@
             </svg>
           </div>
           <h3>DoEveryday</h3>
-          <p>Habit tracker across web, iOS, and a browser extension with streaks and heatmaps. Android in closed testing.</p>
+          <p>Habit tracker across web, iOS, Android, and a browser extension on Chrome, Edge, Firefox, and Safari. Streaks, heatmaps, and a habit-strength score.</p>
         </a>
 
         <a href="projects/great-whiskey-narrative.html" class="project-thumb">
@@ -189,7 +194,7 @@
           <div class="wip-meta">
             <span class="wip-chip"><span class="wip-dot"></span>Just unwrapped</span>
           </div>
-          <p>Point a camera at a label and get the distillery, region, tasting notes, and typical price. 370-bottle library with food pairings and collection tracking. Web live, iOS in build.</p>
+          <p>Point a camera at a label and get the distillery, region, tasting notes, and typical price. 370-bottle library with food pairings. Web live, iOS on TestFlight.</p>
         </a>
 
         <a href="projects/typeleague.html" class="project-thumb">
@@ -254,7 +259,31 @@
             </svg>
           </div>
           <h3>ClaudeBeat</h3>
-          <p>macOS menu bar app for real-time Claude AI token usage monitoring.</p>
+          <p>macOS menu bar app for real-time Claude AI usage. Notarized; installs with one Homebrew command.</p>
+        </a>
+
+        <a href="projects/needlbar.html" class="project-thumb">
+          <div class="thumb-sketch">
+            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round">
+              <!-- Menu bar -->
+              <rect x="20" y="15" width="160" height="16" rx="3" fill="rgba(0,0,0,0.06)"/>
+              <circle cx="165" cy="23" r="4" fill="rgba(0,0,0,0.1)"/>
+              <text x="132" y="26" font-family="monospace" font-size="7" fill="#8a7e6e" stroke="none">$4.20</text>
+              <!-- Popover -->
+              <rect x="40" y="40" width="120" height="65" rx="5" fill="rgba(0,0,0,0.04)" stroke-dasharray="3,3"/>
+              <!-- Three provider bars -->
+              <rect x="52" y="52" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
+              <rect x="52" y="52" width="70" height="6" rx="3" fill="#b0a48e" stroke="none"/>
+              <rect x="52" y="66" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
+              <rect x="52" y="66" width="44" height="6" rx="3" fill="#b0a48e" stroke="none"/>
+              <rect x="52" y="80" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
+              <rect x="52" y="80" width="22" height="6" rx="3" fill="#b0a48e" stroke="none"/>
+              <!-- Labels -->
+              <text x="52" y="99" font-family="Caveat" font-size="11" fill="#8a7e6e" stroke="none">Claude · Codex · Cursor</text>
+            </svg>
+          </div>
+          <h3>Needlbar</h3>
+          <p>macOS menu bar monitor for Claude Code, Codex, and Cursor: local token usage, cost, and quota. Notarized, no telemetry, Rust core behind a Swift UI.</p>
         </a>
 
         <a href="projects/job-tracker.html" class="project-thumb">
@@ -288,27 +317,7 @@
     <section class="projects-section" id="wraps">
       <h2 class="section-heading">Under Wraps</h2>
       <p class="wraps-note">A few new apps in the works. Names stay hidden until they ship &mdash; revealing each at launch.</p>
-      <div class="projects-grid">
-
-        <div class="project-thumb is-locked">
-          <div class="thumb-sketch">
-            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="56" y="46" width="88" height="16" rx="2" fill="rgba(0,0,0,0.06)"/>
-              <rect x="62" y="62" width="76" height="40" rx="2" fill="rgba(0,0,0,0.04)"/>
-              <rect x="94" y="46" width="12" height="56" fill="rgba(0,0,0,0.06)"/>
-              <ellipse cx="88" cy="40" rx="9" ry="6" fill="rgba(0,0,0,0.05)"/>
-              <ellipse cx="112" cy="40" rx="9" ry="6" fill="rgba(0,0,0,0.05)"/>
-              <circle cx="100" cy="41" r="4" fill="rgba(0,0,0,0.07)"/>
-              <text x="150" y="94" font-family="Caveat" font-size="26" font-weight="700" fill="#8a7e6e" stroke="none">?</text>
-            </svg>
-          </div>
-          <h3><span class="redact" style="width:128px"></span></h3>
-          <div class="wip-meta">
-            <span class="wip-chip"><span class="wip-dot"></span>In development</span>
-            <span class="wip-chip">iOS</span>
-          </div>
-          <p>Core build in progress.</p>
-        </div>
+            <div class="projects-grid">
 
         <div class="project-thumb is-locked">
           <div class="thumb-sketch">
@@ -327,8 +336,9 @@
             <span class="wip-chip"><span class="wip-dot"></span>In development</span>
             <span class="wip-chip">iOS</span>
             <span class="wip-chip">Android</span>
+            <span class="wip-chip">Web</span>
           </div>
-          <p>Building for iOS and Android.</p>
+          <p>Running a club without spreadsheets: events with RSVP and check-in, dues, attendance, and a member app that shares one backend with the admin site.</p>
         </div>
 
         <div class="project-thumb is-locked">
@@ -343,33 +353,47 @@
               <text x="150" y="94" font-family="Caveat" font-size="26" font-weight="700" fill="#8a7e6e" stroke="none">?</text>
             </svg>
           </div>
-          <h3><span class="redact" style="width:150px"></span></h3>
-          <div class="wip-meta">
-            <span class="wip-chip"><span class="wip-dot early"></span>Early build</span>
-            <span class="wip-chip">iOS</span>
-          </div>
-          <p>Early prototype, finding the shape.</p>
-        </div>
-
-        <div class="project-thumb is-locked">
-          <div class="thumb-sketch">
-            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="56" y="46" width="88" height="16" rx="2" fill="rgba(0,0,0,0.06)"/>
-              <rect x="62" y="62" width="76" height="40" rx="2" fill="rgba(0,0,0,0.04)"/>
-              <rect x="94" y="46" width="12" height="56" fill="rgba(0,0,0,0.06)"/>
-              <ellipse cx="88" cy="40" rx="9" ry="6" fill="rgba(0,0,0,0.05)"/>
-              <ellipse cx="112" cy="40" rx="9" ry="6" fill="rgba(0,0,0,0.05)"/>
-              <circle cx="100" cy="41" r="4" fill="rgba(0,0,0,0.07)"/>
-              <text x="150" y="94" font-family="Caveat" font-size="26" font-weight="700" fill="#8a7e6e" stroke="none">?</text>
-            </svg>
-          </div>
-          <h3><span class="redact" style="width:112px"></span></h3>
+          <h3><span class="redact" style="width:128px"></span></h3>
           <div class="wip-meta">
             <span class="wip-chip"><span class="wip-dot"></span>In development</span>
             <span class="wip-chip">iOS</span>
           </div>
-          <p>Core features coming together.</p>
+          <p>A day out, planned in tabs. Each stop gets a tab; compare mode stacks every route on one map, with live subway guidance.</p>
         </div>
+
+      </div>
+    </section>
+
+    <!-- Retired — shipped, ran, and shut down on purpose -->
+    <section class="projects-section" id="retired">
+      <h2 class="section-heading">Retired</h2>
+      <p class="wraps-note">Projects that ran for real and were shut down on purpose. Kept here because the write-up is the useful part.</p>
+      <div class="projects-grid">
+
+        <a href="projects/kalshi-arb.html" class="project-thumb">
+          <div class="thumb-sketch">
+            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Axes -->
+              <line x1="28" y1="100" x2="172" y2="100"/>
+              <line x1="28" y1="100" x2="28" y2="20"/>
+              <!-- Equity curve: brief rise, then a long slide -->
+              <path d="M32 78 L50 70 L64 62 L78 66 L94 74 L110 80 L126 88 L142 86 L158 94" stroke-width="2"/>
+              <circle cx="64" cy="62" r="3" fill="rgba(0,0,0,0.08)"/>
+              <!-- Fee band shading under the curve -->
+              <path d="M94 74 L110 80 L126 88 L142 86 L158 94 L158 100 L94 100 Z" fill="rgba(0,0,0,0.06)" stroke="none"/>
+              <!-- Handwritten labels -->
+              <text x="68" y="52" font-family="Caveat" font-size="12" fill="#8a7e6e" stroke="none">+$171</text>
+              <text x="132" y="112" font-family="Caveat" font-size="11" fill="#8a7e6e" stroke="none">fees</text>
+              <text x="148" y="34" font-family="Caveat" font-size="14" fill="#8a7e6e" stroke="none">n=1,983</text>
+            </svg>
+          </div>
+          <h3>kalshi-arb</h3>
+          <div class="wip-meta">
+            <span class="wip-chip"><span class="wip-dot retired"></span>Retired Sep 2026</span>
+            <span class="wip-chip">Python</span>
+          </div>
+          <p>Automated prediction-market and sportsbook +EV trading. 1,983 real-money trades, five months, a clear no &mdash; and the measurement tooling that proved it.</p>
+        </a>
 
       </div>
     </section>

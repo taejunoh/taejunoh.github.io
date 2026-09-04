@@ -37,7 +37,7 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">July 2026</time>
 
         <p>
-          Know the bottle before you pour. Point a camera at a label and get the distillery, region, tasting notes, and what the bottle typically costs &mdash; then keep track of what you have drunk. The web library is live; the iOS app is in build.
+          Know the bottle before you pour. Point a camera at a label and get the distillery, region, tasting notes, and what the bottle typically costs &mdash; then keep track of what you have drunk. The web library is live; the iOS app is on TestFlight (build 6).
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
@@ -53,6 +53,10 @@
           <li>Food pairings and a Whisky 101 guide for people who are still working out what they like</li>
           <li>Tasting tracks: a game layer where tracks, tiers, badges, XP, rank, the passport, flavour mastery, and the cabinet are all computed from your collection on every render, never stored &mdash; so there is nothing to migrate and no way for the two to disagree</li>
           <li>Bottles are graded by price rather than banded &mdash; six steps at $50, $100, $200, $600, and $2,500, which splits the shelf evenly instead of dumping a third of it into "legendary"</li>
+          <li>Information-first scan result sheet with catalogue art served from the API</li>
+          <li>Versioned catalogue delivered over the air, no app release needed</li>
+          <li>Scanning API gated by App Attest in production; installation-based auth, no accounts</li>
+          <li>Full-collection backups; library expanding toward 1,500 bottles</li>
         </ul>
 
         <h2>Nothing about your collection leaves the browser</h2>
@@ -62,7 +66,7 @@
 
         <h2>Tech stack</h2>
         <p>
-          Three pieces ship separately out of one repo. The public site is a static Astro build with React islands &mdash; 121 pages and 326 Vitest tests &mdash; hosted on GitHub Pages, with 370 bottle illustrations served as lazy-loaded WebP. The API is a TypeScript service on Railway handling label scans, the versioned catalogue, and health probes; accounts and collection sync are built but stay off unless configured. The mobile app is Expo and React Native, shipping through EAS, and it reads a built catalogue artifact rather than the site's JSON so the two can version independently.
+          Three pieces ship separately out of one repo. The public site is a static Astro build with React islands &mdash; 121 pages and 355 Vitest tests &mdash; hosted on GitHub Pages, with 370 bottle illustrations served as lazy-loaded WebP. The API is a TypeScript service on Railway handling label scans, the versioned catalogue, and health probes; accounts and collection sync are built but stay off unless configured. The mobile app is Expo and React Native, shipping through EAS, and it reads a built catalogue artifact rather than the site's JSON so the two can version independently.
         </p>
         <p>
           One lesson worth keeping: a green test suite is not proof the server starts. Jest transpiles ESM to CommonJS and <code>tsc --noEmit</code> only reads type declarations, so a package that is CommonJS at runtime can pass both and still fail Node's named-export check the moment the server loads it. A boot test that spawns the real entry point and hits its health endpoint now covers that gap.

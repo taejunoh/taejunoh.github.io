@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClaudeBeat - macOS Menu Bar App | Taejun Oh</title>
-  <meta name="description" content="Real-time Claude AI token usage monitor for macOS menu bar.">
+  <title>Needlbar - AI Coding Usage Monitor for macOS | Taejun Oh</title>
+  <meta name="description" content="Native macOS menu bar monitor for Claude Code, Codex, and Cursor usage, cost, and quota. Local-first and notarized.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -33,40 +33,36 @@
       </a>
 
       <article class="prose">
-        <h1 class="page-title">ClaudeBeat</h1>
+        <h1 class="page-title">Needlbar</h1>
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          A native macOS menu bar app that monitors your Claude AI token usage in real-time. v1.1.2 is Developer ID-signed and notarized. See your 5-hour session and 7-day weekly limits at a glance with circular gauges, get notified on session resets, and watch a gauge for every model the API reports &mdash; plus your Extra Usage credits.
+          A native macOS menu bar monitor for Claude Code, Codex, and Cursor. It shows locally aggregated token usage and estimated cost next to each provider's quota window and reset time, with a home widget for the numbers you check most. It is local-first: no Needlbar account, no backend, no hosted sync, no telemetry. v0.2.2 is public, Developer ID-signed and notarized, for macOS 14 or later on Apple Silicon. A system monitor &mdash; CPU, memory, disk, network, battery &mdash; is in development for v0.3.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
-          <a href="https://claudebeat.com/" target="_blank" rel="noopener" class="btn btn-primary">
-            Website
-          </a>
-          <a href="https://github.com/taejunoh/ClaudeBeat" target="_blank" rel="noopener" class="btn btn-primary">
+          <a href="https://github.com/taejunoh/needlbar" target="_blank" rel="noopener" class="btn btn-primary">
             <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
             GitHub
           </a>
-          <a href="https://github.com/taejunoh/homebrew-tap" target="_blank" rel="noopener" class="btn btn-primary">
-            Homebrew
+          <a href="https://github.com/taejunoh/needlbar/releases/latest" target="_blank" rel="noopener" class="btn btn-primary">
+            Download
           </a>
         </div>
 
         <h2>What it does</h2>
         <ul>
-          <li>Real-time 5-hour session and 7-day weekly usage display in the menu bar</li>
-          <li>Popover dashboard with circular gauges for detailed usage breakdown</li>
-          <li>Weekly breakdown across all models, plus a gauge per model the API reports (e.g. Fable) and an Extra Usage credits bar</li>
-          <li>Session reset notifications and customizable threshold alerts</li>
-          <li>In-app Claude sign-in &mdash; the session lives in the macOS Keychain, never plaintext, with session-key paste as a fallback</li>
-          <li>Configurable auto-refresh (15 seconds to 5 minutes)</li>
-          <li>Install via Homebrew (<code>brew install --cask taejunoh/tap/claudebeat</code>) or just unzip and run &mdash; verified by Apple</li>
+          <li>Overview and per-provider views, each on its own refresh stream</li>
+          <li>Provider-owned browser login for Claude and Codex; Cursor links to its own spending dashboard, no credentials pass through Needlbar</li>
+          <li>Estimated cost computed from local session files &mdash; nothing is sent to a server</li>
+          <li>Quota windows and reset times per provider, including the Claude weekly quota</li>
+          <li>One medium home widget and opt-in quota notifications</li>
+          <li>Local JSON snapshot export that contains no credentials or file paths</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          Built entirely in Swift with SwiftUI for the dashboard UI and AppKit (NSStatusItem, NSPopover) for menu bar integration. Uses macOS Keychain for secure credential storage, UserNotifications for alerts, and Swift Concurrency (async/await) for thread-safe background polling. Requires macOS 14.0 Sonoma or later.
+          Swift 6 and SwiftUI, split into NeedlbarCore, NeedlbarApp, and a widget target, with a C bridge to a Rust static library. The Rust workspace holds the bridge, project-analytics, and quota crates (tokio, reqwest with rustls, security-framework, zeroize) and vendors tokscale-core for session parsing. Requires macOS 14 or later.
         </p>
       </article>
     </main>
