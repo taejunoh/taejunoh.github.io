@@ -37,7 +37,7 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          A native macOS menu bar monitor for Claude Code, Codex, and Cursor. It shows locally aggregated token usage and estimated cost next to each provider's quota window and reset time, with a home widget for the numbers you check most. It is local-first: no Needlbar account, no backend, no hosted sync, no telemetry. v0.2.2 is public, Developer ID-signed and notarized, for macOS 14 or later on Apple Silicon. A system monitor &mdash; CPU, memory, disk, network, battery &mdash; is in development for v0.3.
+          A native macOS menu bar monitor for Claude Code, Codex, and Cursor. It shows locally aggregated token usage and estimated cost next to each provider's quota window and reset time, with a home widget for the numbers you check most. It is local-first: no Needlbar account, no backend, no hosted sync, no telemetry. v0.3.2 is public, Developer ID-signed and notarized, for macOS 14 or later on Apple Silicon. v0.3 added a system monitor &mdash; CPU, memory, disk, network, battery &mdash; in the same popover, and a Module Studio in Settings to choose what the menu bar shows.
         </p>
 
         <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
@@ -47,6 +47,9 @@
           </a>
           <a href="https://github.com/taejunoh/needlbar/releases/latest" target="_blank" rel="noopener" class="btn btn-primary">
             Download
+          </a>
+          <a href="https://github.com/taejunoh/homebrew-tap" target="_blank" rel="noopener" class="btn btn-primary">
+            Homebrew
           </a>
         </div>
 
@@ -58,11 +61,14 @@
           <li>Quota windows and reset times per provider, including the Claude weekly quota</li>
           <li>One medium home widget and opt-in quota notifications</li>
           <li>Local JSON snapshot export that contains no credentials or file paths</li>
+          <li>System monitor modules alongside the AI usage views</li>
+          <li>Compact analytics cards with expandable diagnostics</li>
+          <li>Connection preflight that skips redundant browser re-login</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          Swift 6 and SwiftUI, split into NeedlbarCore, NeedlbarApp, and a widget target, with a C bridge to a Rust static library. The Rust workspace holds the bridge, project-analytics, and quota crates (tokio, reqwest with rustls, security-framework, zeroize) and vendors tokscale-core for session parsing. Requires macOS 14 or later.
+          Swift 6 and SwiftUI, split into NeedlbarCore, NeedlbarApp, and a widget target, with a C bridge to a Rust static library. The Rust workspace holds the bridge, project-analytics, and quota crates (tokio, reqwest with rustls, security-framework, zeroize) and vendors tokscale-core for session parsing. Requires macOS 14 or later. 464 Swift tests across 19 suites.
         </p>
       </article>
     </main>

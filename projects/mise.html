@@ -37,23 +37,24 @@
         <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
 
         <p>
-          Mise is a SaaS platform that automates daily P&L reporting for independent restaurant operators, currently running an active pilot in NYC. Most owners don't see their P&L until the end of the month &mdash; weeks after the money has already been lost. Mise connects directly to Toast POS and MarginEdge and delivers the numbers the next morning: no spreadsheets, no manual data entry.
+          Mise is back-office automation for independent restaurants: daily P&amp;L, invoices and vendor payments, recipes and menu cost, inventory counts, purchasing, and tax prep &mdash; all from live POS and invoice data, without spreadsheets or manual entry. It's an active pilot with a high-volume NYC restaurant, running on live Toast POS data and native invoice ingestion; MarginEdge is used for one-time historical import only.
         </p>
 
         <h2>What it does</h2>
         <ul>
-          <li>Daily P&amp;L delivered automatically &mdash; revenue, COGS, labor, and prime cost calculated every morning from live POS and invoice data</li>
-          <li>Pulls sales, labor, and menu data from Toast POS, and food/beverage cost and invoice data from MarginEdge</li>
-          <li>Real-time dashboard &mdash; overview, sales, costs, labor, menu performance, vendor spend, and check analysis in one place</li>
-          <li>Anomaly alerts when food cost spikes, labor exceeds targets, or voids and comps look unusual</li>
-          <li>Budget vs. actual tracking with period-over-period comparisons</li>
-          <li>Menu and loss-prevention metrics &mdash; item profitability, sales mix, contribution margin, and voids/discounts/comps as a share of revenue</li>
-          <li>Morning email report alongside the dashboard</li>
+          <li><strong>Daily P&amp;L, delivered automatically</strong> &mdash; revenue, COGS, labor, and prime cost calculated every morning; morning email with an honest "COGS pending" state when invoices haven't landed yet</li>
+          <li><strong>Dashboard</strong> &mdash; overview, sales (dine-in vs. takeout, net of discounts and refunds), costs, labor (BOH/FOH, SPLH), P&amp;L, menu performance, checks, vendors, period-over-period comparison</li>
+          <li><strong>Invoices</strong> &mdash; upload or email a PDF and it becomes a structured invoice (OCR); lines are matched to a product catalog; approval workflow (pending &rarr; approved &rarr; paid) with owner/manager roles</li>
+          <li><strong>Vendor payments</strong> &mdash; pay approved invoices by check, virtual card, or ACH (Increase, Lithic, Dwolla), with vendor self-service onboarding via magic link, idempotent retries, and cash-flow view</li>
+          <li><strong>Recipes and menu cost</strong> &mdash; recipe costing with unit-of-measure conversion (purchase unit &harr; recipe unit), POS item &rarr; recipe linking, and the headline theoretical vs. actual food cost %</li>
+          <li><strong>Inventory</strong> &mdash; count sheets that auto-attach new products, draft/saved/posted count sessions, usage-based weekly budget, theoretical usage vs. actual variance</li>
+          <li><strong>Purchasing</strong> &mdash; a vendor item catalog built from invoice lines, per-vendor price history derived at query time (nothing cached, so a rejected invoice drops out), price-increase flags, and cross-vendor comparison that only shows a per-unit price when the selling unit is verified &mdash; it withholds a number rather than publish a guess</li>
+          <li><strong>Tax prep (owner only)</strong> &mdash; 1099-NEC with W-9 collection, sales tax reconciliation, use tax, resale certificate audit and collection, and Form 8846 (FICA tip credit) &mdash; each an honest filing aid with explicit gap codes, PDF + CSV</li>
         </ul>
 
         <h2>Tech stack</h2>
         <p>
-          Next.js 16 frontend with React 19, TypeScript, and Tailwind CSS. Python + FastAPI backend with SQLAlchemy 2 (async) and PostgreSQL, migrated with Alembic. APScheduler runs the daily ingestion jobs against the Toast POS and MarginEdge APIs, Resend sends the morning report, and the service deploys on Railway.
+          FastAPI backend with SQLAlchemy 2 (async) and PostgreSQL, migrated with Alembic. APScheduler runs the daily ingestion jobs, Resend sends the morning report, and Next.js 16 with React 19 and Tailwind CSS 4 make up the frontend. The API deploys on Railway, the web app on Vercel.
         </p>
       </article>
     </main>

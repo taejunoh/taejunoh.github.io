@@ -47,6 +47,9 @@
           <a href="https://apps.apple.com/app/id6781628893" target="_blank" rel="noopener" class="btn btn-primary">
             App Store
           </a>
+          <a href="https://play.google.com/store/apps/details?id=com.golightweight.app" target="_blank" rel="noopener" class="btn btn-primary">
+            Google Play
+          </a>
         </div>
 
         <h2>What it does</h2>
@@ -55,7 +58,7 @@
           <li>Workout planner &mdash; schedule a session on a future date, edit it with the same controls used mid-workout, and start it when the day comes</li>
           <li>Set types (warmup, working, top, drop, failure) and supersets that rename themselves as they grow &mdash; superset, tri-set, giant set</li>
           <li>23 built-in training programs (StrongLifts 5&times;5, 5/3/1 variants, Texas Method, PHUL/PHAT) with a per-program progression engine, free for everyone</li>
-          <li>Exercise library of 449 exercises &mdash; 269 illustrated, 211 with animated two-frame demos</li>
+          <li>Exercise library of 449 exercises, every exercise illustrated and 445 animated with two-frame demos</li>
           <li>Automatic PR detection across max weight, max volume, estimated 1RM, and max reps on bodyweight &mdash; the celebration fires only for numbers actually lifted</li>
           <li>Routines with smart set templates (pyramid, drop, top+backoff), a plate calculator, and a custom numeric keypad built for between-set entry</li>
           <li>Rest and interval timers that survive backgrounding and lock, counting the last three seconds down out loud &mdash; the app renders the audio itself, so it is heard through the ring switch and while the phone is locked</li>
@@ -65,7 +68,10 @@
           <li>Works fully offline on local SQLite, syncing to the cloud when a connection returns</li>
           <li>Apple Health sync (bodyweight in, workouts out), English and Korean localization, and a share-card carousel &mdash; a Story card shading the muscles worked, a transparent Instagram-sticker variant, and a PR card on days that earned one, with a share row straight to Stories, Messages, and Photos</li>
           <li>Free tier with a daily workout limit and ads; Pro unlocks unlimited workouts, auto-sync, and the full analytics set</li>
-          <li>iOS 1.5 is on the <a href="https://apps.apple.com/app/id6781628893" target="_blank" rel="noopener">App Store</a>; Android is in closed testing on Google Play</li>
+          <li>iOS 1.6 is on the <a href="https://apps.apple.com/app/id6781628893" target="_blank" rel="noopener">App Store</a>; Android is on <a href="https://play.google.com/store/apps/details?id=com.golightweight.app" target="_blank" rel="noopener">Google Play</a></li>
+          <li>Community feed with posts, moderation, and blocking (1.6.0)</li>
+          <li>In-app notifications with a bell, tab badge, and list (1.6.2)</li>
+          <li>Illustrations extended to all 1,124 web-library exercises</li>
           <li>Full Korean exercise library (124 badged exercises) and a Korean Science Library</li>
           <li>Home, Analytics, Settings, and exercise-library redesign in 1.5</li>
           <li>Instagram Story sharing of finished workouts</li>
@@ -75,7 +81,7 @@
 
         <h2>Tech stack</h2>
         <p>
-          React Native 0.83 on Expo SDK 55 (bare workflow, bridgeless) with TypeScript. WatermelonDB (SQLite, 12 models) handles local-first storage and syncs to Supabase (PostgreSQL, Auth, Edge Functions) with last-write-wins conflict resolution. Auth is Apple and Google OAuth plus a guest mode that migrates data on sign-up. RevenueCat powers Pro subscriptions, AdMob serves the free tier, Sentry catches crashes, HealthKit connects to Apple Health, and the analytics charts are custom-built on react-native-svg. The Apple Watch target ships via <code>@bacons/apple-targets</code>. Backed by 349 test files. The marketing site at golightweight.app is a separate Next.js 16 app hosting a 1,512-page exercise library and an evidence-graded supplement reference.
+          React Native 0.83 on Expo SDK 55 (bare workflow, bridgeless) with TypeScript. WatermelonDB (SQLite, 12 models) handles local-first storage and syncs to Supabase (PostgreSQL, Auth, Edge Functions) with last-write-wins conflict resolution. Auth is Apple and Google OAuth plus a guest mode that migrates data on sign-up. RevenueCat powers Pro subscriptions, AdMob serves the free tier, Sentry catches crashes, HealthKit connects to Apple Health, and the analytics charts are custom-built on react-native-svg. The Apple Watch target ships via <code>@bacons/apple-targets</code>. Backed by 4,800+ tests across 386 suites. The marketing site at golightweight.app is a separate Next.js 16 app hosting a 1,504-page exercise library and an evidence-graded supplement reference.
         </p>
       </article>
     </main>
