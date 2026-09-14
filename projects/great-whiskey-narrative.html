@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Great Whiskey Narrative - Know the Bottle Before You Pour | Taejun Oh</title>
-  <meta name="description" content="Scan a whisky label and get the distillery, region, tasting notes, and typical price. A 370-bottle library with food pairings, a Whisky 101 guide, and collection tracking. Built with Astro and Expo.">
+  <meta name="description" content="Scan a whisky label and get the distillery, region, tasting notes, and typical price. A 688-bottle library with food pairings, a Whisky 101 guide, and collection tracking. Built with Astro and Expo.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -48,7 +48,7 @@
 
         <h2>What it does</h2>
         <ul>
-          <li>A 370-bottle library, filterable by brand, category, country, region, and flavour, each bottle with its own illustration</li>
+          <li>A 688-bottle library, filterable by brand, category, country, region, and flavour, each bottle with its own illustration</li>
           <li>Label scanner &mdash; send a photo of a label and the API matches it against the catalogue</li>
           <li>Food pairings and a Whisky 101 guide for people who are still working out what they like</li>
           <li>Tasting tracks: a game layer where tracks, tiers, badges, XP, rank, the passport, flavour mastery, and the cabinet are all computed from your collection on every render, never stored &mdash; so there is nothing to migrate and no way for the two to disagree</li>
@@ -57,6 +57,8 @@
           <li>Versioned catalogue delivered over the air, no app release needed</li>
           <li>Scanning API gated by App Attest in production; installation-based auth, no accounts</li>
           <li>Full-collection backups; library expanding toward 1,500 bottles</li>
+          <li>Request queue for bottles the scanner does not know yet</li>
+          <li>Batch catalogue pipeline that grew the library from 370 to 688 bottles in ten days, with a free Codex-CLI art and text backend beside the paid one</li>
         </ul>
 
         <h2>Nothing about your collection leaves the browser</h2>
@@ -66,7 +68,7 @@
 
         <h2>Tech stack</h2>
         <p>
-          Three pieces ship separately out of one repo. The public site is a static Astro build with React islands &mdash; 121 pages and 355 Vitest tests &mdash; hosted on GitHub Pages, with 370 bottle illustrations served as lazy-loaded WebP. The API is a TypeScript service on Railway handling label scans, the versioned catalogue, and health probes; accounts and collection sync are built but stay off unless configured. The mobile app is Expo and React Native, shipping through EAS, and it reads a built catalogue artifact rather than the site's JSON so the two can version independently.
+          Three pieces ship separately out of one repo. The public site is a static Astro build with React islands &mdash; 121 pages and 355 Vitest tests &mdash; hosted on GitHub Pages, with 688 bottle illustrations served as lazy-loaded WebP. The API is a TypeScript service on Railway handling label scans, the versioned catalogue, and health probes; accounts and collection sync are built but stay off unless configured. The mobile app is Expo and React Native, shipping through EAS, and it reads a built catalogue artifact rather than the site's JSON so the two can version independently.
         </p>
         <p>
           One lesson worth keeping: a green test suite is not proof the server starts. Jest transpiles ESM to CommonJS and <code>tsc --noEmit</code> only reads type declarations, so a package that is CommonJS at runtime can pass both and still fail Node's named-export check the moment the server loads it. A boot test that spawns the real entry point and hits its health endpoint now covers that gap.
