@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three charts, not one: moving my default to Opus 5.5 | Taejun Oh</title>
+  <meta name="description" content="Opus 5.5 finally made the &quot;switch the main session off Fable&quot; lever worth pulling. The first benchmark chart said medium effort; three charts said high. Plus why deep-reasoner stays at xhigh and grunt work stays on Sonnet.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Three charts, not one: moving my default to Opus 5.5</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">September 2026</time>
+
+        <p>
+          Opus 5.5 shipped, and for the first time since July my main session isn't running on Fable. The switch itself was one line in a settings file. Getting to the right <em>effort level</em> for it took two tries, and the first try was wrong in a way I want to write down, because it looked completely reasonable at the time.
+        </p>
+
+        <h2>The lever that sat unpulled for two months</h2>
+        <p>
+          Every post I've written since <a href="medium-by-default.html">Medium by default</a> has been about the Fable weekly cap. <a href="the-dial-moved-the-wrong-thing.html">The last one</a> ended with a finding I was pleased with: subagent requests are metered by the model that serves them, so pushing the heavy thinking to an Opus subagent really does spare the Fable cap. What it also showed, if I'm honest, is that the subagents were never the problem. In a long session the thing eating the Fable cap is the orchestrator itself, re-reading its own context on every turn. One session that day logged 19.6M cache-read tokens, all of it Fable.
+        </p>
+        <p>
+          My rules file had a line about this since July: <em>the bigger lever is switching the default model to Opus.</em> It said "not pulled yet, next candidate" for two months, and the reason it stayed unpulled was simple. Opus was the weaker model. You don't move your main session to the weaker model to save a cap.
+        </p>
+        <p>
+          Opus 5.5 removes that reason. On the launch benchmarks it beats Fable 5.1 at every effort level where both appear, and it costs less per token than Fable does:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">price per million tokens</div><pre style="white-space: pre;">              input   cache read   output
+Fable 5.1     $10     $0.25        $50
+Opus 5.5      $4      $0.20        $20
+Sonnet 5      $2      —            $10</pre></div>
+        </div>
+
+        <h2>"Isn't Opus 5.5 at xhigh more expensive than Fable at high?"</h2>
+        <p>
+          That was my first question, about deep-reasoner, the subagent pinned to Opus at xhigh. The <code style="font-family: var(--font-mono); font-size: 0.9em;">opus</code> alias had quietly moved to 5.5, so deep-reasoner was already Opus 5.5 xhigh without me touching anything, and xhigh sounded expensive.
+        </p>
+        <p>
+          Per token it's the other way around. Effort mostly buys output tokens, and Opus 5.5's output is 2.5× cheaper than Fable's. For Opus xhigh to cost more than Fable high on the same task, it would have to write more than 2.5× as many tokens, and nothing documents a ratio that large between adjacent levels. So I kept xhigh, on an argument about roles rather than price: if the main session moves to Opus 5.5 too, a deep-reasoner at the same effort is just a second copy of the orchestrator, and delegating to it buys context isolation but no extra depth. I'd already spent six weeks in that exact situation by accident. I didn't want to recreate it on purpose.
+        </p>
+
+        <h2>One chart said medium</h2>
+        <p>
+          Then I looked at the first benchmark chart, agentic coding by effort level. Opus 5.5's curve peaks at <em>medium</em>. High is a point lower, xhigh drops three more, and max climbs back up at seven times medium's cost. My assistant read it the obvious way: the session default should be Opus 5.5 medium, and the xhigh decision from ten minutes earlier was "probably wrong," since on this chart effort past medium buys nothing.
+        </p>
+        <p>
+          That's a clean conclusion from the data on screen. It was also based on one benchmark, and the dip-and-recover shape of that curve is the kind of thing that usually means noise, not a real property of xhigh. The recommendation came with that caveat. It still would have set a default for every session I run.
+        </p>
+
+        <h2>Three charts said high</h2>
+        <p>
+          I pulled up the other two launch charts, terminal coding and business workflow automation, and asked for the call again. Read off the gridlines, so treat these as approximate:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">Opus 5.5 by effort · score / cost per task</div><pre style="white-space: pre;">          agentic coding   terminal coding   business automation
+low       47 / $0.4        38.5 / $1.5       23 / $0.50
+medium    55 / $0.8        57.5 / $3.0       28.5 / $0.67
+high      54 / $1.1        64 / $3.9         32 / $0.74
+xhigh     51 / $2.3        66.5 / $7.2       34.5 / $0.88
+max       54.5 / $6        65 / $11          40 / $1.35
+
+Fable 5.1, best point:
+          53 / $2.4        56 / $19          (not shown)</pre></div>
+          <p class="explain-p">Terminal coding is the closest of the three to what I actually do in Claude Code. There, going from medium to high is worth six and a half points for 30% more cost. On business automation high is three and a half points up. On agentic coding it's one point down, which is a tie. High is at or near the top on all three; medium is clearly behind on two.</p>
+        </div>
+        <p>
+          The final call was <strong>Opus 5.5 at high</strong>. The argument that decided it is about what a default is. The orchestrator runs every turn of every session, across every kind of work I throw at it. The worst property a default can have is a benchmark where it falls off a cliff, and on this evidence medium has two of those and high has none.
+        </p>
+        <p>
+          The same three charts reversed the reversal on deep-reasoner, too. Xhigh beats high on two of the three, including terminal coding, where it's the peak of the whole curve. It costs roughly double there. But deep-reasoner is a rare, hardest-tasks-only seat, and a rarely used expensive setting is a different trade from an expensive default. It stays at xhigh, one step above the session, which is exactly the separation I wanted.
+        </p>
+        <p>
+          I don't think either of us did anything wrong with the first chart. The medium recommendation was correct for that chart. The mistake would have been letting one benchmark's shape become a default, and the fix cost nothing but opening two more images.
+        </p>
+
+        <h2>Fable, and the cap that stopped mattering</h2>
+        <p>
+          On the two charts where Fable 5.1 appears, it doesn't win anywhere. Its best terminal-coding point is around 56 at $19 a task; Opus 5.5 at medium is 57.5 at $3. It's off the default now. It's still one <code style="font-family: var(--font-mono); font-size: 0.9em;">/model</code> away if something needs it.
+        </p>
+        <p>
+          That also closes out a loose end from last time. I'd wrapped my status line command to capture its input, hoping the payload carried a Fable-specific usage bucket I could read with decimal precision instead of squinting at two integer percentages. Sixteen days and twelve payloads later: no <code style="font-family: var(--font-mono); font-size: 0.9em;">rate_limits</code> field at all, Fable or otherwise. The desktop app just doesn't send it. The wrapper is gone, and with the main session off Fable, the question it was meant to answer mostly doesn't need an answer anymore.
+        </p>
+
+        <h2>Why the grunt-work agent stays on Sonnet</h2>
+        <p>
+          The last decision was fast-worker, which does renames, formatting, boilerplate, and tests on Sonnet 5 at medium. Sonnet isn't on any of the charts, so this one is a price argument. Opus 5.5 is exactly twice Sonnet 5 per token. The only way to make Opus 5.5 cheap is low effort, and low is the worst-value point on every curve above, eight to nineteen points under medium. For mechanical edits, where model quality barely shows in the result, half price wins. If Sonnet ever fumbles something in that lane, that's the data point that reopens it.
+        </p>
+        <p>
+          One programmatic default moved as well. Workflow scripts had used xhigh as their baseline effort, back when xhigh was Fable's sweet spot. On Opus 5.5 that's the most expensive way to be roughly as good as high, so the baseline is high now, with xhigh reserved for hard judgment stages.
+        </p>
+
+        <h2>Where it landed</h2>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">roles after the switch</div><pre style="white-space: pre;">main session    Opus 5.5   high
+deep-reasoner   Opus 5.5   xhigh   (pinned in frontmatter)
+fast-worker     Sonnet 5   medium  (pinned in frontmatter)
+Fable 5.1       /model only</pre></div>
+        </div>
+        <p>
+          The published <a href="../claude.md">claude.md</a> is updated to match. The caveats are the usual ones: these are launch benchmarks, read off a chart, from the company selling the model. None of them measures "orchestrate subagents in my repositories for eight hours." What they're good for is shape. Where the curve bends, where it goes flat, where the extra money stops buying anything. And a shape is only trustworthy once you've seen it in more than one place.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
