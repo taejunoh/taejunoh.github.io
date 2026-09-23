@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three Models, Three Jobs: My GPT-6 Codex Setup | Taejun Oh</title>
+  <meta name="description" content="How I moved my Codex team to GPT-6, with Sol coordinating, Astra reserved for hard calls, and Luna handling bounded execution.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Three Models, Three Jobs: My GPT-6 Codex Setup</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">September 2026</time>
+
+        <p>
+          In July, I wrote about using Codex as a small model team: GPT-5.6 Sol at high for the main session, Terra at high for deep reasoning, and Luna at high for focused implementation. Today I moved that setup to GPT-6 and changed the effort defaults to match the jobs I actually want each role to do.
+        </p>
+        <p>
+          The new local default is GPT-6 Sol at medium. It plans, chooses what to delegate, and brings the pieces back together. The two specialist roles are GPT-6 Astra at high and GPT-6 Luna at high. That gives me one steady coordinator, one expensive judgment call I can invoke deliberately, and one focused worker for work with a clear shape.
+        </p>
+
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="GPT-6 Codex roles and reasoning effort" tabindex="0">
+          <table class="comparison-table">
+            <caption>My GPT-6 Codex roles</caption>
+            <thead>
+              <tr><th scope="col">Role</th><th scope="col">Model</th><th scope="col">Effort</th><th scope="col">When I use it</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Main session</th><td>GPT-6 Sol</td><td>Medium</td><td>Planning, routing, and synthesis.</td></tr>
+              <tr><th scope="row">deep-reasoner</th><td>GPT-6 Astra</td><td>High</td><td>Hard architecture, unclear bugs or race conditions, algorithms, and high-risk review.</td></tr>
+              <tr><th scope="row">fast-worker</th><td>GPT-6 Luna</td><td>High</td><td>Scoped implementation, tests, formatting, and clear small changes. Mechanical stages can use low or medium.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>High is a role choice, not a general default</h2>
+        <p>
+          The <a href="https://learn.chatgpt.com/docs/models" target="_blank" rel="noopener">model guidance</a> says to start with Sol at medium, Luna at high, and Astra at low. My Astra role is the deliberate exception: it is reserved for hard tasks where I want more analysis and checking, so that agent starts at high. The point is not to run every turn at high. A Sol subagent handles routine multi-file implementation at medium or high, depending on the care it needs; a tiny typo or obvious rename does not need a delegated agent at all.
+        </p>
+        <p>
+          For a mechanical stage I do delegate, I can set Luna to low or medium explicitly. The reusable role remains high, while the individual call reflects how much the step needs. My local instructions and role descriptions help route work toward those lanes. They are instructions for this setup, not a universal optimizer that automatically discovers the best model for every task.
+        </p>
+
+        <h2>The price ladder, in two different systems</h2>
+        <p>
+          The relative ladder is unusually clear. On the standard short-context API rate, Astra is five times Sol and Sol is twenty times Luna for both input and output. Codex credits follow those same ratios. The numbers below are per million tokens; API dollars are usage billing, while Codex credits are plan usage. They are separate systems, and neither table tells me the cost of a completed task.
+        </p>
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="GPT-6 API and Codex token rates" tabindex="0">
+          <table class="comparison-table token-rates">
+            <caption>GPT-6 Standard rates per 1M tokens</caption>
+            <thead>
+              <tr><th scope="col" rowspan="2">Model</th><th scope="colgroup" colspan="2">API usage billing</th><th scope="colgroup" colspan="2">Codex plan credits</th></tr>
+              <tr><th scope="col">Input</th><th scope="col">Output</th><th scope="col">Input</th><th scope="col">Output</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">GPT-6 Astra</th><td>$10</td><td>$50</td><td>250</td><td>1,250</td></tr>
+              <tr><th scope="row">GPT-6 Sol</th><td>$2</td><td>$10</td><td>50</td><td>250</td></tr>
+              <tr><th scope="row">GPT-6 Luna</th><td>$0.10</td><td>$0.50</td><td>2.5</td><td>12.5</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">
+          Rates checked in September 2026 against the <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener">OpenAI API pricing</a> and <a href="https://learn.chatgpt.com/docs/pricing" target="_blank" rel="noopener">Codex pricing</a> pages. The API dollar figures are the standard short-context tier (up to 272K input context), excluding cached input; the Codex page lists credits without a separate short- or long-context rate. Prices and credit rates can change, and credits are not dollar prices.
+        </p>
+
+        <h2>More routing, less guessing</h2>
+        <p>
+          I am not claiming this is the optimal assignment, or that a price ratio predicts quality per task. I have not run a benchmark that would support either claim. This is a set of defaults meant to make decisions legible: spend more reasoning on the few tasks that need it, keep ordinary coordination at medium, and use Luna where the work is bounded and repeatable.
+        </p>
+        <p>
+          I still reserve xhigh for a genuinely hard single task. Ultra is for work that can be split into meaningful parallel pieces, where orchestration is worth the overhead. Max is not part of this setup. Most of the time, the useful decision is simpler: name what kind of work this is, choose the matching role if one is needed, and keep the model and effort explicit when delegating.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
