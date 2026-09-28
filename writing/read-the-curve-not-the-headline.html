@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sonnet 5.5: read the curve, not the headline | Taejun Oh</title>
+  <meta name="description" content="Sonnet 5.5 shipped with a headline that said it beats Opus 5.5. The effort curves said my main session should stay put, and that my grunt-work agent's reason for running at medium had quietly expired. Plus why I pinned a model ID, and a verification step that lies.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Sonnet 5.5: read the curve, not the headline</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">September 2026</time>
+
+        <p>
+          Sonnet 5.5 shipped today, six days after I moved my main session to Opus 5.5. Same per-token price as Sonnet 5 ($2 in, $10 out, $0.20 for cache reads), and a launch headline that said it matches or beats Opus 5.5 on several benchmarks. By the end of the day I'd changed three things about my grunt-work agent and nothing about my main session. The headline pointed the other way on both.
+        </p>
+
+        <h2>Pinning the ID, and a check that lies</h2>
+        <p>
+          The easy part first. fast-worker, the subagent that does renames, formatting, boilerplate, and tests, had <code style="font-family: var(--font-mono); font-size: 0.9em;">model: sonnet</code> in its frontmatter. When Opus 5.5 shipped, the <code style="font-family: var(--font-mono); font-size: 0.9em;">opus</code> alias moved on its own and deep-reasoner followed without me touching anything. I could have waited to see whether <code style="font-family: var(--font-mono); font-size: 0.9em;">sonnet</code> did the same.
+        </p>
+        <p>
+          I didn't, because what an alias resolves to depends on which Claude Code build you're running, and a release from the same morning may or may not know about a model that shipped that morning. I've been burned by this class of thing before: <a href="three-places-a-model-id-lives.html">a model ID lives in more places than the one you edit</a>. So the frontmatter now says <code style="font-family: var(--font-mono); font-size: 0.9em;">model: claude-sonnet-5-5</code>. The cost is that the next Sonnet won't arrive on its own. My rules file now says so in so many words, so future me doesn't assume the alias is still doing the work.
+        </p>
+        <p>
+          Then I checked it, and the check said I was wrong. I asked fast-worker to report the model ID in its own system prompt, and it answered <em>claude-sonnet-5</em>. The file was right. The session wasn't. Agent definitions are read when a session starts, so a subagent called from the session that edited its file still runs the old definition. The honest check is a fresh process:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">verify from a new session</div><pre style="white-space: pre;">echo "Call the fast-worker subagent once and have it report the exact
+model ID from its system prompt. Print that one line." \
+  | claude -p --allowedTools Agent
+
+claude-sonnet-5-5</pre></div>
+          <p class="explain-p">The prompt goes in on stdin because <code style="font-family: var(--font-mono); font-size: 0.9em;">--allowedTools</code> takes a variable number of arguments and will happily swallow a prompt placed after it. The same staleness applies to every session I already had open. They keep running Sonnet 5 until they're restarted.</p>
+        </div>
+        <p>
+          One thing this check can't confirm is effort. A subagent can read its model ID off its system prompt, but nothing in there tells it what effort it's running at. For that I'm trusting the frontmatter.
+        </p>
+
+        <h2>The headline</h2>
+        <p>
+          The number that got passed around was Terminal-Bench 4.0: Sonnet 5.5 at 70.6, Opus 5.5 at 66.4. Knowledge work (GDPval-AA) was a dead heat, 1,844 to 1,846. At half the per-token price, that reads like an obvious instruction to move my main session off Opus and onto Sonnet.
+        </p>
+        <p>
+          My notes from <a href="three-charts-not-one.html">last week</a> had a line for exactly this: <em>don't set a default from the shape of one benchmark.</em> A single point per model is less than one benchmark's shape. It doesn't even say which effort level each point was run at. And 66.4 was suspiciously close to the 66.5 I'd read off Opus 5.5's xhigh point last week. So the decision went into the notes as "deferred until there are curves."
+        </p>
+
+        <h2>The curves</h2>
+        <p>
+          They showed up the same afternoon, in the official launch thread: four charts, score against cost per task, one line per effort level. Read off the gridlines, so approximate:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">Sonnet 5.5 by effort · score / cost per task</div><pre style="white-space: pre;">          FrontierCode   Terminal-Bench   CursorBench   AA-Briefcase (Elo)
+low       29.5 / $0.20   20 / $0.75       36 / $0.50    1265 / $1.1
+medium    36.5 / $0.27   29 / $0.80       39 / $0.70    1460 / $1.65
+high      49.5 / $0.42   43 / $1.90       48 / $1.65    1635 / $3.8
+xhigh     52 / $1.60     61.5 / $5.30     53 / $3.90    1745 / $10
+max       46 / $20       70.6 / $12       55.5 / $9.50  1810 / $27
+
+Sonnet 5, best point:
+          43             10.3             34            1360</pre></div>
+          <p class="explain-p">The 70.6 is Sonnet 5.5 at <em>max</em>, costing about $12 an attempt, set against Opus 5.5's best point. The launch tweet's own claim is the more modest one, and it holds: Sonnet 5.5 at low or medium beats Sonnet 5's best on three of the four, for a fraction of the cost.</p>
+        </div>
+        <p>
+          What I actually need to know is whether Sonnet 5.5 beats my current default, Opus 5.5 at high, <em>at the same spend</em>. So line each Opus high point up against the Sonnet point that costs about the same:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">matched spend · score / cost per task</div><pre style="white-space: pre;">                 Opus 5.5 high    Sonnet 5.5 at similar cost
+FrontierCode     54 / $1.1        52 / $1.6     (xhigh)
+Terminal-Bench   64 / $3.9        61.5 / $5.3   (xhigh)
+CursorBench      56 / $4          53 / $3.9     (xhigh)
+AA-Briefcase     1705 / $6.3      1745 / $10    (xhigh, same curve)</pre></div>
+          <p class="explain-p">On the three coding benchmarks, Opus 5.5 at high is at or above Sonnet 5.5 for the same money. On knowledge work the two lines lie almost on top of each other. Sonnet only pulls ahead below Opus's cheapest point, and at the far end of Terminal-Bench.</p>
+        </div>
+        <p>
+          So the main session stays on <strong>Opus 5.5 at high</strong>. Half the per-token price doesn't mean half the cost per task. To match Opus at high, Sonnet has to run at xhigh, and at xhigh it spends the difference.
+        </p>
+        <p>
+          deep-reasoner stays on Opus 5.5 at xhigh too. If the orchestrator ever does move to Sonnet, the case for deep-reasoner gets stronger, not weaker. The separation between them would then come from the model itself, not just from one notch of effort.
+        </p>
+
+        <h2>The price argument expired</h2>
+        <p>
+          The same charts reopened the decision I'd thought was settled. Last week I kept fast-worker at medium on a pure price argument. Sonnet wasn't on any chart, Opus cost exactly twice as much, and for mechanical edits half price wins. I ended that section with the condition that would reopen it: <em>if Sonnet ever fumbles something in that lane.</em>
+        </p>
+        <p>
+          It didn't fumble. The argument expired from the other side. Every one of the four Sonnet 5.5 curves has the same knee, and it sits between medium and high:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">Sonnet 5.5, medium → high</div><pre style="white-space: pre;">FrontierCode     36.5 → 49.5   (+13)    $0.27 → $0.42
+Terminal-Bench   29 → 43       (+14)    $0.80 → $1.90
+CursorBench      39 → 48       (+9)     $0.70 → $1.65
+AA-Briefcase     1460 → 1635   (+175)   $1.65 → $3.80
+
+for scale, Sonnet 5 at medium on FrontierCode:  ~35 / $3.70</pre></div>
+          <p class="explain-p">On FrontierCode, high buys thirteen points for fifteen cents. It's still roughly a ninth of what fast-worker cost per task a week ago, for a much higher score. High is also Sonnet 5.5's default on the API, where Opus 5.5 defaults to medium. The two models don't agree on where "normal" sits.</p>
+        </div>
+        <p>
+          "Cheaper is better for grunt work" was true when the cheaper option was also meaningfully cheaper. When high costs a few tens of cents a task, the thing that actually costs me is a sloppy rename that the orchestrator has to catch, diagnose, and send back. That round trip runs on Opus, in my main context. So fast-worker is at <strong>high</strong> now.
+        </p>
+        <p>
+          The argument against, which I'm writing down so I can't pretend I didn't see it: fast-worker only gets easy work, and its instructions say to hand anything hard back rather than guess. These benchmarks are hard agentic tasks, so medium's weakness on them may not show up in my lane at all. If <code style="font-family: var(--font-mono); font-size: 0.9em;">/usage</code> shows fast-worker becoming a visible share of the week, it goes back to medium.
+        </p>
+
+        <h2>A footnote worth reading</h2>
+        <p>
+          The one place where more effort made Sonnet 5.5 <em>worse</em> is FrontierCode at max, 46 against 52 at xhigh. The chart's footnote explains it. At max, Sonnet more often ran Claude Code's code-review skill, which splits a review across many subagents. In two cases that led to a timeout or to edits outside the task's scope, and FrontierCode penalizes out-of-scope changes even when they're good. That's an orchestration failure, not a reasoning one. It's also a small, concrete argument for why fast-worker's instructions open with "no scope creep."
+        </p>
+
+        <h2>Where it landed</h2>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">roles after Sonnet 5.5</div><pre style="white-space: pre;">main session    Opus 5.5     high
+deep-reasoner   Opus 5.5     xhigh   (pinned in frontmatter)
+fast-worker     Sonnet 5.5   high    (pinned by full model ID)
+Fable 5.1       /model only</pre></div>
+        </div>
+        <p>
+          The published <a href="../claude.md">claude.md</a> is updated to match. Same caveats as always: launch benchmarks, read off a chart, from the company selling the model. What changed my mind twice today wasn't a better number. It was putting the number next to what it cost.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

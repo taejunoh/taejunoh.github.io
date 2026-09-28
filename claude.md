@@ -2,13 +2,13 @@
 
 You are the orchestrator. Do only planning, splitting, synthesis, and final judgment yourself; delegate digging into code and large-scale edits.
 - Reasoning (architecture, debugging with an unclear cause, algorithms, trade-off analysis) → **deep-reasoner** (Opus 5.5, effort pinned to xhigh)
-- Grunt work (boilerplate, tests, formatting/lint, clear small changes like typos and renames) → **fast-worker** (Sonnet 5, effort pinned to medium)
+- Grunt work (boilerplate, tests, formatting/lint, clear small changes like typos and renames) → **fast-worker** (Sonnet 5.5, effort pinned to high)
 - Second opinion → the **Codex** plugin: `/codex:adversarial-review` to challenge a design or implementation approach, `/codex:rescue` to investigate a problem I'm stuck on (same as the `codex:codex-rescue` type on the Agent tool). There is no bare `/codex` command.
 - Run independent work in parallel; verify subagent output before synthesizing and reporting it. Don't delegate one-line answers or conversational questions.
 
 ## Model / Effort
 
-- Always the latest version for each role: main session **Opus 5.5**, deep-reasoner **Opus 5.5**, fast-worker **Sonnet 5**. Fable 5.1 came off the default on 2026-09-22 — on the published benchmarks it trails Opus 5.5 at every effort level, at more than twice the per-token price. Use it only via `/model` when needed.
+- Always the latest version for each role: main session **Opus 5.5**, deep-reasoner **Opus 5.5**, fast-worker **Sonnet 5.5 high** (2026-09-28). fast-worker is pinned by the `claude-sonnet-5-5` ID in its frontmatter, so when a new Sonnet ships I change it by hand (how the alias resolves depends on the Claude Code version, so it isn't a sure thing). Fable 5.1 came off the default on 2026-09-22 — on the published benchmarks it trails Opus 5.5 at every effort level, at more than twice the per-token price. Use it only via `/model` when needed.
 - Session `/effort` default is **high**. It's at or near the top on all three benchmarks, while medium falls clearly behind on terminal coding and business automation. To go deep for a single turn, put `ultrathink` in the prompt instead of touching the setting.
   - If cost has to come down, use medium — it ties high on agentic coding. The deep thinking lives in deep-reasoner, whose effort is pinned (xhigh). Caveat: Explore, Plan, general-purpose, and untyped Agent calls still inherit the session effort.
   - Why deep-reasoner stays at xhigh: it's a rarely called, hardest-tasks-only seat, so an expensive setting is reasonable there, and it keeps one step of separation above the session (high). If the weekly `/usage` bar climbs noticeably because of this agent, drop it to high.
