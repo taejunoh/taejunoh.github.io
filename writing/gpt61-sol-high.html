@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why I moved my Codex default to GPT-6.1 Sol High | Taejun Oh</title>
+  <meta name="description" content="Why I moved my Codex default to GPT-6.1 Sol at high, what the benchmark curves say, and how I updated my model routing rules.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Why I moved my Codex default to GPT-6.1 Sol High</h1>
+        <time class="post-date" datetime="2026-09-29" style="margin-bottom: 1.5rem; display: block;">September 29, 2026</time>
+
+        <p>
+          I had just moved my Codex main session to GPT-6 Sol at medium. Then I looked more closely at the GPT-6.1 Sol results across reasoning effort levels and changed the default again: the main session is now GPT-6.1 Sol at high. That is a configuration choice informed by a few public benchmark curves, not a claim that high is best for every person, task, or budget.
+        </p>
+        <p>
+          I started with the coding curve. These are the five published GPT-6.1 Sol points on DeepSWE:
+        </p>
+
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="GPT-6.1 Sol DeepSWE score and average task cost by reasoning effort" tabindex="0">
+          <table class="comparison-table">
+            <caption>GPT-6.1 Sol on DeepSWE</caption>
+            <thead>
+              <tr><th scope="col">Reasoning effort</th><th scope="col">Score</th><th scope="col">Average task cost</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Low</th><td>64.4%</td><td>$0.17</td></tr>
+              <tr><th scope="row">Medium</th><td>73.0%</td><td>$0.42</td></tr>
+              <tr><th scope="row">High</th><td>75.2%</td><td>$0.65</td></tr>
+              <tr><th scope="row">Xhigh</th><td>71.9%</td><td>$0.79</td></tr>
+              <tr><th scope="row">Max</th><td>71.9%</td><td>$1.57</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          Medium to high buys 2.2 percentage points for roughly 55% more average task cost in this evaluation. For a main session that plans coding work and reviews the results, that measured trade felt reasonable as a default to try. I have not run these evaluations myself.
+        </p>
+
+        <h2>The gain depends on the benchmark</h2>
+        <p>
+          I checked two other curves before deciding. High also improves over medium there; OSWorld's best listed point is max. I want a default that reflects my coding work, while leaving room to make a different choice for a specific task.
+        </p>
+
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="GPT-6.1 Sol medium and high results across three benchmarks" tabindex="0">
+          <table class="comparison-table">
+            <caption>GPT-6.1 Sol at medium and high</caption>
+            <thead>
+              <tr><th scope="col">Benchmark</th><th scope="col">Medium score</th><th scope="col">Medium cost</th><th scope="col">High score</th><th scope="col">High cost</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">DeepSWE</th><td>73.0%</td><td>$0.42</td><td>75.2%</td><td>$0.65</td></tr>
+              <tr><th scope="row">GDP.pdf</th><td>30.0%</td><td>$0.34</td><td>32.0%</td><td>$0.35</td></tr>
+              <tr><th scope="row">OSWorld 2.0 offline</th><td>66.8%</td><td>$0.77</td><td>69.6%</td><td>$0.96</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">
+          Scores and average task costs are transcribed from the GPT-6.1 Sol release's <a href="https://openai.com/index/introducing-gpt-6-1-sol/#coding" target="_blank" rel="noopener">coding</a>, <a href="https://openai.com/index/introducing-gpt-6-1-sol/#professional-work" target="_blank" rel="noopener">professional work</a>, and <a href="https://openai.com/index/introducing-gpt-6-1-sol/#computer-use" target="_blank" rel="noopener">computer-use benchmark charts</a>. The <a href="https://developers.openai.com/api/docs/models/gpt-6.1-sol" target="_blank" rel="noopener">model documentation</a> lists medium as the default and supports low, medium, high, xhigh, and max effort. These evaluation costs are not Codex subscription credits, a prediction of my bill, or a measure of actual task latency.
+        </p>
+
+        <h2>Aligning the setting and the policy</h2>
+        <p>
+          I noticed a small mismatch while making the change. My main configuration already said GPT-6.1 Sol at high after I selected the model and effort in the picker. My global AGENTS.md still described GPT-6 Sol at medium as the main-session default. A person or agent reading the policy could therefore reason from a different setup than the one Codex would actually launch.
+        </p>
+        <p>
+          I aligned the two. The configuration now records <code>model="gpt-6.1-sol"</code> and <code>model_reasoning_effort="high"</code>, while the global instructions describe that same main default. The configuration selects the model and effort; AGENTS.md describes how I want work routed. The latter is guidance for people and agents, not an automatic optimizer that measures a task and swaps models on its own.
+        </p>
+
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="My Codex model and effort assignments" tabindex="0">
+          <table class="comparison-table">
+            <caption>My current Codex roles</caption>
+            <thead>
+              <tr><th scope="col">Role</th><th scope="col">Model and effort</th><th scope="col">Typical work</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Main session</th><td>GPT-6.1 Sol, high</td><td>Planning, routing, synthesis, and general work.</td></tr>
+              <tr><th scope="row">Generic implementation agent</th><td>GPT-6.1 Sol, medium or high</td><td>Multi-file implementation, selected by task difficulty.</td></tr>
+              <tr><th scope="row">deep-reasoner</th><td>GPT-6 Astra, high</td><td>Hard design, unclear debugging, algorithms, or high-risk review.</td></tr>
+              <tr><th scope="row">fast-worker</th><td>GPT-6 Luna, high</td><td>Bounded implementation, tests, and cleanup; low or medium for mechanical stages.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          The routing rules matter as much as the default. Generic implementation subagents now use GPT-6.1 Sol at medium for ordinary multi-file work, or high when the task calls for more care. Astra at high stays reserved for difficult design decisions, bugs whose cause is unclear, and high-risk reviews. Luna at high handles tightly scoped implementation, tests, and cleanup; a mechanical delegated stage can be explicitly set to low or medium. An obvious typo or rename does not need an agent at all.
+        </p>
+        <p>
+          I keep xhigh exceptional for a hard task where I want one model to spend more time reasoning. Max is not part of this setup. I also do not delegate tiny tasks just because there is a worker role available. The practical change is to align the main default with my selected setting and keep the model and effort explicit for each delegated job.
+        </p>
+
+        <h2>A default to learn from</h2>
+        <p>
+          High won this choice because it fits the main-session work I expect and led the DeepSWE curve I checked. I will watch how it feels on my own coding tasks and lower effort for a particular delegation when its scope is mechanical or tightly bounded.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
