@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nothing Broke | Taejun Oh</title>
+  <meta name="description" content="Five and a half months, 1,983 real-money trades, and a $2,004 loss. The strategies never degraded. Fees made the expectation slightly negative, two weeks of noise hid it, and bet size did the rest.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Nothing Broke</h1>
+        <time class="post-date" datetime="2026-10-17" style="margin-bottom: 1.5rem; display: block;">October 17, 2026</time>
+
+        <p><em>I made money for two weeks, lost $2,175 over the next four months, and the strategies never changed. This is what actually happened.</em></p>
+
+        <hr class="divider">
+
+        <p>
+          Over five and a half months I built an automated betting system: 1,983 real trades across 24 strategies on Kalshi, plus a detector watching eight New York sportsbooks for mispricings against the sharpest book in the world.
+        </p>
+
+        <p>
+          The first two weeks made $171. The rest lost $2,175.
+        </p>
+
+        <p>
+          I assumed one of two things had happened. Either the edge was real and something closed it — other people found the trade, the market adapted, I got picked off. Or I'd been stubborn: a strategy that needed constant revision, and I kept running the same version into a changing market.
+        </p>
+
+        <p>
+          I finally checked. Neither.
+        </p>
+
+        <p>
+          Nothing broke. The same eight strategies ran in both periods and not one degraded significantly. <code style="font-family: var(--font-mono); font-size: 0.9em;">sports_underdog_v31</code> went from +12.5% to −7.7% — z = 1.69, not significant. <code style="font-family: var(--font-mono); font-size: 0.9em;">sports_midshot_v31</code>, +21.9% to −9.8% — z = 0.42. The only statistically significant change in the entire set was a strategy that got <em>better</em>. If something had been arbitraged away, one of those numbers would have moved.
+        </p>
+
+        <p>
+          What happened instead is a three-link chain, and every link is boring:
+        </p>
+
+        <ol>
+          <li><strong>Fees made my expected return slightly negative before I placed a single bet.</strong></li>
+          <li><strong>Two weeks of variance hid that, and made it look positive.</strong></li>
+          <li><strong>I read the variance as skill and multiplied my bet size by ten.</strong></li>
+        </ol>
+
+        <p>
+          A slightly negative expectation, at ten times the size, is $2,004.
+        </p>
+
+        <hr class="divider">
+
+        <h2>Link one: the fee is a bigger percentage than it looks</h2>
+
+        <p>
+          Kalshi's trading fee is seven cents per contract multiplied by p × (1 − p), where p is the price. At 50 cents that's 1.75 cents a contract. At 10 cents it's 0.63 cents. In absolute terms it is tiny, which is exactly how it disappears.
+        </p>
+
+        <p>
+          Divide it by what you actually risk and it stops being tiny. A contract at price p costs p, so the fee as a fraction of your stake is just <strong>7% × (1 − p)</strong> — and that is largest precisely where the price is lowest.
+        </p>
+
+        <p>
+          At the prices I actually traded:
+        </p>
+
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="Kalshi taker fee as a percentage of stake at six entry prices" tabindex="0">
+          <table class="comparison-table">
+            <caption>Kalshi taker fee as a share of stake</caption>
+            <thead>
+              <tr><th scope="col">entry price</th><th scope="col">fee as % of stake</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">4¢</th><td>6.7%</td></tr>
+              <tr><th scope="row">20¢</th><td>5.6%</td></tr>
+              <tr><th scope="row">33¢</th><td>4.7%</td></tr>
+              <tr><th scope="row">49¢</th><td>3.6%</td></tr>
+              <tr><th scope="row">80¢</th><td>1.4%</td></tr>
+              <tr><th scope="row">86¢</th><td>1.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          Betting favourites costs about one percent. Betting longshots costs nearly seven. And longshots are where underdog strategies live, and where the mispricings are biggest — the toll is steepest on exactly the region you want to trade.
+        </p>
+
+        <p>
+          I ran my edge by price band eventually. In the 25–35 cent band my gross edge was +5.2%. The fee in that band was 4.6–5.3%.
+        </p>
+
+        <p>
+          Read those twice. The strategy worked. It found real mispricings and was right about them about 5% more often than the market implied. It returned nothing, because being right by 5% costs 5%.
+        </p>
+
+        <p>
+          Past a point it inverts entirely. You pay the fee whether you win or lose, so a loser costs you your stake <em>plus</em> the toll: <strong>974 of my losing trades cost more than I had staked on them</strong>, up to 107.4%. Losing more than you bet sounds like a category error until you notice the fee doesn't care how it went.
+        </p>
+
+        <p>
+          None of this is hidden — the formula is published. But it's published as a charge per contract, and the number that decides whether a strategy is viable is the charge as a fraction of your stake, which is a different number at every price and is printed nowhere. Public information and obvious implication are not the same thing. I could have derived this in an afternoon before writing any other code. I derived it in month four.
+        </p>
+
+        <h3>The walls that kept the edge small</h3>
+
+        <p>
+          A 5% edge would have survived a 5% fee if it had been bigger, and two structural constraints made sure it wasn't. Neither yields to effort.
+        </p>
+
+        <p>
+          <strong>New York decides which game you play.</strong> Eight legal sportsbooks — that's the universe. The classic value bet is an arbitrage against a soft book: sharp books price accurately, recreational books price to attract customers, and the gap is real money. Pinnacle, the sharp reference, doesn't operate in New York. So the price I needed in order to know the truth and the prices I could actually transact on lived in different regulatory universes. I could see the truth and I could see the offer, and I could only touch one.
+        </p>
+
+        <p>
+          <strong>And a sportsbook can decline your business.</strong> Consistent winners get limited: your maximum drops from $1,000 to $50 to $5, quietly. Standard practice, entirely legal. This inverts the whole game — a real edge doesn't compound, it <em>burns down a resource</em>, and the better you are the faster you spend it. The ceiling isn't your skill. It's how long you're allowed to keep playing, and skill shortens that.
+        </p>
+
+        <p>
+          An exchange like Kalshi fixes exactly that: it's a market, it takes the other side of nothing, it will not limit you for winning. Which is why I built there too. And on the exchange, the fee ate the edge instead.
+        </p>
+
+        <p>
+          Pick your wall.
+        </p>
+
+        <hr class="divider">
+
+        <h2>Link two: two weeks of noise</h2>
+
+        <p>
+          Here is the part I got most wrong, and the part that generalizes furthest.
+        </p>
+
+        <p>
+          Over the first two weeks I made $171 on 628 trades — a 6.1% return on money staked. It felt like confirmation.
+        </p>
+
+        <p>
+          The average return per trade across those same 628 trades was <strong>−0.16%</strong>, with a t-statistic of −0.02.
+        </p>
+
+        <p>
+          Both numbers are correct. They disagree because the dollar figure is stake-weighted and the per-trade figure isn't. I wasn't winning more often than I lost. My <em>larger</em> bets happened to win. Weight every trade equally and the best fortnight of the project sits exactly on zero.
+        </p>
+
+        <p>
+          I never looked at it that way, because the dashboard showed dollars, and dollars said $171.
+        </p>
+
+        <p>
+          Underneath that is a more basic problem. A single bet in my data has a standard deviation of about 120%. Against that much variance, 628 trades tells you almost nothing — the confidence interval on that fortnight runs from −12.8% to +12.5%. It contains catastrophe and it contains a fortune. Two weeks of positive P&amp;L is not weak evidence of an edge. It is <em>no</em> evidence, and it is indistinguishable from its own opposite.
+        </p>
+
+        <p>
+          Compare the two periods directly and the difference is z = 0.90. Not significant. I did not have an edge that decayed. I had no measurable edge in either period, and one of them happened to land heads.
+        </p>
+
+        <hr class="divider">
+
+        <h2>Link three: I scaled up on that</h2>
+
+        <p>
+          This is the decision I'd go back and stop.
+        </p>
+
+        <p>
+          Average bet size, by week:
+        </p>
+
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="Average bet size and return by week" tabindex="0">
+          <table class="comparison-table">
+            <caption>Average bet size by week</caption>
+            <thead>
+              <tr><th scope="col">week of</th><th scope="col">avg bet</th><th scope="col">return</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Apr 15</th><td>$2.75</td><td>−1.5%</td></tr>
+              <tr><th scope="row">Apr 20</th><td>$7.46</td><td><strong>+10.9%</strong></td></tr>
+              <tr><th scope="row">Apr 27</th><td>$16.45</td><td>−15.8%</td></tr>
+              <tr><th scope="row">May 4</th><td>$26.12</td><td>−5.4%</td></tr>
+              <tr><th scope="row">May 11</th><td>$26.90</td><td>+10.0%</td></tr>
+              <tr><th scope="row">May 18</th><td>$22.84</td><td>−7.6%</td></tr>
+              <tr><th scope="row">May 25</th><td>$27.12</td><td>−24.7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          Ten times larger in six weeks. And look at the order: the week I made 10.9% is immediately followed by more than doubling my size, and <em>that</em> week lost $710.
+        </p>
+
+        <p>
+          The counterfactual is the number that stayed with me. Take all 1,983 trades I actually placed, keep every decision identical, and hold the stake flat at $2.75 — the size I started with:
+        </p>
+
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">same trades, two bet sizes</div><pre style="white-space: pre;">Actual        −$2,004.37
+Flat $2.75    −$254.23</pre></div>
+        </div>
+
+        <p>
+          <strong>Size scaling accounts for $1,750 of a $2,004 loss.</strong> Eighty-seven percent.
+        </p>
+
+        <p>
+          At $2.75 a trade I'd have lost $254 over five months. That's a cheap education, and I'd probably still be running the thing, still learning from it. The strategies were never the expensive part. My confidence in them was.
+        </p>
+
+        <p>
+          There's a rule I wrote down in June, months in: no increase in stake size until forward measurement confirms an edge. I wrote it after the damage. The version of me who needed it was in April, and he'd just had a very good fortnight.
+        </p>
+
+        <hr class="divider">
+
+        <h2>The same mistake in four costumes</h2>
+
+        <p>
+          Scaling on noise and overfitting a backtest are the same error. Both mistake a sample for a property of the world. It took me a while to see them as one thing, because one feels like money management and the other feels like statistics.
+        </p>
+
+        <p>
+          Once I started looking, it was everywhere.
+        </p>
+
+        <p>
+          <strong>I scored history under today's rules.</strong> My published track record re-derived itself from source nightly, which meant every rule change silently re-scored the entire past. And since you change a rule <em>because it looks better on the data you already have</em>, the rewrite always flatters. One tier change would have moved my public record from +2.13% to +13.90% overnight, on a doubled sample, with no bet actually settling. Six times the return, from an edit.
+        </p>
+
+        <p>
+          <strong>I promoted a strategy using the data that suggested it.</strong> A tier change looked extraordinary: +16.4% over 556 bets. Forward, after I turned it on: <strong>+0.19%</strong>. Same strategy, same market. Those 556 bets were the rows I'd read the decision off. The sample that convinces you is not evidence.
+        </p>
+
+        <p>
+          <strong>I ignored an answer I'd already been given.</strong> Alongside the sports work I spent two months on crypto prediction markets — 9.9 million price observations, nineteen observer strategies, hunting for any pattern a taker could exploit. There wasn't one. The four strategies I funded lost $195 across 248 trades in a single week, and I froze all of them in May. I filed it as a <em>crypto</em> problem: crypto is liquid, heavily arbitraged, full of people with better infrastructure than mine, so of course it was efficient. Sports felt different. Sports has public sentiment, hometown bias, casual money — inefficiency you can <em>name</em>. I got the identical answer in both markets, and I discounted the first one because I wanted the second to be different.
+        </p>
+
+        <p>
+          <strong>And then the one that actually frightened me.</strong> Late in the project I found a clean dose-response: the higher a bet's expected value at entry, the worse it did against the closing line. A perfect monotone gradient across six buckets. It reproduced independently in both halves of my data with nearly identical slopes (t = −4.16 and −4.13). It beat 2,000 randomized placebo tests — zero of which matched it. Every robustness check I knew how to run, it passed.
+        </p>
+
+        <p>
+          It was arithmetic. Both quantities were computed from the same estimate of fair value. Noise in that estimate selects moments where it reads high — which is the definition of a high-EV pick — and then it reverts, which is the definition of a poor closing-line result. The correlation appears with no underlying signal at all. Recomputed without the shared term, r = −0.19 became <strong>r = +0.03</strong>: significant in every split, to significant in none.
+        </p>
+
+        <p>
+          I had recommended acting on it about ninety minutes earlier.
+        </p>
+
+        <p>
+          The lesson is worse than the finding. <strong>Reproducibility and placebo survival are not evidence of causation.</strong> A mechanical artifact reproduces perfectly, in every subsample, forever — that is what mechanical means. Every robustness check in my toolkit was a check against <em>noise</em>, and this wasn't noise. It was structure. No amount of resampling detects it. The only defence is noticing that your two variables share a term, which you either happen to check or you don't.
+        </p>
+
+        <hr class="divider">
+
+        <h2>What you're actually up against</h2>
+
+        <p>
+          The reason a quantitative fund beats a retail participant is not that their models are better. I assumed it was. It isn't, and the gap is more structural than that — four things, none of which is intelligence.
+        </p>
+
+        <p>
+          <strong>They have someone whose job is to attack the result.</strong> A fund catches all four of the mistakes above, before the money does, because adversarial review is a role somebody is paid to occupy. I had a codebase and my own attention, and my own attention was the thing generating the errors. You cannot peer-review yourself; the same brain that produced the finding evaluates it, and it is already invested.
+        </p>
+
+        <p>
+          <strong>Statistical power is bought with volume.</strong> Detecting a 5% edge takes ~4,500 settled bets. At my rate that's years. At a hundred times my volume it's a fortnight. This is the part that took me longest to accept: <em>the same edge is knowable to them and unknowable to me.</em> Not because they're cleverer — because significance is a function of n, and n is a function of capital. They can run the experiment. I could only run something that looks like one.
+        </p>
+
+        <p>
+          <strong>Fixed costs don't amortize at retail scale.</strong> My data feed cost $120 a month against roughly $9,625 of monthly volume, so it demanded a 1.25% edge just to break even. The identical feed against ten million dollars of volume demands 0.0012%. Same tool, same price, and for one of us it's a rounding error and for the other it's the entire hurdle. Every fixed cost in this business works this way, which means the minimum edge you need is set by how much money you have.
+        </p>
+
+        <p>
+          <strong>And the cheap door was locked.</strong> Kalshi's maker fee is a quarter of the taker fee — 1.75% × (1 − p) of your stake instead of 7% × (1 − p). In the 25–35 cent band that's about 1.2% against my 5.2% gross edge. <strong>As a maker the strategy was profitable.</strong> So I looked at posting resting orders instead of crossing the spread, and found the spread was already one cent wide with something like a hundred thousand contracts queued ahead of me. There was no room to quote and no realistic path to the front of the line. The version of this trade that works requires being the kind of participant who is already at the front, and you cannot get there by being right.
+        </p>
+
+        <p>
+          Put together: I was playing a game where the profitable version required infrastructure I didn't have, the measurable version required capital I didn't have, and the version available to me had a toll roughly equal to the edge.
+        </p>
+
+        <p>
+          That, and not any modeling gap, is what retail is up against.
+        </p>
+
+        <hr class="divider">
+
+        <h2>You couldn't have measured it anyway</h2>
+
+        <p>
+          I should have known the two-week result was meaningless. But there's a harder version of that problem underneath it.
+        </p>
+
+        <p>
+          With ~120% per-bet standard deviation, detecting a genuine 5% edge at conventional standards takes roughly <strong>4,500 settled bets</strong>. No real-money cohort I ever built reached 1,200. At my volume, 4,500 is years.
+        </p>
+
+        <p>
+          So a realistic edge — the 2–5% that value betting can plausibly produce — is <em>unmeasurable at retail scale</em>. If it had been there I couldn't have proven it. If it was absent I couldn't have ruled it out. Every number I produced for five months had error bars wide enough to contain both "quit now" and "mortgage the house."
+        </p>
+
+        <p>
+          That's a property of the market, knowable in advance from the variance alone. It should have been a criterion for choosing what to work on, not something I discovered halfway through.
+        </p>
+
+        <p>
+          There is a partial escape and I did eventually find it: instead of waiting for outcomes, measure your <em>price</em> against the market's final price. Consistently better prices mean an edge whether or not the ball bounced your way, and the error bar collapses — on the same 457 bets, ±0.3 percentage points instead of ±10.7 for realized return.
+        </p>
+
+        <p>
+          Measured that way against true closing prices, 534 of my entries came in at <strong>+0.30%</strong>, 95% confidence interval −0.45% to +1.04%.
+        </p>
+
+        <p>
+          Zero. Not beaten by the market, not beating it. Transacting at exactly the fair price, which is what an efficient market feels like from the inside.
+        </p>
+
+        <p>
+          The one ledger that did grow big enough to read outcomes directly agrees. The detector's paper book settled 22,337 bets and finished at −1.0%, confidence interval −2.4% to +0.4%.
+        </p>
+
+        <hr class="divider">
+
+        <h2>Why I stopped</h2>
+
+        <p>
+          The arithmetic closed.
+        </p>
+
+        <p>
+          Data cost $120 a month. Monthly volume was about 385 bets at $25 — roughly $9,625 flowing through. To pay for the data I needed an edge of <strong>1.25%</strong>.
+        </p>
+
+        <p>
+          Measured edge: 0.30%, upper bound 1.04%.
+        </p>
+
+        <p>
+          The entire confidence interval sits below break-even. Not just the estimate — the most optimistic reading the data permits still doesn't pay for the tool that measures it.
+        </p>
+
+        <p>
+          And the trap closes from both sides. My own rule says no size increase until measurement confirms an edge, but the edge only pays for itself at much larger size. I can't afford the proof without the size and I can't justify the size without the proof. At my scale there's no sequence of moves out of that box — and when I forced it anyway, starting in April, it cost $1,750.
+        </p>
+
+        <p>
+          Continuing purely to measure fails too: three more months of data costs $360–480 to learn whether a hundred-dollar-a-month edge exists.
+        </p>
+
+        <p>
+          So I stopped it. Real money came off on September 1st, and the machine went dark on the 6th.
+        </p>
+
+        <hr class="divider">
+
+        <h2>What I'd tell someone starting this</h2>
+
+        <p>
+          <strong>Compute the fee as a fraction of your stake, at every price you intend to trade, before you write anything else.</strong> It's an afternoon. If the fee is the same order of magnitude as any plausible edge, no cleverness downstream recovers it.
+        </p>
+
+        <p>
+          <strong>Ask whether you could detect success if you had it.</strong> Take the variance of one bet, decide what edge is worth having, compute how many bets you need. If the answer exceeds what you'll realistically place, you're not building a trading system. You're building an expensive random number generator, and you will not be able to tell from the inside.
+        </p>
+
+        <p>
+          <strong>Fix your bet size in advance and tie increases to a pre-registered test, not to your P&amp;L.</strong> This is the one that actually cost me. Not the strategies — the strategies lost $254. Winning early is the most dangerous thing that can happen to you, because it arrives dressed as evidence and it is not evidence.
+        </p>
+
+        <p>
+          <strong>Assume you will fool yourself, and build for it structurally.</strong> Not "be careful." Pre-registered thresholds, immutable history, single definitions, uncertainty labels on everything. You will not out-discipline this. I was hunting for these errors specifically and made every one of them, including one I caught ninety minutes after recommending it.
+        </p>
+
+        <hr class="divider">
+
+        <p>
+          Nothing broke. No one figured me out. There was never anything to figure out — just a slightly negative expectation, two lucky weeks, and a decision to trust them.
+        </p>
+
+        <p>
+          The system worked. It answered the question it was built to answer, and the answer was no. It cost $2,004 and five and a half months, and $1,750 of that was the size I bet, not the bets I chose.
+        </p>
+
+        <p>
+          I'd rather know.
+        </p>
+
+        <hr class="divider">
+
+        <p class="table-note">
+          <em>A note on the numbers. Every figure here is from the trade ledger. A June fee backfill missed 318 early rows that still carry an older flat-fee model, so the ledger overstates fees by $72.84 and the true result is closer to −$1,931.53. I've used the ledger figures throughout so they match the code.</em>
+        </p>
+
+        <p>The code, the ledger tooling, and a technical write-up are on <a href="https://github.com/taejunoh/kalshi-arb" target="_blank" rel="noopener">GitHub</a>, and there is a short summary on the <a href="../projects/kalshi-arb.html">project page</a>.</p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
