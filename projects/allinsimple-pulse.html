@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AllinSimple Pulse - Uptime Monitoring | Taejun Oh</title>
+  <meta name="description" content="Uptime and heartbeat monitoring for websites, APIs, cron jobs, and workers, with Down and recovery alerts to Email, Telegram, Discord, and Slack. Private pilot.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All projects
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">AllinSimple Pulse</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
+
+        <p>
+          AllinSimple Pulse monitors websites, APIs, cron jobs, and workers. It runs HTTP checks and accepts authenticated heartbeat pings, confirms an outage with retries before opening a single incident, records the recovery, and sends Down and recovery alerts to Email, Telegram, Discord, and Slack. It is a private pilot and signup is closed.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://pulse.allinsimple.com" target="_blank" rel="noopener" class="btn btn-primary">
+            Website
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>HTTP checks against a status code, a piece of text, or a typed value inside nested JSON</li>
+          <li>Heartbeat pings for cron jobs and workers, authenticated, with a set interval and a grace period</li>
+          <li>Retries confirm an outage before it counts, so one outage opens one incident</li>
+          <li>Recovery is recorded on the incident when the check passes again</li>
+          <li>Down and recovery alerts to Email, Telegram, Discord, and Slack, each tested end to end</li>
+        </ul>
+
+        <h2>Sibling: AllinSimple Desk</h2>
+        <p>
+          AllinSimple Desk is a personal operations ledger for many projects: links, recurring costs, renewal dates, and maintenance tasks, in Korean and English. A read-only demo with fictional data is public, with an <a href="https://desk.allinsimple.com/?lang=en" target="_blank" rel="noopener">English version</a>. It is built with React 19, Vite, and SQLite, and has not yet been validated in real use.
+        </p>
+
+        <h2>Tech stack</h2>
+        <p>
+          Next.js 16 and React 19 with Tailwind CSS 4. Drizzle ORM over PostgreSQL, which coordinates due checks, retries, and incidents. A separate worker process runs the checks. Tests use Vitest.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
