@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seoul Rising - K-pop Trends Widget | Taejun Oh</title>
+  <meta name="description" content="K-pop trends for US fans in an iOS widget, scored from Korean sources before English coverage catches up. Keyless Python pipeline, one static file, no server.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All projects
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Seoul Rising</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
+
+        <p>
+          K-pop news often reaches US fans after Korea has already moved on. Seoul Rising is an iOS widget and a small app that shows what is rising in Korea first. A Python pipeline watches YouTube channel feeds, Wikipedia pageviews, and Yonhap, Soompi, and Koreaboo headlines, scores artist momentum, and flags when Korea moves before English-language coverage. Every 30 minutes a GitHub Actions job writes one static trends.json to GitHub Pages. There is no server, no accounts, and no API keys. Version 1.0.0 was submitted to App Review on October 17, 2026.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://taejunoh.com/seoulpulse/" target="_blank" rel="noopener" class="btn btn-primary">
+            Website
+          </a>
+          <a href="https://github.com/taejunoh/seoulpulse" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>Reads YouTube channel feeds, Wikipedia pageviews, and headlines from Yonhap, Soompi, and Koreaboo, all without API keys</li>
+          <li>Scores each artist's momentum from those sources</li>
+          <li>Flags an artist when Korea moves before English-language coverage does</li>
+          <li>Writes one static trends.json every 30 minutes through GitHub Actions and serves it from GitHub Pages</li>
+          <li>Shows the results in an iOS 18 app and a WidgetKit home-screen widget that read the file</li>
+          <li>Falls back to the cached copy, then to bundled sample data, when the file cannot be fetched</li>
+        </ul>
+
+        <h2>Tech stack</h2>
+        <p>
+          Python 3.12 with httpx and uv, SQLite, and GitHub Actions on a 30-minute schedule that publishes to GitHub Pages. The iOS 18 app is SwiftUI with a WidgetKit extension sharing data through an App Group, and the project is generated with xcodegen.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
