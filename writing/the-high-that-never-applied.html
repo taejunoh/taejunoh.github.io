@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The high that never applied | Taejun Oh</title>
+  <meta name="description" content="My rules file said Opus 5.5 ran at high. Outside the desktop app, it was running at medium, because Opus 5.5 ignores the settings key I had used. I found out while asking whether to switch to medium.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">The high that never applied</h1>
+        <time class="post-date" datetime="2026-11-02" style="margin-bottom: 1.5rem; display: block;">November 2, 2026</time>
+
+        <p>
+          In September I wrote <a href="three-charts-not-one.html">Three charts, not one</a>, which ended with my main session on Opus 5.5 at high. Today I asked whether that should change to medium. The answer started with a problem I hadn't asked about: outside the desktop app, the high setting wasn't being applied.
+        </p>
+
+        <h2>The question</h2>
+        <p>
+          Andrej Karpathy published <a href="https://karpathy.bearblog.dev/hacker-tube/" target="_blank" rel="noopener">a post about building HackerTube</a> in which he says, "I use Opus 5.5 on Medium effort as my default." I asked Grok why medium and not high, got a comparison table, and brought it to my assistant with the question: should I update my CLAUDE.md?
+        </p>
+        <p>
+          Before getting to an answer, the assistant checked the current docs and then my settings file. That's where it found this line:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">~/.claude/settings.json</div><pre style="white-space: pre;">"model": "claude-opus-5-5",
+"effortLevel": "high"</pre></div>
+          <p class="explain-p">It looks correct, and it's what my rules file described. But <a href="https://code.claude.com/docs/en/settings-reference.md" target="_blank" rel="noopener">the settings reference</a> says a top-level <code style="font-family: var(--font-mono); font-size: 0.9em;">effortLevel</code> in the user settings file is a legacy form. It still applies to Opus 5, Fable 5.1, and earlier models. Opus 5.5 and later models skip it and start at their own default, which for Opus 5.5 is medium.</p>
+        </div>
+        <p>
+          Reading the docs isn't the same as seeing what actually runs, so it asked Claude Code directly, in a fresh process:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">terminal</div><pre style="white-space: pre;">$ claude -p "/effort status"
+Effort level: auto (currently medium)</pre></div>
+        </div>
+        <p>
+          So my rules file said high, the settings file said high, and the run said medium.
+        </p>
+
+        <h2>What I can and can't say about the last six weeks</h2>
+        <p>
+          It's been about six weeks since I moved to Opus 5.5, and I want to be careful about what this finding covers.
+        </p>
+        <p>
+          The check was a single <code style="font-family: var(--font-mono); font-size: 0.9em;">-p</code> run. The docs say the same rule applies to interactive sessions, and I never had a per-model level saved, so an interactive terminal session without <code style="font-family: var(--font-mono); font-size: 0.9em;">--effort</code> should have been at medium too. I infer that rather than having measured it. I also can't say whether this has been true since launch day, though the docs describe it as how Opus 5.5 behaves, not as a later change.
+        </p>
+        <p>
+          The desktop app is the part that doesn't fit. The session I was asking from reported <code style="font-family: var(--font-mono); font-size: 0.9em;">high</code>, and I don't know where that value came from. So "it never applied" is the accurate title only for the terminal and <code style="font-family: var(--font-mono); font-size: 0.9em;">-p</code> runs. In the app, it may have been high all along.
+        </p>
+        <p>
+          I'd also like to say that six weeks of unnoticed medium proves medium is fine. It doesn't. I wasn't comparing anything, and I didn't know there was anything to compare. Not noticing a difference you aren't looking for tells you very little.
+        </p>
+        <p>
+          This is the second six-week silent failure I've written up in this series. In <a href="the-dial-moved-the-wrong-thing.html">The dial that moved the wrong thing</a>, the dial moved something I didn't expect. This time, outside the app, it didn't move anything at all. In both cases the rules file read fine, and the rules file is what I'd been checking.
+        </p>
+
+        <h2>Checking the Grok table</h2>
+        <p>
+          Then back to the original question. Some of what Grok told me held up, and some of it didn't:
+        </p>
+        <ul>
+          <li><strong>Karpathy uses medium: true.</strong> But the post doesn't say why and doesn't mention high. It's one person's default on one new project.</li>
+          <li><strong>Medium is the official default, and matches or beats Opus 5 at high: true.</strong> It's in <a href="https://code.claude.com/docs/en/model-config.md" target="_blank" rel="noopener">the model configuration docs</a>. The same page suggests high where verification matters or edge cases are likely, such as fixing a bug in an existing codebase. That's a lot of what I do.</li>
+          <li><strong>Identical completion rates: overstated.</strong> The closest test I could find, <a href="https://wmedia.es/en/tips/claude-code-effort-level-medium-high-xhigh" target="_blank" rel="noopener">27 runs from wmedia</a>, had every level passing 100%. That result says the tasks were too easy to separate the levels. High cost about 36% more, and the author says longer tasks weren't tested.</li>
+          <li><strong>Artificial Analysis, 51 vs 54: shaky.</strong> One summary of their results gave high as 54, and <a href="https://artificialanalysis.ai/models/comparisons/claude-opus-5-5-high-vs-claude-opus-5-5" target="_blank" rel="noopener">their comparison page</a> showed 52 when I looked.</li>
+          <li><strong>High slower in 39 of 44 runs, wins more blind judgments: couldn't verify.</strong> I couldn't find the source post, so those numbers aren't part of this decision.</li>
+        </ul>
+        <p>
+          None of that was new evidence against September's table. Adding the two benchmarks from <a href="read-the-curve-not-the-headline.html">the Sonnet 5.5 charts</a>, it still favors high. These are read off charts, so treat them as approximate:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">Opus 5.5 · score / cost per task</div><pre style="white-space: pre;">                     medium        high          difference
+agentic coding       55 / $0.8     54 / $1.1     -1,    +38%
+terminal coding      57.5 / $3.0   64 / $3.9     +6.5,  +30%
+business automation  28.5 / $0.67  32 / $0.74    +3.5,  +10%
+CursorBench          52.5 / $2.9   56 / $4       +3.5,  +38%
+AA-Briefcase (Elo)   1640 / $4.3   1705 / $6.3   +65,   +47%</pre></div>
+        </div>
+
+        <h2>I picked medium anyway</h2>
+        <p>
+          My assistant recommended staying at high. The numbers above were its argument, and they're fair. I chose medium.
+        </p>
+        <p>
+          The benchmarks measure a model working alone on a task. My main session is meant to be an orchestrator: hard reasoning goes to deep-reasoner at xhigh, and grunt work goes to fast-worker at high. Medium is also Anthropic's default and its suggested starting point when moving from Opus 5. And usage was a real factor: this week's all-models bar was at 63% with about 64% of the week gone. At that pace I'd reach the 90% line where my rules stop ordinary work roughly half a day before the reset.
+        </p>
+        <p>
+          The trade-off is real, and it isn't free. Explore, Plan, general-purpose, and untyped Agent calls inherit the session level, so they came down too. My assistant couldn't estimate how much usage this saves, because I don't know the main session's share of the total. And since September's post argued that a default shouldn't have a benchmark where it falls off, I should say plainly that I've changed my mind about what that argument is worth for an orchestrator, not that the data changed.
+        </p>
+        <p>
+          For bug fixes in existing code, or anything where the edge cases matter, I'll raise it for that work. That's now in the rules file.
+        </p>
+
+        <h2>The fix</h2>
+        <p>
+          Whichever level I picked, the old key couldn't set it. The per-model setting is the one Opus 5.5 reads:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">~/.claude/settings.json</div><pre style="white-space: pre;">"effortLevel": "high",
+"modelSettings": {
+  "claude-opus-5-5": {
+    "effortLevel": "medium"
+  }
+}</pre></div>
+          <p class="explain-p">The top-level key stays, because it still sets older models such as Fable 5.1. If you've carried an <code style="font-family: var(--font-mono); font-size: 0.9em;">effortLevel</code> line forward from an earlier model and want a specific level on Opus 5.5, this is the place to put it. Running <code style="font-family: var(--font-mono); font-size: 0.9em;">/effort</code> interactively also writes it here for you.</p>
+        </div>
+        <p>
+          The same check, after the change:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">terminal</div><pre style="white-space: pre;">$ claude -p "/effort status"
+Current effort level: medium</pre></div>
+        </div>
+        <p>
+          The result is the same level as before, but it's now one I chose and saved rather than a default I'd fallen into. The desktop session also changed from high to medium after the edit. The published <a href="../claude.md">claude.md</a> is updated, including a line that tells future sessions not to use the top-level key for this.
+        </p>
+
+        <h2>What I'm keeping</h2>
+        <p>
+          After a settings change, I ask the running tool what value it resolved instead of rereading the file I just edited. It's one command, and it costs nothing. Had I run it in September, I'd have found this six weeks ago.
+        </p>
+        <p>
+          The other thing is about upgrades. A key that worked on the previous model isn't guaranteed to work on the next one, and when it stops working it doesn't necessarily complain. A new default just takes over. So when I move models now, I'll check which settings the new one reads along with the benchmarks.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
