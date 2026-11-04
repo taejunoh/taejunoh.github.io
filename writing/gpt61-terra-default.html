@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why I moved my Codex default to GPT-6.1 Terra | Taejun Oh</title>
+  <meta name="description" content="Why I moved my Codex default to GPT-6.1 Terra at medium, what the benchmarks show, and how I updated my model routing rules.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Why I moved my Codex default to GPT-6.1 Terra</h1>
+
+        <time class="post-date" datetime="2026-11-04" style="margin-bottom: 1.5rem; display: block;">November 4, 2026</time>
+
+        <p>I moved my Codex main session from GPT-6.1 Sol at high to GPT-6.1 Terra at medium. Sol is still in the setup for complex development. Astra still gets the hard judgment calls, and Luna still handles bounded work.</p>
+
+        <p>The decision took longer than the two lines it changed. I first kept Sol, then looked at a computer-use chart I had not given enough weight. The resulting setup is a bet about the mix of work in my main session, not proof that Terra is better at everything I do.</p>
+
+        <h2>The chart I had underweighted</h2>
+
+        <p>OpenAI&#x27;s <a href="https://openai.com/index/introducing-gpt-6-1-terra/" target="_blank" rel="noopener">Terra launch announcement</a> includes Agents&#x27; Last Exam, a benchmark of professional tasks performed with software. Its examples range from 3D modeling to reviewing animated film.</p>
+
+        <p>On the published chart, Terra at max reaches 60.0%, compared with Sol at max at 58.6%. The points are close, and this is the vendor&#x27;s evaluation, not my own. The cost axis matters too: Terra&#x27;s points sit substantially to the left of Sol&#x27;s. OpenAI also reports that Terra completed tasks more than three times faster than Sol and Astra on this evaluation. That&#x27;s a result for those tasks, not a general multiplier I can apply to every Codex session.</p>
+
+        <p>I had treated Terra as a model for small, fast jobs and visual work. The chart supports a broader case: it can handle substantial work across applications. My main session does more than code, so that matters.</p>
+
+        <h2>The numbers that still favor Sol</h2>
+
+        <p>The other chart I looked at points in a different direction. Artificial Analysis&#x27;s Intelligence Index compares a mix of evaluations, not the same set of tasks as Agents&#x27; Last Exam:</p>
+
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="Comparison by reasoning effort" tabindex="0">
+          <table class="comparison-table">
+            <caption>Comparison by reasoning effort</caption>
+            <thead><tr><th scope="col">Reasoning effort</th><th scope="col">Terra</th><th scope="col">Sol</th></tr></thead>
+            <tbody>
+              <tr><th scope="row"><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-1-terra-medium-vs-gpt-6-1-sol-medium" target="_blank" rel="noopener">Medium</a></th><td>38</td><td>46</td></tr>
+              <tr><th scope="row"><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-1-terra-high-vs-gpt-6-1-sol-high" target="_blank" rel="noopener">High</a></th><td>42</td><td>50</td></tr>
+              <tr><th scope="row"><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-1-terra-vs-gpt-6-1-sol" target="_blank" rel="noopener">Max</a></th><td>51</td><td>55</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Sol leads at each matched effort, though that doesn&#x27;t mean it wins every coding task. I am accepting a trade when I lower both the model and the main session&#x27;s effort. My previous default was Sol at high; Terra at medium scores 38 against Sol high&#x27;s 50 on this index. That&#x27;s a cross-effort comparison between the two settings I actually chose, not a controlled test of model difference alone.</p>
+
+        <p>I also ran one small comparison. I gave each model the same JSONL aggregation CLI task at high effort, then ran six independent black-box tests against each implementation. Both passed all six. That&#x27;s a useful check that neither failed this particular exercise. It is not a benchmark of my repositories, a measure of latency, or evidence that the models are interchangeable on complex development.</p>
+
+        <h2>Price is a rate, not a finished task</h2>
+
+        <p>At standard API rates, Terra costs $1 per million input tokens and $5 per million output tokens; Sol costs $2 and $10. Cached input is $0.05 and $0.10 respectively. Those are per-token prices, not the cost of completing a job. Extra tokens, retries, or review can erase some of the difference. <a href="https://developers.openai.com/api/docs/models" target="_blank" rel="noopener">OpenAI&#x27;s model catalog</a> lists the current API rates.</p>
+
+        <p>Codex subscription usage and Codex credits are a separate system. I can&#x27;t turn the API price ratio into an exact number of sessions or a prediction of my bill. OpenAI does say that, in Work and Codex, the same allowance goes substantially further with Terra than with Sol; the amount still depends on the task and how it runs. The computer-use chart&#x27;s dollar figures are evaluation costs, not my subscription charges.</p>
+
+        <h2>The actual changes</h2>
+
+        <p>The configuration now sets:</p>
+
+        <pre><code>model = &quot;gpt-6.1-terra&quot;
+model_reasoning_effort = &quot;medium&quot;</code></pre>
+
+        <p>I updated global <code>AGENTS.md</code> to describe the same default and to reserve Sol at high for complex codebase work, long technical tasks, difficult debugging, and complex orchestration. The existing specialist roles remain:</p>
+
+        <p class="table-scroll-hint" aria-hidden="true">Swipe to see all columns &rarr;</p>
+        <div class="comparison-table-wrap" role="region" aria-label="My current Codex roles" tabindex="0">
+          <table class="comparison-table">
+            <caption>My current Codex roles</caption>
+            <thead><tr><th scope="col">Role</th><th scope="col">Model and effort</th><th scope="col">Work</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Main session</th><td>GPT-6.1 Terra, medium</td><td>General work, writing, visual understanding, and work across apps.</td></tr>
+              <tr><th scope="row">Complex implementation</th><td>GPT-6.1 Sol, medium or high</td><td>Multi-file work, with high for harder technical tasks.</td></tr>
+              <tr><th scope="row">deep-reasoner</th><td>GPT-6 Astra, high</td><td>Difficult design, unclear bugs, and high-risk judgment.</td></tr>
+              <tr><th scope="row">fast-worker</th><td>GPT-6 Luna, high</td><td>Scoped implementation, tests, and cleanup.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>The distinction between the two files matters. <code>config.toml</code> selects the configured default. <code>AGENTS.md</code> records how I want to choose and delegate; it does not inspect each task and automatically switch the main model. For a difficult development session I still need to select Sol, or explicitly choose it for a suitable subagent. Existing sessions may still need their model picker checked.</p>
+
+        <h2>A default to test</h2>
+
+        <p>The case for Terra is strongest when I combine the kind of work my main session does with the computer-use results and its lower token price. The case for Sol is still strong for harder technical work, and the broader index is a reason to keep that escalation path visible.</p>
+
+        <p>I haven&#x27;t measured a representative set of my own sessions yet. If Terra needs enough correction or review on real projects to offset the speed and usage savings, I can change the default again. For now, this is the setup I want to try, with the limits of the evidence written down next to it.</p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
