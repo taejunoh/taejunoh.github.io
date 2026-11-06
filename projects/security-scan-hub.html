@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Scan Hub - One Scan, Seven Security Tools | Taejun Oh</title>
+  <meta name="description" content="Run seven open-source security tools in one scan and review the findings in one Security Inbox. Desktop prerelease for Mac and Windows; public code.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All projects
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Security Scan Hub</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
+
+        <p>
+          Seven good open-source security tools come with seven setups and seven report formats. Security Scan Hub runs the ones you pick in a single scan and merges the results into one Security Inbox, with the highest-severity findings first and a clear record of which tools completed, were skipped, or failed. Reports export as HTML, JSON, and SARIF. It runs locally as a command-line tool and as a desktop app; the desktop app is a 0.2.2 prerelease, signed and notarized for Apple silicon Macs, with an unsigned Windows x64 build.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://github.com/taejunoh/security-scan-hub" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://github.com/taejunoh/security-scan-hub/releases" target="_blank" rel="noopener" class="btn btn-primary">
+            Download
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>Seven integrations: Google OSV Scanner, NVIDIA SkillSpector, OpenAI Codex Security, Alibaba Open Code Review, OpenAI PHP2Shell Checker, the Cloudflare Security Audit Skill, and Anthropic's Defending Code reference harness</li>
+          <li>Checks dependencies for known vulnerabilities, scans AI agent skills for suspicious patterns, reviews source code, and checks a URL's response headers</li>
+          <li>Security Inbox: search by package, title, or advisory ID, filter by severity, and read each finding's impact, affected version, and listed fix</li>
+          <li>Saved scans and comparisons, with the original evidence and metadata one click away</li>
+          <li>AI-backed tools run only with explicit opt-in, since they may send code or context to the configured provider</li>
+          <li>Desktop app bundles OSV Scanner, so a first scan needs no terminal, no Node.js, and no account; all seven tools run on a supported Mac after setup, and the Cloudflare and Anthropic workflows are off on Windows</li>
+          <li>English and Korean interface, with a narrow layout that keeps search, filters, and scroll position when you go back to results</li>
+        </ul>
+
+        <h2>Tech stack</h2>
+        <p>
+          A Node.js 22 command-line orchestrator (ES modules, tested with the built-in Node test runner) that launches each upstream tool, normalizes its output, and records coverage and provenance per tool. The desktop app wraps it in Electron and ships the bundled OSV Scanner. Mac releases are Developer ID-signed and notarized, with SHA-256 checksums for every download.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
