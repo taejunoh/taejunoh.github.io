@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fieldnote - Personal Sports Research | Taejun Oh</title>
+  <meta name="description" content="A personal sports research app built around persistent conversations, sourced analysis, and structured decision records. Retired in November 2026.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../#retired" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Retired
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Fieldnote</h1>
+        <time datetime="2026-11" class="post-date" style="margin-bottom: 1.5rem; display: block;">November 2026 &middot; Retired</time>
+
+        <p>
+          Fieldnote was a personal sports research app for keeping analysis and decision history in one continuous workspace. Each sport had a persistent thread, with Markdown handoffs to carry forward prior context.
+        </p>
+
+        <h2>What it did</h2>
+        <ul>
+          <li>Ran background research and presented findings in structured analysis tables</li>
+          <li>Kept recommendations separate from bets the user had manually confirmed</li>
+          <li>Preserved conversations and operating criteria across sessions</li>
+        </ul>
+
+        <h2>Why it retired</h2>
+        <p>
+          Interrupted runs and missing or inconsistent table results made repeat checks and manual recovery too common. Even completed runs could leave a result that was incomplete or difficult to use.
+        </p>
+
+        <h2>What I learned</h2>
+        <p>
+          Measure published, usable output separately from model completion. Reliability includes the full path from a request to a complete result that a person can review.
+        </p>
+
+        <h2>Tech stack</h2>
+        <p>Next.js, TypeScript, Supabase Postgres, and a separate background worker.</p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
