@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>What ClaudeBeat Taught Me Before I Built Needlbar | Taejun Oh</title>
-  <meta name="description" content="A missing weekly gauge in ClaudeBeat changed how I thought about usage data. Needlbar carries that lesson forward, and it is where I will spend my maintenance time.">
+  <meta name="description" content="Shipping ClaudeBeat taught me about distribution, changing usage responses, and the context a number needs. Those lessons carry into Needlbar, where I am consolidating maintenance.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -37,21 +37,61 @@
         <time class="post-date" datetime="2026-11-09" style="margin-bottom: 1.5rem; display: block;">November 9, 2026</time>
 
         <p>
-          I built <a href="../projects/claudebeat.html">ClaudeBeat</a> to answer one question from the macOS menu bar. How much Claude quota do I have left before it resets? Shipping a signed, notarized app that people could install with Homebrew was a good experience. Maintaining it taught me what could go wrong with a number that looked simple.
+          I built <a href="../projects/claudebeat.html">ClaudeBeat</a> because I wanted to see my Claude usage without leaving what I was doing. A menu bar number, a five-hour session window, and a weekly limit felt like a manageable place to start. I could open the popover when I needed more detail and get a notification when a session reset.
         </p>
 
-        <h2>When a gauge disappeared</h2>
         <p>
-          At one point, Claude's usage response included limits for individual models but omitted the all-models total. ClaudeBeat dropped the total gauge even though it still had a previous reading. The fix fell back one limit at a time. A partial response could update the numbers it carried and leave the others visible.
-        </p>
-        <p>
-          I carried that lesson into <a href="../projects/needlbar.html">Needlbar</a>. Claude Code, Codex, and Cursor each refresh on their own, and a failed refresh can leave the last known quota visible. Token counts and estimated cost come from local session files, while quota and reset times are shown separately. That way, the app can still tell me what I used when it has trouble refreshing how much I have left.
+          That scope helped me ship. ClaudeBeat became a signed and notarized macOS app, available through Homebrew and a direct download. It also gave me a working product to maintain. The experience of keeping those numbers useful became the starting point for Needlbar.
         </p>
 
-        <h2>One app to maintain</h2>
         <p>
-          Keeping ClaudeBeat active would mean another app to test, sign, and release when something changes. ClaudeBeat earned its place by getting the idea out into the world. I retired it so I can spend that maintenance time on Needlbar, where I now track all three tools in the same menu bar.
+          Getting an app onto someone else's Mac adds details that are easy to miss while building it. One ClaudeBeat release fixed the version shown in Settings because the release build had discarded the version from its tag. Another adjusted the vertical position of two lines of menu bar text. Neither change added a feature, but both belonged to the experience of using the app.
         </p>
+
+        <p>
+          That is part of what I value about having shipped ClaudeBeat. I got to work through distribution, credentials in Keychain, notifications, and the small constraints of a menu bar interface together. Needlbar carries that experience forward through the same native interface and a signed, notarized release that can be installed with Homebrew.
+        </p>
+
+        <p>
+          The harder lesson came from the data. Claude's usage response changed over time. Fields could be null, model limits moved to a different field, and a response could include some limits while omitting others. ClaudeBeat needed fixes for cases where those changes left the popover blank or made a gauge disappear.
+        </p>
+
+        <p>
+          One particularly useful correction concerned the number shown in the menu bar. The overall weekly total could be at 64 percent while a particular model had already reached 100 percent. Displaying only the overall number gave an incomplete picture of whether I could keep working. ClaudeBeat was updated to show the highest weekly utilization and name the model when that model was the constraint. Alerts also had to watch each limit.
+        </p>
+
+        <p>
+          Those fixes made the display question more concrete. A number needs enough context to explain what it measures, which window it belongs to, and what happens when part of the response is missing. The release history records how much work went into keeping that context intact.
+        </p>
+
+        <p>
+          <a href="../projects/needlbar.html">Needlbar</a> extends the idea across Claude Code, Codex, and Cursor. That brings more sources with different refresh behavior and different meanings for the numbers they expose. Each provider has its own refresh stream, and the app keeps last-known quota values when a refresh fails. It also recovers after sleep and network loss.
+        </p>
+
+        <p>
+          Local session data gives Needlbar another useful source. It aggregates tokens and estimates cost from session files, then presents quota windows and reset times alongside them. An estimated dollar amount describes the cost represented by recorded activity. A provider's quota describes the allowance available under its own rules. Keeping those meanings clear helps me understand what I am looking at when the figures differ.
+        </p>
+
+        <p>
+          The app also exposes diagnostics and labels the opt-in Claude Code quota source as “Reported by Claude Code.” That attention to where a value comes from follows naturally from the problems ClaudeBeat encountered. When something looks wrong, there needs to be a way to understand which source supplied it.
+        </p>
+
+        <p>
+          Needlbar does this locally, without a Needlbar account, backend, hosted sync, or telemetry. Its Swift interface sits over a Rust core that handles session parsing and other data work. The project has room for more providers and views while keeping the everyday interaction close to the original idea of checking the menu bar.
+        </p>
+
+        <p>
+          With Needlbar available, continuing to maintain ClaudeBeat would mean keeping another app ready for changes in macOS, authentication, and usage responses. Each fix would still need testing, packaging, and a release. Even a small app creates that recurring obligation.
+        </p>
+
+        <p>
+          I enjoyed building ClaudeBeat, and that experience is already part of Needlbar. I want to put future maintenance time into the app that covers the tools I use together. Consolidating the work gives me one place to improve how usage is collected, explained, and displayed.
+        </p>
+
+        <p>
+          ClaudeBeat is now retired, and its project page and source remain as a record of what I shipped. Needlbar is where that work continues. The first app gave me a concrete problem to solve, a release to support, and enough experience to make the next version of the idea more useful.
+        </p>
+
       </article>
     </main>
 
