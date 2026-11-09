@@ -15,7 +15,8 @@
     <!-- Nav -->
     <nav class="topnav">
       <a href="#about">About</a>
-      <a href="#projects">Projects</a>
+      <a href="#projects">Released</a>
+      <a href="#development">In Development</a>
       <a href="#wraps">Under Wraps</a>
       <a href="#retired">Retired</a>
       <a href="#tech">Tech Stack</a>
@@ -97,9 +98,10 @@
 
     </div>
 
-    <!-- Projects -->
+    <!-- Released projects -->
     <section class="projects-section" id="projects">
-      <h2 class="section-heading">Projects</h2>
+      <h2 class="section-heading">Released</h2>
+      <p class="wraps-note">Available as apps, live websites, or self-hosted projects.</p>
       <div class="projects-grid">
 
         <a href="projects/golightweight.html" class="project-thumb">
@@ -192,10 +194,90 @@
           </div>
           <h3>Great Whiskey Narrative</h3>
           <div class="wip-meta">
-            <span class="wip-chip"><span class="wip-dot"></span>Just unwrapped</span>
+            <span class="wip-chip"><span class="wip-dot"></span>Web live</span>
           </div>
           <p>Point a camera at a label and get the distillery, region, tasting notes, and typical price. 1,078-bottle library with food pairings. Web live, iOS on TestFlight.</p>
         </a>
+
+        <a href="projects/seoul-rising.html" class="project-thumb">
+          <div class="thumb-sketch">
+            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Phone widget -->
+              <rect x="50" y="18" width="100" height="84" rx="10" fill="rgba(0,0,0,0.04)"/>
+              <!-- Three rising bars -->
+              <rect x="66" y="66" width="16" height="26" rx="2" fill="rgba(0,0,0,0.06)"/>
+              <rect x="88" y="52" width="16" height="40" rx="2" fill="rgba(0,0,0,0.08)"/>
+              <rect x="110" y="38" width="16" height="54" rx="2" fill="rgba(0,0,0,0.06)"/>
+              <!-- Upward arrow -->
+              <path d="M134 44 L134 26" stroke-width="2"/>
+              <path d="M129 31 L134 24 L139 31" stroke-width="2"/>
+              <!-- Label -->
+              <text x="64" y="40" font-family="Caveat" font-size="14" fill="#8a7e6e" stroke="none">K-pop</text>
+            </svg>
+          </div>
+          <h3>Seoul Rising</h3>
+          <div class="wip-meta">
+            <span class="wip-chip"><span class="wip-dot"></span>On the App Store</span>
+          </div>
+          <p>K-pop trends for US fans in an iOS widget, scored from Korean sources before English coverage catches up. Keyless pipeline, one static file, no server.</p>
+        </a>
+
+        <a href="projects/needlbar.html" class="project-thumb">
+          <div class="thumb-sketch">
+            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round">
+              <!-- Menu bar -->
+              <rect x="20" y="15" width="160" height="16" rx="3" fill="rgba(0,0,0,0.06)"/>
+              <circle cx="165" cy="23" r="4" fill="rgba(0,0,0,0.1)"/>
+              <text x="132" y="26" font-family="monospace" font-size="7" fill="#8a7e6e" stroke="none">$4.20</text>
+              <!-- Popover -->
+              <rect x="40" y="40" width="120" height="65" rx="5" fill="rgba(0,0,0,0.04)" stroke-dasharray="3,3"/>
+              <!-- Three provider bars -->
+              <rect x="52" y="52" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
+              <rect x="52" y="52" width="70" height="6" rx="3" fill="#b0a48e" stroke="none"/>
+              <rect x="52" y="66" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
+              <rect x="52" y="66" width="44" height="6" rx="3" fill="#b0a48e" stroke="none"/>
+              <rect x="52" y="80" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
+              <rect x="52" y="80" width="22" height="6" rx="3" fill="#b0a48e" stroke="none"/>
+              <!-- Labels -->
+              <text x="52" y="99" font-family="Caveat" font-size="11" fill="#8a7e6e" stroke="none">Claude · Codex · Cursor</text>
+            </svg>
+          </div>
+          <h3>Needlbar</h3>
+          <p>macOS menu bar monitor for Claude Code, Codex, and Cursor: local token usage, cost, quota, and a system monitor. Notarized, on Homebrew, Rust core behind a Swift UI.</p>
+        </a>
+
+        <a href="projects/job-tracker.html" class="project-thumb">
+          <div class="thumb-sketch">
+            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round">
+              <!-- Document -->
+              <rect x="55" y="15" width="60" height="75" rx="3" fill="rgba(0,0,0,0.04)"/>
+              <line x1="65" y1="30" x2="105" y2="30"/>
+              <line x1="65" y1="40" x2="100" y2="40"/>
+              <line x1="65" y1="50" x2="95" y2="50"/>
+              <line x1="65" y1="60" x2="105" y2="60"/>
+              <line x1="65" y1="70" x2="90" y2="70"/>
+              <!-- Magnifying glass -->
+              <circle cx="140" cy="50" r="18"/>
+              <line x1="153" y1="63" x2="165" y2="75" stroke-width="2.5"/>
+              <!-- AI sparkle -->
+              <text x="133" y="55" font-family="Caveat" font-size="16" fill="#8a7e6e" stroke="none">AI</text>
+              <!-- Chrome icon hint -->
+              <circle cx="40" cy="95" r="10" stroke-dasharray="3,3"/>
+              <text x="33" y="99" font-family="Caveat" font-size="10" fill="#8a7e6e" stroke="none">ext</text>
+            </svg>
+          </div>
+          <h3>JobTracker</h3>
+          <p>Self-hosted job application tracker with a Chrome extension and resume keyword matching.</p>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Projects in development -->
+    <section class="projects-section" id="development">
+      <h2 class="section-heading">In Development</h2>
+      <p class="wraps-note">Named projects in pilot, prototype, or prerelease.</p>
+      <div class="projects-grid">
 
         <a href="projects/crewon.html" class="project-thumb">
           <div class="thumb-sketch">
@@ -228,29 +310,6 @@
             <span class="wip-chip"><span class="wip-dot"></span>Coming soon</span>
           </div>
           <p>Club management in one place: events with RSVP and QR check-in, dues through Stripe Connect, a club feed, and a sponsorship marketplace. Web app built, member app in TestFlight.</p>
-        </a>
-
-        <a href="projects/seoul-rising.html" class="project-thumb">
-          <div class="thumb-sketch">
-            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <!-- Phone widget -->
-              <rect x="50" y="18" width="100" height="84" rx="10" fill="rgba(0,0,0,0.04)"/>
-              <!-- Three rising bars -->
-              <rect x="66" y="66" width="16" height="26" rx="2" fill="rgba(0,0,0,0.06)"/>
-              <rect x="88" y="52" width="16" height="40" rx="2" fill="rgba(0,0,0,0.08)"/>
-              <rect x="110" y="38" width="16" height="54" rx="2" fill="rgba(0,0,0,0.06)"/>
-              <!-- Upward arrow -->
-              <path d="M134 44 L134 26" stroke-width="2"/>
-              <path d="M129 31 L134 24 L139 31" stroke-width="2"/>
-              <!-- Label -->
-              <text x="64" y="40" font-family="Caveat" font-size="14" fill="#8a7e6e" stroke="none">K-pop</text>
-            </svg>
-          </div>
-          <h3>Seoul Rising</h3>
-          <div class="wip-meta">
-            <span class="wip-chip"><span class="wip-dot"></span>On the App Store</span>
-          </div>
-          <p>K-pop trends for US fans in an iOS widget, scored from Korean sources before English coverage catches up. Keyless pipeline, one static file, no server.</p>
         </a>
 
         <a href="projects/allinsimple-pulse.html" class="project-thumb">
@@ -363,6 +422,9 @@
             </svg>
           </div>
           <h3>TypeLeague</h3>
+          <div class="wip-meta">
+            <span class="wip-chip"><span class="wip-dot"></span>Preseason</span>
+          </div>
           <p>Competitive typing leaderboards &mdash; one test ranks you globally and by country, city, school, and company.</p>
         </a>
 
@@ -383,55 +445,10 @@
             </svg>
           </div>
           <h3>Mise</h3>
+          <div class="wip-meta">
+            <span class="wip-chip"><span class="wip-dot"></span>Active pilot</span>
+          </div>
           <p>Back-office automation for independent restaurants: daily P&amp;L, invoices, purchasing, inventory, and tax prep from live POS data. Active pilot in NYC.</p>
-        </a>
-
-        <a href="projects/needlbar.html" class="project-thumb">
-          <div class="thumb-sketch">
-            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round">
-              <!-- Menu bar -->
-              <rect x="20" y="15" width="160" height="16" rx="3" fill="rgba(0,0,0,0.06)"/>
-              <circle cx="165" cy="23" r="4" fill="rgba(0,0,0,0.1)"/>
-              <text x="132" y="26" font-family="monospace" font-size="7" fill="#8a7e6e" stroke="none">$4.20</text>
-              <!-- Popover -->
-              <rect x="40" y="40" width="120" height="65" rx="5" fill="rgba(0,0,0,0.04)" stroke-dasharray="3,3"/>
-              <!-- Three provider bars -->
-              <rect x="52" y="52" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
-              <rect x="52" y="52" width="70" height="6" rx="3" fill="#b0a48e" stroke="none"/>
-              <rect x="52" y="66" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
-              <rect x="52" y="66" width="44" height="6" rx="3" fill="#b0a48e" stroke="none"/>
-              <rect x="52" y="80" width="96" height="6" rx="3" fill="rgba(0,0,0,0.05)"/>
-              <rect x="52" y="80" width="22" height="6" rx="3" fill="#b0a48e" stroke="none"/>
-              <!-- Labels -->
-              <text x="52" y="99" font-family="Caveat" font-size="11" fill="#8a7e6e" stroke="none">Claude · Codex · Cursor</text>
-            </svg>
-          </div>
-          <h3>Needlbar</h3>
-          <p>macOS menu bar monitor for Claude Code, Codex, and Cursor: local token usage, cost, quota, and a system monitor. Notarized, on Homebrew, Rust core behind a Swift UI.</p>
-        </a>
-
-        <a href="projects/job-tracker.html" class="project-thumb">
-          <div class="thumb-sketch">
-            <svg viewBox="0 0 200 120" fill="none" stroke="#8a7e6e" stroke-width="1.5" stroke-linecap="round">
-              <!-- Document -->
-              <rect x="55" y="15" width="60" height="75" rx="3" fill="rgba(0,0,0,0.04)"/>
-              <line x1="65" y1="30" x2="105" y2="30"/>
-              <line x1="65" y1="40" x2="100" y2="40"/>
-              <line x1="65" y1="50" x2="95" y2="50"/>
-              <line x1="65" y1="60" x2="105" y2="60"/>
-              <line x1="65" y1="70" x2="90" y2="70"/>
-              <!-- Magnifying glass -->
-              <circle cx="140" cy="50" r="18"/>
-              <line x1="153" y1="63" x2="165" y2="75" stroke-width="2.5"/>
-              <!-- AI sparkle -->
-              <text x="133" y="55" font-family="Caveat" font-size="16" fill="#8a7e6e" stroke="none">AI</text>
-              <!-- Chrome icon hint -->
-              <circle cx="40" cy="95" r="10" stroke-dasharray="3,3"/>
-              <text x="33" y="99" font-family="Caveat" font-size="10" fill="#8a7e6e" stroke="none">ext</text>
-            </svg>
-          </div>
-          <h3>JobTracker</h3>
-          <p>Self-hosted job application tracker with a Chrome extension and resume keyword matching.</p>
         </a>
 
       </div>
@@ -440,7 +457,7 @@
     <!-- Under Wraps — unreleased apps, names redacted until launch -->
     <section class="projects-section" id="wraps">
       <h2 class="section-heading">Under Wraps</h2>
-      <p class="wraps-note">A few new apps in the works. Names stay hidden until they ship &mdash; revealing each at launch.</p>
+      <p class="wraps-note">Projects in progress whose names and full details are still under wraps.</p>
             <div class="projects-grid">
 
         <div class="project-thumb is-locked">
