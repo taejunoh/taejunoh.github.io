@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fieldnote - Personal Sports Research | Taejun Oh</title>
-  <meta name="description" content="A personal sports research app built around persistent conversations, sourced analysis, and structured decision records. Retired in November 2026.">
+  <meta name="description" content="A retired sports research desk for eight sports, with persistent conversations, background research, and a separate ledger for confirmed bets.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -37,28 +37,38 @@
         <time datetime="2026-11" class="post-date" style="margin-bottom: 1.5rem; display: block;">November 2026 &middot; Retired</time>
 
         <p>
-          Fieldnote was a personal sports research app for keeping analysis and decision history in one continuous workspace. Each sport had a persistent thread, with Markdown handoffs to carry forward prior context.
+          I built Fieldnote after getting tired of writing a Markdown handoff every time a sports research chat grew too long. The app gave eight sports a permanent thread, brought forward the rules and past decisions for each one, and ran web research in the background. A shared table was supposed to make the latest recommendations and price conditions easy to find.
         </p>
 
         <h2>What it did</h2>
         <ul>
-          <li>Ran background research and presented findings in structured analysis tables</li>
-          <li>Kept recommendations separate from bets the user had manually confirmed</li>
-          <li>Preserved conversations and operating criteria across sessions</li>
+          <li><strong>Persistent context.</strong> Each sport kept its full conversation. Imported handoffs became drafts I could review, and the worker combined recent messages with relevant rules, history, and game state for each new request.</li>
+          <li><strong>Background research.</strong> Requests went into Postgres and a separate worker handled the model call. I could leave the page and come back to check the result. The app saved the original response and validated the game, market, price, and sources before publishing structured rows.</li>
+          <li><strong>A separate ledger.</strong> A recommendation or a quoted price could stay in the analysis. A confirmed entry required an explicit action, and settlement used the recorded terms and verified result. Missing terms stayed unknown.</li>
         </ul>
 
-        <h2>Why it retired</h2>
+        <h2>What the operating record showed</h2>
         <p>
-          Interrupted runs and missing or inconsistent table results made repeat checks and manual recovery too common. Even completed runs could leave a result that was incomplete or difficult to use.
+          Of 423 recorded requests, 18 ended in failure or interruption. That figure reflects final job states. It leaves out earlier attempts that recovered and completed requests that still had missing rows. A seven-sport audit made the distinction clear. All seven raw responses were saved, but each initially failed to produce a validated table. Two lacked an evaluation block, four failed schema validation, and one failed to match a cited URL to its source record.
+        </p>
+        <p>
+          Because the raw responses were available, I could reprocess them offline and recover the rows with adequate evidence. The experience made publication a separate milestone from model completion. A usable result needs to reach the table with its source, decision, and price condition intact.
         </p>
 
-        <h2>What I learned</h2>
+        <h2>Why it stopped</h2>
         <p>
-          Measure published, usable output separately from model completion. Reliability includes the full path from a request to a complete result that a person can review.
+          Fieldnote reduced the work of moving context between chats, but I still spent time retrying runs and reconciling the chat with the table. When a row was missing, I went back to the original analysis to see what the table had missed. The performance review also had a limit. The available Fieldnote and ChatGPT bet records covered different dates, markets, and accepted prices, so they could not establish which workflow performed better under the same conditions. I retired the app in November 2026.
         </p>
 
-        <h2>Tech stack</h2>
-        <p>Next.js, TypeScript, Supabase Postgres, and a separate background worker.</p>
+        <h2>What I would measure next time</h2>
+        <p>
+          I would track how often the first request produces a usable published result, how often rows are missing, and how long recovery takes. For a comparison of the analyses themselves, I would hold the pregame inputs and price snapshot fixed and keep recommended bets separate from confirmed entries and settlements.
+        </p>
+
+        <h2>Tech stack and closeout</h2>
+        <p>
+          Next.js and TypeScript for the app, Supabase Postgres for the queue and ledger, and a separate worker and gateway for model calls. I tested a database restore and verified the gateway backup before shutting down the Railway services and pausing Supabase.
+        </p>
       </article>
     </main>
 
