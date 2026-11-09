@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half the cost of what? | Taejun Oh</title>
+  <meta name="description" content="Fable 5.2 launched at roughly half the cost of Opus 5.5's best score. That comparison is against Opus at max. I moved one seat to Fable 5.2, kept my main session, and found my own wrapper was out of date again.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Half the cost of what?</h1>
+        <time class="post-date" datetime="2026-11-09" style="margin-bottom: 1.5rem; display: block;">November 9, 2026</time>
+
+        <p>
+          <a href="https://www.anthropic.com/claude-fable-and-mythos-5-2" target="_blank" rel="noopener">Fable 5.2</a> came out today, so I asked my assistant whether my CLAUDE.md needed updating. Since September the file has said Fable trails Opus 5.5 at every effort level and costs more than twice as much per token. That was written about Fable 5.1. It needed checking.
+        </p>
+
+        <h2>The first answer</h2>
+        <p>
+          The price dropped from $10/$50 to $8/$40 per million tokens, which is exactly double Opus 5.5 at $4/$20. On the headline benchmarks, Fable 5.2 now leads at each model's highest effort: 49.1% to 45.5% on FrontierCode 2.0, 69.9% to 62.3% on FrontierSWE v2, and 51.4% to 42.5% on AutomationBench. So the old sentence had to go.
+        </p>
+        <p>
+          The assistant recommended rewriting that sentence and keeping everything else. It said my deep-reasoner agent was the natural next candidate, and that I should compare real tasks after my weekly reset. It added that my terminal build "may need" an update first.
+        </p>
+        <p>
+          "May need" was the part I stopped on. Whether my installed Claude Code could run this model was a question one command could answer, and nobody had run the command. So I asked why it hadn't checked.
+        </p>
+
+        <h2>What the check found</h2>
+        <p>
+          It called the model from each build I had, looking at which model actually served the request:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">which model actually answered</div><pre style="white-space: pre;">build     claude-fable-5-2      alias: fable
+2.1.292   5.2, with a warning   5.1
+2.1.317   5.2, with a warning   5.1
+2.1.321   5.2, no warning       5.2</pre></div>
+          <p class="explain-p">The warning is <code style="font-family: var(--font-mono); font-size: 0.9em;">unrecognized_model</code>. The exact ID works on older builds, which is easy to mistake for support. But the <a href="https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md" target="_blank" rel="noopener">changelog</a> first lists Fable 5.2 in 2.1.321, and a build that doesn't know a model gives you no guarantee about how it handles that model's effort or cost.</p>
+        </div>
+        <p>
+          The more useful result came from the other half of the check, which went looking for Opus 5.5's numbers at each effort level.
+        </p>
+
+        <h2>Half the cost of what</h2>
+        <p>
+          Anthropic's launch post says Fable 5.2 at high is about level with Opus 5.5's best FrontierCode 2.0 score for roughly half the cost per task. That is accurate. It's also a comparison with Opus at max, the most expensive point on its curve and not a setting I run. Here are both curves:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">FrontierCode 2.0 · score / cost per task</div><pre style="white-space: pre;">         Opus 5.5        Fable 5.2
+low      14.7 / $0.75    34.2 / $2.10-2.62
+medium   30.1 / $1.70    37.6 / $2.48-3.10
+high     34.5 / $2.42    45.3 / $6.72-8.40
+xhigh    43.4 / $5.18    49.1 / $14.19-17.73
+max      45.5 / $12.82   45.7 / $44.70-55.87</pre></div>
+          <p class="explain-p">Where the numbers come from matters here. The Fable ranges run from the figures reported from the system card to the ones reported from Cognition's live board, and I don't know why they differ. The Opus rows other than max come from <a href="https://llmlearner.com/rankings/frontiercode-2-0" target="_blank" rel="noopener">a site that aggregates Cognition's leaderboard</a>. A second aggregator agrees, and the max row matches Anthropic's table, but I couldn't read the effort rows on <a href="https://cognition.com/frontiercode" target="_blank" rel="noopener">Cognition's own page</a>.</p>
+        </div>
+        <p>
+          Read that way, the last 2.1 points of Opus's score cost $7.64 per task. Opus at xhigh gets 43.4 for less money than Fable at high. Against a sensible Opus setting, "half the cost" becomes 1.9 more points for 1.3 to 1.6 times the money.
+        </p>
+        <p>
+          This cut the other way too, and it corrected something the assistant had told me. In the first answer it had called Fable 5.2 at medium weak and pointed to how flat Opus's curve was on FrontierCode 1.1. On 2.0 it isn't flat. Opus at medium scores 30.1, below Fable at low. At about the same spend, Fable low ties Opus high, and Fable medium beats it by 3.1 points for a little more money.
+        </p>
+        <p>
+          So the headline oversold the top of the curve and undersold the bottom. It's the same lesson as <a href="read-the-curve-not-the-headline.html">the Sonnet 5.5 post</a>, and I still needed it again.
+        </p>
+
+        <h2>One seat moves</h2>
+        <p>
+          My setup has three seats: a main session that orchestrates, a deep-reasoner agent for the hardest problems, and a fast-worker agent for mechanical work. I moved one of them.
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">~/.claude/agents/deep-reasoner.md</div><pre style="white-space: pre;">model: claude-fable-5-2
+effort: xhigh</pre></div>
+          <p class="explain-p">Against the Opus xhigh it replaces, that's 5.7 more points for 2.7 to 3.4 times the cost per task. I wouldn't pay that everywhere. deep-reasoner gets called rarely and only for the hardest work, so a higher price per call buys the most there. Xhigh is also where Fable 5.2 peaks on this benchmark; max scores lower and costs about three times more. If the weekly usage bar starts climbing because of this agent, the next step down is Fable at high: 1.9 points over Opus xhigh at 1.3 to 1.6 times the cost.</p>
+        </div>
+        <p>
+          The main session stays on Opus 5.5 at medium, and that decision is less clean than I'd like. On this table, Fable at low beats it by 4.1 points for 1.2 to 1.5 times the cost, so I can't claim the numbers favor Opus. What I can say is that <a href="three-charts-not-one.html">one benchmark doesn't set a default</a>, and that this one measures a model working alone on code, which is not what an orchestrator spends its day doing. Fable turns also draw down both the Fable bar and the all-models bar, and I'm at 74% of the weekly all-models limit with more than two days left.
+        </p>
+        <p>
+          I should be plain about the gaps. I haven't compared these models on my own work, and I couldn't find a Terminal-Bench 4.0 score for Fable 5.2, which was one of the three charts behind my September decision. deep-reasoner moved on one benchmark curve and a set of headline numbers at top effort. The check I ran also confirms which model answered, not that xhigh was applied; the output doesn't show that.
+        </p>
+
+        <h2>The wrapper, again</h2>
+        <p>
+          The output of that check also included something the assistant flagged. In September I wrote about <a href="three-places-a-model-id-lives.html">the wrapper I wrote and forgot</a>, a zsh function that launches Fable and falls back to Opus when the Fable cap runs out. It was still loaded, and its defaults still said Fable 5.1 and Opus 5:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">terminal</div><pre style="white-space: pre;">$ CLAUDE_SELECTOR_DRYRUN=1 claude
+[dryrun] claude --model claude-fable-5-1</pre></div>
+          <p class="explain-p">My rules file and settings file both say the main session is Opus 5.5. A plain <code style="font-family: var(--font-mono); font-size: 0.9em;">claude</code> in a terminal was starting Fable 5.1 instead, because an explicit <code style="font-family: var(--font-mono); font-size: 0.9em;">--model</code> flag beats the settings file.</p>
+        </div>
+        <p>
+          That also reaches back to last week. In <a href="the-high-that-never-applied.html">The high that never applied</a>, I checked my effort level with <code style="font-family: var(--font-mono); font-size: 0.9em;">claude -p</code> and inferred that an interactive terminal session would behave the same way. But the wrapper leaves <code style="font-family: var(--font-mono); font-size: 0.9em;">-p</code> alone and only steps in for a plain interactive launch, so that check went straight past it. My inference was wrong for that case, at least today. I don't know how long the wrapper's defaults had been in this state, so I can't say how many sessions it affected.
+        </p>
+        <p>
+          The last time this happened, I updated the model ID inside the wrapper. This time I turned it off:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">~/.zshrc</div><pre style="white-space: pre;">CLAUDE_SELECTOR_OFF=1</pre></div>
+          <p class="explain-p">It existed to prefer Fable while falling back from a cap. My default is no longer Fable, so it has no job left, and every release gave it another chance to go stale. A new terminal now starts without <code style="font-family: var(--font-mono); font-size: 0.9em;">--model</code>, and a call with no model set came back from <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-opus-5-5</code>.</p>
+        </div>
+
+        <h2>What changed</h2>
+        <p>
+          I updated Claude Code to 2.1.321 in both the terminal and the desktop app, and confirmed in a new process that deep-reasoner answers from <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-fable-5-2</code> with no warning. The published <a href="../claude.md">claude.md</a> matches: deep-reasoner on Fable 5.2, the old sentence about Fable 5.1 replaced, and Fable 5.2 added to the models that default to medium.
+        </p>
+
+        <h2>What I'm keeping</h2>
+        <p>
+          When a vendor says "about the same score at half the cost," my first question is now which point on the other curve they picked. Usually it's the top, because that's where the competitor's score is highest, and the top is also where the competitor is least efficient. The comparison I care about is against the setting I actually run.
+        </p>
+        <p>
+          The other one is about how I work with an assistant. "May need an update" sounded careful, and it was the sentence with the least work behind it. Asking it to check took a few minutes, and the check turned up the build requirement, the correction to its own reasoning, and a wrapper I'd have kept running. When a hedge is about something a command could settle, I want the command.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
