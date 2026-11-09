@@ -891,6 +891,49 @@ a { color: inherit; text-decoration: none; }
   transition: var(--transition);
 }
 
+.post-teaser[hidden] {
+  display: none;
+}
+
+.writing-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.writing-pagination[hidden] {
+  display: none;
+}
+
+.writing-pagination a {
+  min-width: 2.25rem;
+  padding: 0.25rem 0.55rem;
+  color: var(--ink-blue);
+  text-align: center;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+
+.writing-pagination [aria-disabled="true"] {
+  min-width: 2.25rem;
+  padding: 0.25rem 0.55rem;
+  color: var(--ink-faded);
+  text-align: center;
+}
+
+.writing-pagination a:hover,
+.writing-pagination a[aria-current="page"] {
+  background: var(--card-bg);
+  border-color: var(--ink-blue);
+}
+
+.writing-pagination a[aria-current="page"] {
+  font-weight: 700;
+}
+
 .post-teaser:hover {
   box-shadow: var(--card-hover-shadow);
 }
