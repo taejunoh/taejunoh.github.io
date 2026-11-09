@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLB Walk-Forward Lab | Taejun Oh</title>
+  <meta name="description" content="A retired MLB pregame forecasting experiment: 24 timestamped claims, 23 formal settlements, and the measurement limits behind a 43.5% record.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../#retired" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Retired
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">MLB Walk-Forward Lab</h1>
+        <time datetime="2026-09" class="post-date" style="margin-bottom: 1.5rem; display: block;">September 2026 &middot; Retired</time>
+
+        <p>
+          I built a walk-forward MLB forecasting experiment that saved timestamped pregame claims and traced each one through its source inputs and final result. The archive contains 24 claims across three regular-season dates. Of those, 23 formally settled: 10 were correct, or 43.5% of the settled claims. One claim remains unresolved.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://github.com/taejunoh/mlb-walkforward-lab" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            Public archive
+          </a>
+        </div>
+
+        <h2>How I counted</h2>
+        <p>
+          Forecast coverage and formal settlement are different counts. The 24 timestamped pregame claims describe what the experiment recorded; the accuracy figure uses only the 23 claims with a formal settlement. The first eligible claim for each game was preserved as the immutable forecast record, then matched to the official final result. The source trace keeps the recorded forecast and its inputs inspectable rather than replacing them with a later version.
+        </p>
+        <p>
+          The 43.5% figure is a small descriptive result, not evidence of a betting edge or profit. It covers three regular-season dates only and does not support a broad claim about MLB forecasting performance.
+        </p>
+
+        <h2>What the data checks established</h2>
+        <p>
+          An isolated reconciliation of official data accounted for 2,469 played games and 728,343 pitches. Separately, the archived offline fixture run passed 33 tests and 9 subtests. These checks support the integrity of the saved inputs and processing path; they are not a live evaluation of postseason forecasts. No live postseason test was performed, and I make no postseason performance claim.
+        </p>
+
+        <h2>Why it stopped</h2>
+        <p>
+          On September 30, 2026, I chose to pause after input validation was blocked by a duplicate game ID associated with a postponed game and its rescheduled entry. A later parser fix and offline verification addressed the input issue, but that repair did not restart the experiment. I did not resume live forecasting or extend the record into the postseason.
+        </p>
+
+        <h2>Closeout</h2>
+        <p>
+          The <a href="https://github.com/taejunoh/mlb-walkforward-lab/blob/master/reports/daily_review/2026-09-30/operations-closeout-2026-09.en.md" target="_blank" rel="noopener">English operations closeout</a> documents the pause and verification. The public archive preserves the code and evidence.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
