@@ -71,6 +71,9 @@ Effort level: auto (currently medium)</pre></div>
           The check was a single <code style="font-family: var(--font-mono); font-size: 0.9em;">-p</code> run. The docs say the same rule applies to interactive sessions, and I never had a per-model level saved, so an interactive terminal session without <code style="font-family: var(--font-mono); font-size: 0.9em;">--effort</code> should have been at medium too. I infer that rather than having measured it. I also can't say whether this has been true since launch day, though the docs describe it as how Opus 5.5 behaves, not as a later change.
         </p>
         <p>
+          <strong>Update (November 9, 2026):</strong> That inference didn't hold for a plain interactive <code style="font-family: var(--font-mono); font-size: 0.9em;">claude</code> in my terminal. <a href="three-places-a-model-id-lives.html">A zsh wrapper I wrote</a> steps in for those launches, and it was passing <code style="font-family: var(--font-mono); font-size: 0.9em;">--model claude-fable-5-1</code>, which overrides the settings file. So those sessions started on Fable 5.1, a model the top-level key does still set. The <code style="font-family: var(--font-mono); font-size: 0.9em;">-p</code> check bypasses the wrapper, so it couldn't have caught this. I don't know how long the wrapper's defaults had been in that state. More in <a href="half-the-cost-of-what.html">Half the cost of what?</a>
+        </p>
+        <p>
           The desktop app is the part that doesn't fit. The session I was asking from reported <code style="font-family: var(--font-mono); font-size: 0.9em;">high</code>, and I don't know where that value came from. So "it never applied" is the accurate title only for the terminal and <code style="font-family: var(--font-mono); font-size: 0.9em;">-p</code> runs. In the app, it may have been high all along.
         </p>
         <p>
