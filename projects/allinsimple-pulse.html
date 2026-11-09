@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Under Wraps | Taejun Oh</title>
-  <meta name="description" content="Projects in development remain private until launch.">
-  <meta name="robots" content="noindex, nofollow">
+  <title>AllinSimple Pulse - Uptime Monitoring | Taejun Oh</title>
+  <meta name="description" content="Uptime and heartbeat monitoring for websites, APIs, cron jobs, and workers, with Down and recovery alerts to Email, Telegram, Discord, and Slack. Private pilot.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -34,8 +33,37 @@
       </a>
 
       <article class="prose">
-        <h1 class="page-title">Under Wraps</h1>
-        <p>Projects in development remain private until launch.</p>
+        <h1 class="page-title">AllinSimple Pulse</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
+
+        <p>
+          AllinSimple Pulse monitors websites, APIs, cron jobs, and workers. It runs HTTP checks and accepts authenticated heartbeat pings, confirms an outage with retries before opening a single incident, records the recovery, and sends Down and recovery alerts to Email, Telegram, Discord, and Slack. It is a private pilot and signup is closed.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://pulse.allinsimple.com" target="_blank" rel="noopener" class="btn btn-primary">
+            Website
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>HTTP checks against a status code, a piece of text, or a typed value inside nested JSON</li>
+          <li>Heartbeat pings for cron jobs and workers, authenticated, with a set interval and a grace period</li>
+          <li>Retries confirm an outage before it counts, so one outage opens one incident</li>
+          <li>Recovery is recorded on the incident when the check passes again</li>
+          <li>Down and recovery alerts to Email, Telegram, Discord, and Slack, each tested end to end</li>
+        </ul>
+
+        <h2>AllinSimple projects</h2>
+        <p>
+          <a href="allinsimple-check.html">AllinSimple Check</a> is a local prototype for manually checking a fixed browser flow against its bundled demo site. <a href="allinsimple-desk.html">AllinSimple Desk</a> is a personal operations ledger with a public read-only demo using fictional data.
+        </p>
+
+        <h2>Tech stack</h2>
+        <p>
+          Next.js 16 and React 19 with Tailwind CSS 4. Drizzle ORM over PostgreSQL, which coordinates due checks, retries, and incidents. A separate worker process runs the checks. Tests use Vitest.
+        </p>
       </article>
     </main>
 

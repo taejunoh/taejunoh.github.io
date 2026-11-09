@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Under Wraps | Taejun Oh</title>
-  <meta name="description" content="Projects in development remain private until launch.">
-  <meta name="robots" content="noindex, nofollow">
+  <title>CrewOn - Club Management Platform | Taejun Oh</title>
+  <meta name="description" content="All-in-one management for clubs and local communities: events, members, dues, attendance, and announcements. Web app for organizers, Expo member app in TestFlight.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
 </head>
@@ -34,8 +33,36 @@
       </a>
 
       <article class="prose">
-        <h1 class="page-title">Under Wraps</h1>
-        <p>Projects in development remain private until launch.</p>
+        <h1 class="page-title">CrewOn</h1>
+        <time class="post-date" style="margin-bottom: 1.5rem; display: block;">2026</time>
+
+        <p>
+          Running a club means events in one app, members in a spreadsheet, and dues in a chat. CrewOn puts them in one place: events with instant, approval, and lottery RSVP plus QR check-in, dues and online payments through Stripe Connect with automatic reminders, a club feed with polls and chat, a sponsorship marketplace, and a public "find a club" page. The web app for organizers is built; the Expo member app is in TestFlight; public launch is coming soon.
+        </p>
+
+        <div class="project-cta" style="justify-content: flex-start; margin: 1.5rem 0;">
+          <a href="https://getcrewon.com" target="_blank" rel="noopener" class="btn btn-primary">
+            Website
+          </a>
+        </div>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>Clubs &amp; members: invite links and role-based membership for organizers and members</li>
+          <li>Events: one-off and recurring events with instant, approval, or lottery RSVP, waitlists, and in-person or QR check-in</li>
+          <li>Dues &amp; payments: manual dues tracking plus Stripe Connect online payments, a charge ledger, refunds, and automatic weekly reminders</li>
+          <li>Passes &amp; rules: passes and penalties to manage attendance and enforcement</li>
+          <li>Community: a club feed with media, polls, reactions, comments, chat, and push notifications</li>
+          <li>Records &amp; club identity: club records and branding</li>
+          <li>Sponsorship marketplace: a marketplace connecting clubs with sponsors</li>
+          <li>Discovery: a public "find a club" page for discovering clubs</li>
+          <li>Event recap loop: auto-drafted event recaps after each event</li>
+        </ul>
+
+        <h2>Tech stack</h2>
+        <p>
+          Turborepo and pnpm, with Next.js 15 (App Router) and Tailwind v4 for the web app, and an Expo SDK 56 / React Native member app on the same backend. tRPC v11 and Prisma 6 over PostgreSQL, with Auth.js v5 and zod, deployed on Vercel with Neon. Staging deploys automatically from main through gated GitHub workflows; production is manual and protected.
+        </p>
       </article>
     </main>
 
