@@ -44,6 +44,7 @@
           That scope helped me ship. ClaudeBeat became a signed and notarized macOS app, available through Homebrew and a direct download. It also gave me a working product to maintain. The experience of keeping those numbers useful became the starting point for Needlbar.
         </p>
 
+        <h2>Shipping beyond my own Mac</h2>
         <p>
           Getting an app onto someone else's Mac adds details that are easy to miss while building it. One ClaudeBeat release fixed the version shown in Settings because the release build had discarded the version from its tag. Another adjusted the vertical position of two lines of menu bar text. Neither change added a feature, but both belonged to the experience of using the app.
         </p>
@@ -52,6 +53,7 @@
           That is part of what I value about having shipped ClaudeBeat. I got to work through distribution, credentials in Keychain, notifications, and the small constraints of a menu bar interface together. Needlbar carries that experience forward through the same native interface and a signed, notarized release that can be installed with Homebrew.
         </p>
 
+        <h2>When usage data changes</h2>
         <p>
           The harder lesson came from the data. Claude's usage response changed over time. Fields could be null, model limits moved to a different field, and a response could include some limits while omitting others. ClaudeBeat needed fixes for cases where those changes left the popover blank or made a gauge disappear.
         </p>
@@ -64,6 +66,7 @@
           Those fixes made the display question more concrete. A number needs enough context to explain what it measures, which window it belongs to, and what happens when part of the response is missing. The release history records how much work went into keeping that context intact.
         </p>
 
+        <h2>How those lessons shaped Needlbar</h2>
         <p>
           <a href="../projects/needlbar.html">Needlbar</a> extends the idea across Claude Code, Codex, and Cursor. That brings more sources with different refresh behavior and different meanings for the numbers they expose. Each provider has its own refresh stream, and the app keeps last-known quota values when a refresh fails. It also recovers after sleep and network loss.
         </p>
@@ -80,6 +83,7 @@
           Needlbar does this locally, without a Needlbar account, backend, hosted sync, or telemetry. Its Swift interface sits over a Rust core that handles session parsing and other data work. The project has room for more providers and views while keeping the everyday interaction close to the original idea of checking the menu bar.
         </p>
 
+        <h2>One app to maintain</h2>
         <p>
           With Needlbar available, continuing to maintain ClaudeBeat would mean keeping another app ready for changes in macOS, authentication, and usage responses. Each fix would still need testing, packaging, and a release. Even a small app creates that recurring obligation.
         </p>
