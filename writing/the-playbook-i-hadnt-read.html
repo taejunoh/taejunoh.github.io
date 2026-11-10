@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The playbook I hadn't read | Taejun Oh</title>
+  <meta name="description" content="Anthropic published a guide to choosing a Claude model the same day I last changed my rules. I hadn't read it. Comparing the two found a note in my own records that had gone stale, and one subagent I moved to Haiku 5.5.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">The playbook I hadn't read</h1>
+        <time class="post-date" datetime="2026-11-10" style="margin-bottom: 1.5rem; display: block;">November 10, 2026</time>
+
+        <p>
+          Yesterday I <a href="half-the-cost-of-what.html">moved deep-reasoner to Fable 5.2</a>. The same day, Anthropic published Addy Osmani's <a href="https://claude.dev/blog/which-claude-model-should-you-build-with/" target="_blank" rel="noopener">guide to choosing a Claude model</a>. This morning I asked my assistant a simple question: did you use this when you updated my CLAUDE.md?
+        </p>
+
+        <h2>No</h2>
+        <p>
+          It didn't guess. It searched my Claude config folder for the URL and found it only in the conversation we were having. Then it read the memory file where I keep the reasons behind each rule. The sources listed there were benchmark charts, a launch thread, a news write-up, a leaderboard and a system card. The guide wasn't one of them. So I asked it to read the guide and compare.
+        </p>
+
+        <h2>Where we agree</h2>
+        <p>
+          Most of the file held up. The guide says to start most work on Opus 5.5 at medium, which is my main session. It says to move to high for debugging, which my rules already say for bug fixes. It saves Fable 5.2 for the hardest work, for when Opus 5.5 at high still falls short. That's what deep-reasoner is for. It also says to test Fable 5.2 before raising Opus past high on a hard task, and that's the trade I made yesterday. And it ends by telling you to measure on your own tasks, which is close to my rule that <a href="three-charts-not-one.html">one benchmark doesn't set a default</a>.
+        </p>
+
+        <h2>Where I sit higher</h2>
+        <p>
+          The guide starts Fable 5.2 at medium and moves to high from there. It warns that past high, one more effort level can cost as much as a bigger model. deep-reasoner runs at xhigh. My own numbers show what the guide is warning about:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">Fable 5.2 · FrontierCode 2.0 · score / cost per task</div><pre style="white-space: pre;">high     45.3 / $6.72-8.40
+xhigh    49.1 / $14.19-17.73</pre></div>
+          <p class="explain-p">3.8 more points for about 2.1 times the cost per task. I'm keeping xhigh for now, on purpose: the seat is rarely called and only gets the hardest problems, and it stays a level above the main session. But I'm further outside the guide's advice than I'd realized. That makes the rule for when to step down to high matter more.</p>
+        </div>
+        <p>
+          fast-worker, my Sonnet 5.5 seat for mechanical work, is one level higher too. The guide starts Sonnet at medium for well-scoped work, and I run high. My notes from September have the reason: on Anthropic's own charts, medium to high was the biggest jump at almost no added cost. That's a difference I chose, so it stays.
+        </p>
+
+        <h2>The note that went stale</h2>
+        <p>
+          This was the useful part. In October, when Haiku 5.5 came out, I wrote down that my Claude Code build still resolved the <code style="font-family: var(--font-mono); font-size: 0.9em;">haiku</code> alias to Haiku 4.5. I'd wait for an update before using it. The guide says the alias resolves to Haiku 5.5 from v2.1.293. I'm on 2.1.321, which I installed yesterday for Fable 5.2. So the wait had been over for a while, and nothing in my setup was going to tell me. A note that says "waiting for X" has no way to notice when X happens.
+        </p>
+        <p>
+          The guide also says the built-in Explore subagent, the read-only one that searches a codebase, runs on the session's model. It suggests defining your own Explore pinned to Haiku. I had nothing like that. A hook makes my orchestrator name a model whenever it calls Explore, so the choice was being made fresh on every call.
+        </p>
+
+        <h2>What changed</h2>
+        <p>
+          I added one file. An agent with the same name as a built-in one replaces it:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">~/.claude/agents/Explore.md</div><pre style="white-space: pre;">---
+name: Explore
+description: Read-only search agent for broad fan-out searches ...
+tools: Read, Bash
+model: claude-haiku-5-5
+effort: medium
+---</pre></div>
+          <p class="explain-p">The model is pinned by ID, not alias, like my other two agents. Medium is Haiku 5.5's default.</p>
+        </div>
+        <p>
+          Then I checked it the way I check every agent change: from a new <code style="font-family: var(--font-mono); font-size: 0.9em;">claude -p</code> process, because agent definitions load when a session starts. Called with no model set, Explore answered from <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-haiku-5-5</code>.
+        </p>
+        <p>
+          The check caught one mistake. My first version listed <code style="font-family: var(--font-mono); font-size: 0.9em;">Grep</code> and <code style="font-family: var(--font-mono); font-size: 0.9em;">Glob</code> as tools, copied from how Explore usually describes itself. The agent reported having only Read and Bash, so I removed the two that don't exist. Two limits I should be plain about. I can't confirm from the output that medium effort was applied. And "read-only" is only an instruction in the prompt, because Bash can still write files.
+        </p>
+        <p>
+          The published <a href="../claude.md">claude.md</a> now says Explore is pinned, and that only Plan, general-purpose and untyped Agent calls still inherit the session's effort.
+        </p>
+
+        <h2>What I left out</h2>
+        <p>
+          The guide suggests an order for when a model falls short. First check that it can verify its own work. Then raise effort one level. Only then move up a model. If outcomes can be checked automatically, run everything at low and re-run only the failures at high. In its SWE-bench Pro example, that passed about 97% of tasks for $0.17 each, against 95.3% for $0.29 with everything at high. I like it, but my rules don't have a place where tasks are retried in bulk, so I didn't add it yet.
+        </p>
+
+        <h2>What I'm keeping</h2>
+        <p>
+          I've been setting these rules from benchmark curves and launch posts. A guide written for exactly the choice I'm making is a different kind of source, and I'd skipped it. Next time a model ships, I'll read the vendor's own guidance alongside the numbers.
+        </p>
+        <p>
+          The other one is about my notes. Any note that says "waiting for" should also say what to check, so that a later session can run the check instead of trusting the note. This one had the check written down, and nobody ran it until an outside source made me look.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
