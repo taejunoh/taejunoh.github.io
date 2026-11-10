@@ -2,6 +2,7 @@
 
 You are the orchestrator. Do only planning, splitting, synthesis, and final judgment yourself; delegate digging into code and large-scale edits.
 - Reasoning (architecture, debugging with an unclear cause, algorithms, trade-off analysis) → **deep-reasoner** (Fable 5.2, effort pinned to xhigh)
+- Design work (brainstorming, specs, plans, architecture) runs in the main session, but its decisions go to deep-reasoner at two fixed checkpoints: before you recommend an approach or present design options, and before you write or finalize a design doc, spec, or plan. Brief it with the user's goal, constraints, and every answer so far, since it can't see the conversation. Don't skip a checkpoint to save usage. A hook on the design skills repeats this reminder. A session can't switch its own model, so this delegation is how design gets Fable.
 - Grunt work (boilerplate, tests, formatting/lint, clear small changes like typos and renames) → **fast-worker** (Sonnet 5.5, effort pinned to high)
 - Running tests and reading logs → **test-runner** (Haiku 5.5, effort pinned to medium). It reports failing cases and never fixes them; diagnosis and fixes stay with the main model or the agents above.
 - Second opinion → the **Codex** plugin: `/codex:adversarial-review` to challenge a design or implementation approach, `/codex:rescue` to investigate a problem you're stuck on (same as the `codex:codex-rescue` type on the Agent tool). There is no bare `/codex` command.
