@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rules it couldn&#39;t follow | Taejun Oh</title>
+  <meta name="description" content="A design session never handed its decisions to the model my rules assign them to. Counting two weeks of transcripts showed which rules were being followed, and reading them closely found one that no session could follow at all.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Rules it couldn't follow</h1>
+        <time class="post-date" datetime="2026-11-10" style="margin-bottom: 1.5rem; display: block;">November 10, 2026</time>
+
+        <p>
+          My rules say design decisions go to deep-reasoner, a subagent on Fable 5.2 at the highest effort I use. This afternoon I was working through a design in another session, answering one question at a time. Partway in I switched that session to Fable myself and asked whether the design had gone through deep-reasoner. It hadn't. The main session, on Opus 5.5, had decided the scope, the pricing split and the server structure on its own.
+        </p>
+        <p>
+          Its explanation was honest. The questions came one at a time, each judgment looked small, and it settled them inside the conversation. It also said it was trying to save usage, and that this was no reason to break the rule.
+        </p>
+
+        <h2>Was it only this session?</h2>
+        <p>
+          I asked my assistant to count. Every session leaves a transcript, so it could count how often the main session called each agent over the last 14 days:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">last 14 days · 76 working sessions</div><pre style="white-space: pre;">rule                          what the transcripts show
+edits go to fast-worker       315 calls, 209 direct edits
+reasoning to deep-reasoner    326 calls
+design decisions delegated    5 of 15 design sessions: zero calls
+tests go to test-runner       130 test runs in the main session
+usage checked before work     50 of 52 manual sessions</pre></div>
+          <p class="explain-p">So most of the delegation works. The gap was specific: a third of the sessions that used a design skill never called deep-reasoner. test-runner only exists since <a href="the-playbook-i-hadnt-read.html">this morning</a>, so its row is a baseline, not a failure.</p>
+        </div>
+        <p>
+          The first version of this count was wrong, and I should say so. The assistant filtered transcripts by file modification time, which pulled in sessions back to July, and it reported 2,646 fast-worker calls for "the last 14 days." It caught this when the same filter turned up sessions on models I stopped using in September. Filtering by each message's own timestamp gave the table above.
+        </p>
+
+        <h2>Why the obvious fix doesn't exist</h2>
+        <p>
+          My first idea was simple: when a session turns into design work, switch it to Fable. The assistant's first suggestion was the same, with me approving the switch. I didn't want a step that waits on me. So it checked whether a session can switch itself. It can't. The app's tools for changing a session's model or effort refuse when a session points them at itself, so that a session can't quietly re-price its own turns.
+        </p>
+        <p>
+          That leaves delegation, and delegation was already the rule. What it lacked was a moment. "Reasoning goes to deep-reasoner" leaves the timing to the main session's judgment, and in a one-question-at-a-time design that moment never looks like it has arrived.
+        </p>
+
+        <h2>Checkpoints and a hook</h2>
+        <p>
+          The rule now names two fixed points: before recommending an approach or presenting options, and before writing or finalizing a design doc, spec or plan. The hand-off carries my goal, constraints and every answer so far, because the subagent can't see the conversation.
+        </p>
+        <p>
+          A rule in a file can still be forgotten, so there is also a hook. Claude Code runs it, not the model:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">~/.claude/settings.json</div><pre style="white-space: pre;">"PostToolUse": [
+  { "matcher": "Skill",
+    "hooks": [{ "type": "command",
+      "command": "~/.claude/hooks/design-skill-reminder.sh" }] }
+]</pre></div>
+          <p class="explain-p">When a design skill loads (brainstorming, writing plans, architecture, system design), the script puts the two checkpoints into the conversation right after the skill's own text. In a new process, the model quoted the injected first sentence back.</p>
+        </div>
+
+        <h2>A rule nobody could follow</h2>
+        <p>
+          Then I switched this session to Fable and asked it to review the whole file for rules that can't actually be carried out. It found one I had been reading past for weeks:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">before</div><pre>Raise it to high for work where verification matters or edge cases are likely... To go deep for a single turn, put `ultrathink` in the prompt instead of touching the setting.</pre></div>
+          <p class="explain-p">Both halves are addressed to the assistant, and both are things only I can do. A session can't raise its own effort, and <code style="font-family: var(--font-mono); font-size: 0.9em;">ultrathink</code> is a word I type. The rule read like an instruction and worked like a note to myself.</p>
+        </div>
+        <p>
+          The new text says so: model and effort are my levers. When work needs more depth than medium gives, the session sends the hard part to deep-reasoner and tells me in one line that raising effort would help.
+        </p>
+        <p>
+          Two more rules had no trigger. Debugging "with an unclear cause" now has one: hand off once the cause is still unclear after the first investigation pass, or as soon as one fix has failed. And test-runner now says when to use it: full suites, slow runs, and output longer than a screen. A second hook watches for a test command in the main session that returns more than 4,000 characters, and reminds it that test-runner exists. The hook skips subagents, so test-runner doesn't get told to call itself.
+        </p>
+
+        <h2>The check I'd been missing</h2>
+        <p>
+          Building that second hook turned up something I've wanted since <a href="the-dial-moved-the-wrong-thing.html">September</a>, when I pinned each subagent's effort and had no way to see it at runtime. Several posts since then have carried the same caveat: I can confirm which model answered, but not which effort level was applied. The JSON that Claude Code passes to a hook includes both:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">logged from a PostToolUse hook · Claude Code 2.1.321</div><pre style="white-space: pre;">agent_type      effort.level
+(main session)  medium
+deep-reasoner   xhigh
+fast-worker     high
+Explore         medium
+test-runner     medium</pre></div>
+          <p class="explain-p">All five match what the settings say. The caveat I wrote this morning about Explore and test-runner, that I couldn't confirm the effort level, is now closed.</p>
+        </div>
+
+        <h2>The smaller decisions</h2>
+        <p>
+          The review left three rules untouched, and I decided them one at a time. Codex, my second opinion, had no trigger either. It's now called only when stuck: deep-reasoner has also tried and the cause is still unknown, or two fixes have failed. The usage check stays as it is. Of the 11 sessions that skipped it, 9 were scheduled tasks, which the rule exempts. And the rule about workflow scripts gets no hook, because I haven't run a workflow in 30 days.
+        </p>
+        <p>
+          One more change came out of the same day. My global rules file was in Korean, and the <a href="../claude.md">claude.md</a> on this site was its English translation. Every rule change needed a translation, and this morning the two had drifted apart on one machine. I talk to the assistant in Korean, but I don't need the rules in Korean. The global file is now this site's text, word for word, plus one private section. That also exposed two sentences written in my voice ("I change them by hand") that read wrongly once the same text became instructions to the assistant.
+        </p>
+
+        <h2>What I'm keeping</h2>
+        <p>
+          A rule needs someone who can carry it out and a moment when it applies. "Raise the effort" had no one. "Hand off the reasoning" had no moment. Both looked fine on the page, and I only found them because one session admitted it had skipped a step.
+        </p>
+        <p>
+          The limits are real. A hook reminds; it doesn't force. I've confirmed the hooks fire and that the model sees them. I haven't yet watched a real design session hand off at both checkpoints. The count that found the problem is the same count that will show whether this worked, so I'll run it again in two weeks.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
