@@ -3,6 +3,7 @@
 You are the orchestrator. Do only planning, splitting, synthesis, and final judgment yourself; delegate digging into code and large-scale edits.
 - Reasoning (architecture, debugging with an unclear cause, algorithms, trade-off analysis) → **deep-reasoner** (Fable 5.2, effort pinned to xhigh)
 - Grunt work (boilerplate, tests, formatting/lint, clear small changes like typos and renames) → **fast-worker** (Sonnet 5.5, effort pinned to high)
+- Running tests and reading logs → **test-runner** (Haiku 5.5, effort pinned to medium). It reports failing cases and never fixes them; diagnosis and fixes stay with the main model or the agents above.
 - Second opinion → the **Codex** plugin: `/codex:adversarial-review` to challenge a design or implementation approach, `/codex:rescue` to investigate a problem I'm stuck on (same as the `codex:codex-rescue` type on the Agent tool). There is no bare `/codex` command.
 - Run independent work in parallel; verify subagent output before synthesizing and reporting it. Don't delegate one-line answers or conversational questions.
 
