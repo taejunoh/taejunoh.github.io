@@ -107,6 +107,9 @@ effort: medium
         <p>
           The other one is about my notes. Any note that says "waiting for" should also say what to check, so that a later session can run the check instead of trusting the note. This one had the check written down, and nobody ran it until an outside source made me look.
         </p>
+        <p>
+          <strong>Update (November 10, 2026):</strong> Later the same day I added a second Haiku 5.5 agent, <code style="font-family: var(--font-mono); font-size: 0.9em;">test-runner</code>. It runs a test suite and reports each failing case, with the file, the test name and the first error line, and it never fixes anything. It's the guide's own log-reader example: work where a mistake is cheap to spot. It came up while I looked at an agent tree shared on X that day, with Fable 5.2 as the orchestrator, Opus 5.5 editing code and Haiku exploring and testing. I took only the tester. The guide's default is still Opus 5.5 at medium, and it saves Fable 5.2 for large jobs that lead many subagents. Moving code edits out of the lead model is the shape the guide calls the reverse of its recommended pattern. The tree also came with no measurements. Checked the same way as Explore, from a new <code style="font-family: var(--font-mono); font-size: 0.9em;">claude -p</code> process: on a sample suite with two passing tests and one failing, it reported the failure correctly, answered from <code style="font-family: var(--font-mono); font-size: 0.9em;">claude-haiku-5-5</code>, and left the test file unchanged. The same two limits apply: I can't confirm the effort level, and "never fixes" is only an instruction in its prompt. The <a href="../claude.md">claude.md</a> lists it in the role split.
+        </p>
       </article>
     </main>
 
