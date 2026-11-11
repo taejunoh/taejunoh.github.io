@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I tested my Codex orchestrator instead of guessing | Taejun Oh</title>
+  <meta name="description" content="A small orchestration experiment comparing Terra and Sol, and what its checks missed.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+<style>
+.chart,.diagram{margin:1.8rem 0;padding:1.25rem;background:#faf8f1;border:1px solid #d9d2c0;border-radius:4px}.chart figcaption{font-weight:700;margin-bottom:1rem}.bar-row{display:grid;grid-template-columns:8rem minmax(3rem,1fr) 6.5rem;gap:.7rem;align-items:center;margin:.65rem 0;font-size:.9rem}.bar-row strong{text-align:right;font-variant-numeric:tabular-nums}.track{height:.8rem;background:#e4e0d5;border-radius:2px}.track i{display:block;height:100%;background:#557e77;border-radius:2px}.chart-note{font-size:.82rem;line-height:1.5;margin:.9rem 0 0!important;color:#595b55}.step{padding:.65rem .85rem;border-left:3px solid #557e77;background:#fff}.step strong,.step span{display:block}.step span{font-size:.9rem}.arrow{text-align:center;color:#557e77;font-weight:bold}@media(max-width:520px){.bar-row{grid-template-columns:1fr auto;gap:.25rem .6rem}.bar-row .track{grid-column:1 / -1;grid-row:2}.bar-row strong{grid-column:2;grid-row:1}.chart,.diagram{padding:1rem}}
+</style>
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">I tested my Codex orchestrator instead of guessing</h1>
+        <time class="post-date" datetime="2026-11-11" style="margin-bottom:1.5rem;display:block">November 11, 2026</time>
+        <p>I had just made Terra medium my default Codex model. Then I asked a question that sounded obvious: if the main session orchestrates code, shouldn't Sol be in charge?</p>
+        <p>I audited my instructions, tested some proposed changes, and ran the same small orchestration job with different models. I briefly switched the default to Sol medium. After a separate comparison with Terra, I switched it back. The result surprised me, but the more useful lesson was what the tests could and could not tell me.</p>
+        <h2>First, make the instructions honest</h2>
+        <p>I read the global <code>AGENTS.md</code>, my local skills, and the custom agent files. I sorted instructions into repository facts and completion conditions, model-specific behavior, suspected old failure-prevention rules, and overlapping skill descriptions. A suspected obsolete rule wasn't enough reason to delete it: unproven candidates stayed.</p>
+        <p>One practical change to brainstorming allowed a clearly specified, small, reversible change to proceed without another approval. Important ambiguity, explicit review requests, and consent before a local preview still needed attention. In a later check Luna sometimes described an unexecuted change as complete. I added a narrow instruction to its worker role: report completion only after doing the work and checking the result; otherwise say it hasn't been applied or run. The retest improved the observed behavior, not a guarantee for every future task.</p>
+        <h2>Who does what?</h2>
+        <div class="diagram" aria-label="Main orchestrator delegates to workers, who check their own work; the orchestrator independently verifies, integrates, and reports">
+          <div class="step"><strong>1 · Main session</strong><span>Terra medium plans, splits work, and chooses help</span></div><div class="arrow" aria-hidden="true">↓</div>
+          <div class="step"><strong>2 · Focused work</strong><span>Luna high implements a bounded task and runs its first checks</span></div><div class="arrow" aria-hidden="true">↓</div>
+          <div class="step"><strong>3 · Independent integration</strong><span>The main session inspects the result, checks the combined work, and reports what actually happened</span></div>
+        </div>
+        <p>For difficult design, unclear failures, and high-risk review I have an Astra high specialist. For complex development in the main session, I still prefer Sol high. Skills aren't attached to a model: they are selected for the work, such as debugging, frontend design, or planning.</p>
+        <p><code>AGENTS.md</code> describes my preferences; it doesn't automatically switch the active main model. <code>config.toml</code> records a default, while a session's model selector or a higher-priority override may select something else.</p>
+        <h2>The test: the same job, nine fresh starts</h2>
+        <p>Each lead got the same unfinished Python project: build a CSV parser, a currency-aware report, and a CLI while preserving a legacy API. Every run used two fresh Luna high workers. I ran Terra medium, Terra high, and Sol medium three times each, sequentially, rotating their order. The lead decided how to divide the files, coordinate, and verify the integrated result.</p>
+        <p>After each lead finished, I ran the same independent 28 checks without feeding the results into the next run. Those checks covered the legacy API, parsing, reporting, and the CLI. They are a useful sample of behavior, not proof that the implementation meets every possible input.</p>
+        <h2>How long did the whole job take?</h2>
+        <p>Time starts when the lead starts and ends at its final report. It includes waiting, fixes, and verification, but not my setup or independent grading.</p>
+        <figure class="chart"><figcaption>End-to-end time · median of three · lower is better</figcaption>
+          <div class="bar-row"><span>Terra medium</span><div class="track"><i style="width:69.8%"></i></div><strong>112.8 sec</strong></div>
+          <div class="bar-row"><span>Terra high</span><div class="track"><i style="width:89.0%"></i></div><strong>143.8 sec</strong></div>
+          <div class="bar-row"><span>Sol medium</span><div class="track"><i style="width:100%"></i></div><strong>161.6 sec</strong></div>
+          <p class="chart-note">Each run, in seconds: Terra medium 186.9 / 96.7 / 112.8; Terra high 116.2 / 186.8 / 143.8; Sol medium 135.3 / 190.2 / 161.6. Three runs are not a latency distribution.</p>
+        </figure>
+        <p>Terra medium's median was about 30% shorter than Sol medium's. But the fastest individual run was not representative of every run, and worker timing, task division, and service latency all contributed to these end-to-end numbers.</p>
+        <h2>Tokens: the lead is not the whole team</h2>
+        <figure class="chart"><figcaption>Lead + workers · total tokens · median of three</figcaption>
+          <div class="bar-row"><span>Terra medium</span><div class="track"><i style="width:73.4%"></i></div><strong>979,134</strong></div>
+          <div class="bar-row"><span>Terra high</span><div class="track"><i style="width:83.6%"></i></div><strong>1,115,573</strong></div>
+          <div class="bar-row"><span>Sol medium</span><div class="track"><i style="width:100%"></i></div><strong>1,334,710</strong></div>
+          <p class="chart-note">Totals include repeated cached input across model requests. They are not a bill or a percentage of a Codex allowance.</p>
+        </figure>
+        <figure class="chart"><figcaption>Lead + workers · uncached input tokens · median of three</figcaption>
+          <div class="bar-row"><span>Terra medium</span><div class="track"><i style="width:39.8%"></i></div><strong>39,059</strong></div>
+          <div class="bar-row"><span>Terra high</span><div class="track"><i style="width:100%"></i></div><strong>98,124</strong></div>
+          <div class="bar-row"><span>Sol medium</span><div class="track"><i style="width:63.6%"></i></div><strong>62,366</strong></div>
+          <p class="chart-note">The median is calculated separately for each measure. Reasoning tokens are already included in output tokens, not added again.</p>
+        </figure>
+        <h2>28 out of 28 is not a proof</h2>
+        <figure class="chart"><figcaption>Independent checks passed · each of three runs</figcaption>
+          <div class="bar-row"><span>Terra medium</span><div class="track"><i style="width:100%"></i></div><strong>28 / 28</strong></div>
+          <div class="bar-row"><span>Terra high</span><div class="track"><i style="width:100%"></i></div><strong>28 / 28</strong></div>
+          <div class="bar-row"><span>Sol medium</span><div class="track"><i style="width:100%"></i></div><strong>28 / 28</strong></div>
+        </figure>
+        <p>All nine leads recorded non-overlapping ownership, a shared contract, and responsibility for integration. The workers read their assignments, and each lead inspected the returned code and ran public tests plus boundary checks. In one run, the lead caught and reported a limit on unusually large integers. That prompted a separate question.</p>
+        <p>After the seventh run, I defined two exploratory checks and ran them against all nine completed artifacts. These were added after seeing an issue, so I keep them separate from the predeclared 28:</p>
+        <div class="comparison-table-wrap" role="region" aria-label="Exploratory edge cases" tabindex="0"><table class="comparison-table"><caption>Exploratory edge cases · passing runs out of three</caption><thead><tr><th scope="col">Input</th><th scope="col">Terra medium</th><th scope="col">Terra high</th><th scope="col">Sol medium</th></tr></thead><tbody><tr><th scope="row">4,501-digit amount</th><td>1 / 3</td><td>1 / 3</td><td>1 / 3</td></tr><tr><th scope="row">140,000-character CSV field</th><td>1 / 3</td><td>0 / 3</td><td>0 / 3</td></tr></tbody></table></div>
+        <p>Most implementations inherited an integer conversion or CSV field-size limit despite the task specifying no length limit. The one implementation that handled both temporarily changed a process-wide CSV limit and reported a concurrency caveat. Two post-hoc cases don't establish a model-wide reliability ranking, but they do show why I shouldn't call 28/28 complete coverage.</p>
+        <h2>What I changed—and what I didn't learn</h2>
+        <p>The earlier comparison of Sol medium and high had favored medium for this kind of job. That was a comparison within Sol, not evidence against Terra. In the new comparison Terra medium was fastest and used fewer tokens at the median, so I set both my global preference and configured default back to Terra medium. I kept Sol high for complex code work and Astra for difficult judgment.</p>
+        <p>This was one synthetic project, with three runs per setting and a fixed team of two workers. The models did not choose team size, and I did not test a difficult production repository, long-running maintenance, or ambiguous architecture. The result supports a practical default for a bounded task; it doesn't prove that Terra is the best orchestrator for everything.</p>
+        <p>The habit I want to keep is simpler: inspect the actual configuration, give each role a clear contract, distinguish worker checks from the lead's integration checks, and measure the finished job before changing the default.</p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
