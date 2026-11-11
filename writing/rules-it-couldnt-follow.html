@@ -128,6 +128,9 @@ test-runner     medium</pre></div>
         <p>
           The limits are real. A hook reminds; it doesn't force. I've confirmed the hooks fire and that the model sees them. I haven't yet watched a real design session hand off at both checkpoints. The count that found the problem is the same count that will show whether this worked, so I'll run it again in two weeks.
         </p>
+        <p>
+          <strong>Update (November 10, 2026):</strong> Later the same evening I moved deep-reasoner from xhigh to high, so the table above shows the setting as it was when I measured it. Most of the gain is already there at high: on FrontierCode 2.0, xhigh scored 3.8 points more for about 2.1 times the cost per task, and Anthropic's guide starts Fable at medium and goes up to high. xhigh is now an escalation for one call. If deep-reasoner's answer at high doesn't solve the problem, the main session sends the same problem once more at xhigh, and only after that goes to Codex. This works because the Agent tool takes an <code style="font-family: var(--font-mono); font-size: 0.9em;">effort</code> value that overrides the level pinned in the agent's file. The same hook log confirmed both: <code style="font-family: var(--font-mono); font-size: 0.9em;">high</code> by default, <code style="font-family: var(--font-mono); font-size: 0.9em;">xhigh</code> when asked. My rules file had said the Agent tool has no such setting, which was wrong, and that line is fixed too.
+        </p>
       </article>
     </main>
 
