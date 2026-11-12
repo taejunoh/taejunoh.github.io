@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When Fable runs out | Taejun Oh</title>
+  <meta name="description" content="My reasoning subagent is pinned to Fable, and Fable has its own weekly limit. I hadn't asked what happens when it's used up. The fix is one line, and the first draft of that line switched too early.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">When Fable runs out</h1>
+        <time class="post-date" datetime="2026-11-12" style="margin-bottom: 1.5rem; display: block;">November 12, 2026</time>
+
+        <p>
+          I was looking at my usage page and noticed a line I had been skipping. Fable has its own bar, with a note under it: up to 50% of your weekly limit. I had used 16% of it. My rules send every design checkpoint and every stuck debugging session to deep-reasoner, and deep-reasoner is pinned to Fable 5.2. I had never asked what happens when that bar is full.
+        </p>
+
+        <h2>What happens</h2>
+        <p>
+          Fable requests stop until the weekly reset. Using Fable counts against both its own limit and the all-models limit, so the cap is there to keep one model from eating the whole week. My plan has extra usage turned off, so nothing spills over into paid usage either. The calls simply fail.
+        </p>
+        <p>
+          The main session is fine. It runs on Opus 5.5, and Opus only draws on the all-models limit. The problem is everything the main session hands off. A design checkpoint would call deep-reasoner and get an error. So would a debugging hand-off. I couldn't find anything saying Claude Code quietly retries on another model, and I'd rather not build on a fallback I haven't seen.
+        </p>
+        <p>
+          My usage rule doesn't catch this either. It stops work when a limit gets close, but it only looks at the limits that apply to the model doing the current work. The main session is on Opus, so a full Fable bar never trips it.
+        </p>
+
+        <h2>The fix was already there</h2>
+        <p>
+          Two days ago I found that the Agent tool takes an <code style="font-family: var(--font-mono); font-size: 0.9em;">effort</code> value that overrides the level pinned in an agent's file. It takes a <code style="font-family: var(--font-mono); font-size: 0.9em;">model</code> value the same way. So deep-reasoner doesn't need a twin on another model. The main session can call the same agent, with the same instructions and the same pinned effort, and name a different model for that one call.
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">added to claude.md, under deep-reasoner</div><pre>Fable fallback: once the Fable weekly limit is used up (a deep-reasoner call fails on the usage limit), keep delegating but pass the Agent tool's `model` as `opus` (it overrides the pinned model for that call; the pinned effort stays) until the limit resets. Tell the user in one line that deep-reasoner is running on Opus this week. Don't skip a delegation or checkpoint because Fable is out.</pre></div>
+          <p class="explain-p">The last sentence matters most. The failure I worried about isn't an error message. It's a session that hits the error, decides the judgment was small anyway, and settles it on its own, which is what <a href="rules-it-couldnt-follow.html">a design session did on Tuesday</a> with Fable still available.</p>
+        </div>
+
+        <h2>The first draft switched too early</h2>
+        <p>
+          The assistant's first version said to switch when the Fable bar had 10% or less left, or when a call failed. The 10% came from my usage rule, which stops ordinary work at 10% remaining. It looked consistent.
+        </p>
+        <p>
+          I took it out. The usage rule keeps a reserve so that scheduled tasks still have room at the end of the week. That reserve lives in the all-models limit. The last 10% of the Fable bar protects nothing. It's simply Fable I can still use, and switching early would hand my hardest calls to a different model for no reason. The rule now switches only when a call actually fails.
+        </p>
+
+        <h2>What I haven't seen</h2>
+        <p>
+          I haven't hit the limit, so the rule is untested. I'm assuming two things: that the failed call comes back to the main session as an error it can read, and that a call with the model override goes through while Fable is blocked. The second part I've already seen work for effort, not for model. I'll know the first time the bar fills, and I'll add what happened here.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
