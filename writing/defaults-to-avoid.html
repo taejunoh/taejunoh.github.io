@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Defaults to avoid | Taejun Oh</title>
+  <meta name="description" content="A green bar down the left edge of a workout plan made me write down the habits of generated UI. The rule I added treats them as defaults to avoid, not bans, and my own site keeps three of them.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Defaults to avoid</h1>
+        <time class="post-date" datetime="2026-11-12" style="margin-bottom: 1.5rem; display: block;">November 12, 2026</time>
+
+        <p>
+          One of my apps has a screen that lists the week's workouts: upper body A, lower body A, upper body B, lower body B, each with its exercises underneath. Down the left side of the list runs a thin green bar. Nobody asked for it. It doesn't mean anything. It's there because that is what generated UI tends to do when it wants something to look organized.
+        </p>
+        <p>
+          Once I noticed it, I saw it everywhere. So I asked my assistant two things: can I stop this from happening unless it's really needed, and where does a rule like that belong?
+        </p>
+
+        <h2>Where it goes</h2>
+        <p>
+          There were four places it could live. A project's own rules file covers one app. A skill loads only when the work looks like UI, which keeps it out of every other session but means it may not load when it should. A hook could scan edited files, and for web CSS a line like <code style="font-family: var(--font-mono); font-size: 0.9em;">border-left: 3px solid</code> is easy to catch. In SwiftUI there are too many ways to draw the same bar for a pattern to find them all.
+        </p>
+        <p>
+          The rule is a few lines and applies to every project, web and iOS alike, so it went into my global <a href="../claude.md">CLAUDE.md</a>, which every session reads.
+        </p>
+
+        <h2>The list</h2>
+        <p>
+          I asked to see the other common tells before writing anything down. The assistant drew each one next to a plainer version of the same content. These are the eleven I kept:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">usual marks of generated UI</div><pre style="white-space: pre;">1   accent border down one side of a card
+2   purple-to-blue gradients
+3   gradient text
+4   emoji in headings
+5   everything wrapped in cards
+6   three-column grids of icon tiles
+7   pill badges everywhere
+8   small all-caps label above a heading
+9   glass blur and glow
+10  centered hero, vague headline, two buttons
+11  big rounded corners with heavy shadows</pre></div>
+          <p class="explain-p">What they share is that none of them comes from the content. Each is decoration added out of habit. The alternatives mostly use what's already on the page: type size and weight, spacing, a hairline divider, and words that say what the thing does. On the workout screen, a heavier title and a little more space between the four days separate them better than the bar did.</p>
+        </div>
+
+        <h2>Not a ban</h2>
+        <p>
+          Before anything was written, I asked how it would be phrased, because "never" felt wrong. A side bar is exactly right for marking added and removed lines in a diff, or the severity of an alert. A badge is right when it shows a real state. A rule that says "never" would block those along with the habits.
+        </p>
+        <p>
+          So the rule says "defaults to avoid." Use one only when it carries meaning the alternatives can't, or when the project's design system or I ask for it, and then say which one and why in a single line. That last part matters most. A pattern that has to be justified out loud stops showing up by accident.
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">~/.claude/CLAUDE.md</div><pre>## Design
+
+- Treat these as defaults to avoid, not bans. They&#x27;re the usual marks of generated UI: a colored accent border on one side of a card or callout; purple-to-blue gradients; gradient text; emoji in headings or labels; wrapping everything in cards; three-column grids of icon tiles; many pill badges; small all-caps eyebrow labels above headings; glass blur and glow; a centered hero with a vague headline and two buttons; large corner radii with heavy shadows.
+- Build hierarchy from what&#x27;s already there first: type size and weight, spacing, alignment, a hairline divider, a quiet background tint on the whole block, and plain words that say what the thing does.
+- Use one of these patterns only when it carries meaning the alternatives can&#x27;t (a side bar marking diff lines or a severity level, a badge for a real state), or when the project&#x27;s design system or the user asks for it. Then say in one line which one and why.
+- A project&#x27;s own design system wins over this list. Apply this to new work; don&#x27;t restyle existing screens unasked, but point these patterns out in code you&#x27;re already changing.</pre></div>
+          <p class="explain-p">The last line keeps it from turning into a rewrite of everything I've already built. It applies to new work, and existing screens get flagged, not restyled.</p>
+        </div>
+
+        <h2>My own site</h2>
+        <p>
+          It seemed fair to check this site against the list. It has no side bars, no purple gradients and no emoji headings. It does have three of the others: the small all-caps role line on the home page, rounded status chips on the project cards, and cards with a soft shadow.
+        </p>
+        <p>
+          I'm keeping them for now, and the rule says why that's allowed. This site has its own look, a notebook on graph paper with taped-on cards, and those three pieces belong to it. Some of the chips show a real status, such as "In development" or "Retired Sep 2026", which is the kind of meaning the rule makes room for. Others only name the platform, like iOS or Python, and those are closer to the habit. If I redesign the site, they'll all have to earn their place again.
+        </p>
+
+        <h2>What I'm keeping</h2>
+        <p>
+          The useful question about a design pattern isn't whether it's allowed. It's whether the thing on the screen would lose anything without it. The green bar on my workout screen wouldn't. That's the test I want applied before the pattern is drawn, not after I notice it.
+        </p>
+        <p>
+          I haven't seen this rule work on a real screen yet. It reaches new UI work from the next session on, and the first one will tell me whether "say which one and why" actually stops the habit.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

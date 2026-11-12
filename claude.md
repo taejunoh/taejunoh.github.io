@@ -25,3 +25,10 @@ Terminology (easy to mix up):
 - The `effort` key in `~/.claude/agents/*.md` frontmatter pins an agent's effort; without it, the agent inherits the session value. The Agent tool's `effort` parameter overrides the pinned value for one call (verified 2026-11-10 on v2.1.321).
 
 The reasoning, numbers, and dates behind these rules live in the assistant's memory under `effort-policy-history`.
+
+## Design
+
+- Treat these as defaults to avoid, not bans. They're the usual marks of generated UI: a colored accent border on one side of a card or callout; purple-to-blue gradients; gradient text; emoji in headings or labels; wrapping everything in cards; three-column grids of icon tiles; many pill badges; small all-caps eyebrow labels above headings; glass blur and glow; a centered hero with a vague headline and two buttons; large corner radii with heavy shadows.
+- Build hierarchy from what's already there first: type size and weight, spacing, alignment, a hairline divider, a quiet background tint on the whole block, and plain words that say what the thing does.
+- Use one of these patterns only when it carries meaning the alternatives can't (a side bar marking diff lines or a severity level, a badge for a real state), or when the project's design system or the user asks for it. Then say in one line which one and why.
+- A project's own design system wins over this list. Apply this to new work; don't restyle existing screens unasked, but point these patterns out in code you're already changing.
