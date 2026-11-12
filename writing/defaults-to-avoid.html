@@ -7,6 +7,19 @@
   <meta name="description" content="A green bar down the left edge of a workout plan made me write down the habits of generated UI. The rule I added treats them as defaults to avoid, not bans, and my own site keeps three of them.">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+  <style>
+    .tells { margin: 1.5rem 0 0.5rem; }
+    .tells-head, .tell-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.75rem; }
+    .tells-head { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-faded); margin-bottom: 0.25rem; }
+    .tell { padding: 0.9rem 0; border-top: 1px solid var(--card-border); }
+    .tell-name { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-light); margin-bottom: 0.5rem; }
+    .demo { background: #fff; border: 1px solid var(--card-border); border-radius: 4px; padding: 0.8rem; min-height: 4.2rem; display: flex; flex-direction: column; justify-content: center; gap: 0.3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 0.85rem; line-height: 1.4; color: #2a2520; }
+    .demo .t { font-weight: 600; }
+    .demo .m { color: #6b645c; font-size: 0.78rem; }
+    .demo .row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .tells-note { font-size: 0.85rem; color: var(--ink-faded); margin-top: 0.6rem; }
+    @media (max-width: 480px) { .tells-head { display: none; } .tell-pair { grid-template-columns: 1fr; } .tell-pair .demo::before { content: attr(data-label); font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-faded); } }
+  </style>
 </head>
 <body>
 
@@ -53,22 +66,92 @@
 
         <h2>The list</h2>
         <p>
-          I asked to see the other common tells before writing anything down. The assistant drew each one next to a plainer version of the same content. These are the eleven I kept:
+          I asked to see the other common tells before writing anything down. The assistant drew each one next to a plainer version of the same content. These are the eleven I kept, each with the same content done more plainly:
         </p>
-        <div class="rule-block">
-          <div class="code-panel"><div class="code-tab">usual marks of generated UI</div><pre style="white-space: pre;">1   accent border down one side of a card
-2   purple-to-blue gradients
-3   gradient text
-4   emoji in headings
-5   everything wrapped in cards
-6   three-column grids of icon tiles
-7   pill badges everywhere
-8   small all-caps label above a heading
-9   glass blur and glow
-10  centered hero, vague headline, two buttons
-11  big rounded corners with heavy shadows</pre></div>
-          <p class="explain-p">What they share is that none of them comes from the content. Each is decoration added out of habit. The alternatives mostly use what's already on the page: type size and weight, spacing, a hairline divider, and words that say what the thing does. On the workout screen, a heavier title and a little more space between the four days separate them better than the bar did.</p>
+        <div class="tells" role="group" aria-label="Eleven habits of generated UI, each next to a plainer version">
+          <div class="tells-head"><span>Habit</span><span>Plainer</span></div>
+          <div class="tell">
+            <div class="tell-name">1. Accent border down one side</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><div style="border-left:3px solid #1D9E75;padding-left:0.6rem"><div class="t">Upper body A</div><div class="m">Bench press · Row · Shoulder press</div></div></div>
+              <div class="demo" data-label="Plainer"><div class="t" style="font-size:1rem">Upper body A</div><div class="m">Bench press · Row · Shoulder press</div></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">2. Purple-to-blue gradients</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><span style="align-self:flex-start;background:linear-gradient(90deg,#7F77DD,#378ADD);color:#fff;padding:0.35rem 0.9rem;border-radius:999px;font-weight:600">Get started</span></div>
+              <div class="demo" data-label="Plainer"><span style="align-self:flex-start;background:#2a2520;color:#fff;padding:0.35rem 0.9rem;border-radius:4px;font-weight:600">Start this week</span></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">3. Gradient text</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><span style="font-size:1.1rem;font-weight:700;background:linear-gradient(90deg,#534AB7,#D4537E);-webkit-background-clip:text;background-clip:text;color:transparent">Build faster with AI</span></div>
+              <div class="demo" data-label="Plainer"><span style="font-size:1.1rem;font-weight:600">Log a workout in three taps</span></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">4. Emoji in headings</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><span class="t">🚀 Quick start</span><span class="t">✨ Features</span></div>
+              <div class="demo" data-label="Plainer"><span class="t">Quick start</span><span class="t">Features</span></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">5. Everything wrapped in cards</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><div class="row"><span style="flex:1;background:#fff;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.14);padding:0.5rem;text-align:center">Training</span><span style="flex:1;background:#fff;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.14);padding:0.5rem;text-align:center">Meals</span><span style="flex:1;background:#fff;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.14);padding:0.5rem;text-align:center">Sleep</span></div></div>
+              <div class="demo" data-label="Plainer"><span style="padding:0.2rem 0;border-bottom:1px solid #e3ded6">Training</span><span style="padding:0.2rem 0;border-bottom:1px solid #e3ded6">Meals</span><span style="padding:0.2rem 0;">Sleep</span></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">6. Three-column grid of icon tiles</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><div class="row" style="justify-content:space-around;text-align:center"><span><span style="display:inline-block;width:1.7rem;height:1.7rem;line-height:1.7rem;border-radius:8px;background:#EEEDFE;color:#534AB7;font-weight:700">⚡</span><br>Fast</span><span><span style="display:inline-block;width:1.7rem;height:1.7rem;line-height:1.7rem;border-radius:8px;background:#EEEDFE;color:#534AB7;font-weight:700">◆</span><br>Secure</span><span><span style="display:inline-block;width:1.7rem;height:1.7rem;line-height:1.7rem;border-radius:8px;background:#EEEDFE;color:#534AB7;font-weight:700">♥</span><br>Easy</span></div></div>
+              <div class="demo" data-label="Plainer"><span>Each set saves in under a second.</span><span class="m">Your data stays on the device.</span></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">7. Pill badges everywhere</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><div class="row"><span style="background:#EEEDFE;color:#3C3489;padding:0.1rem 0.55rem;border-radius:999px;font-size:0.72rem;font-weight:600">NEW</span><span style="background:#E1F5EE;color:#085041;padding:0.1rem 0.55rem;border-radius:999px;font-size:0.72rem;font-weight:600">AI</span><span style="background:#FAEEDA;color:#633806;padding:0.1rem 0.55rem;border-radius:999px;font-size:0.72rem;font-weight:600">BETA</span><span style="background:#FBEAF0;color:#72243E;padding:0.1rem 0.55rem;border-radius:999px;font-size:0.72rem;font-weight:600">PRO</span></div></div>
+              <div class="demo" data-label="Plainer"><span class="m">Beta · added in November</span></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">8. Small all-caps label above a heading</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><span style="font-size:0.68rem;letter-spacing:0.12em;color:#534AB7;font-weight:700">FEATURES</span><span class="t" style="font-size:1rem">Everything you need</span></div>
+              <div class="demo" data-label="Plainer"><span class="t" style="font-size:1rem">What you can do here</span></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">9. Glass blur and glow</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><div style="position:relative;overflow:hidden;background:#26215C;border-radius:6px;padding:0.8rem;margin:-0.3rem"><span style="position:absolute;width:70px;height:70px;border-radius:50%;background:#D4537E;top:-18px;left:8px"></span><span style="position:absolute;width:60px;height:60px;border-radius:50%;background:#378ADD;bottom:-22px;right:10px"></span><div style="position:relative;background:rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.35);box-shadow:0 0 16px rgba(127,119,221,.85);border-radius:14px;padding:0.5rem 0.7rem;color:#fff"><div class="t">Today</div><div style="font-size:0.78rem;opacity:.85">Upper body A · 45 min</div></div></div></div>
+              <div class="demo" data-label="Plainer"><div style="border:1px solid #e3ded6;border-radius:4px;padding:0.5rem 0.7rem"><div class="t">Today</div><div class="m">Upper body A · 45 min</div></div></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">10. Centered hero, vague headline, two buttons</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><div style="text-align:center"><div style="font-size:1.05rem;font-weight:700;line-height:1.25">Your workouts,<br>reimagined</div><div class="m" style="margin:0.25rem 0 0.45rem">The all-in-one platform to supercharge your fitness</div><div class="row" style="justify-content:center"><span style="background:#2a2520;color:#fff;padding:0.25rem 0.7rem;border-radius:999px;font-size:0.75rem">Get started</span><span style="border:1px solid #c9c2b8;padding:0.25rem 0.7rem;border-radius:999px;font-size:0.75rem">Learn more</span></div></div></div>
+              <div class="demo" data-label="Plainer"><span class="t" style="font-size:1rem">Four dumbbell days a week</span><span class="m">Upper and lower body, alternating. About 45 minutes each.</span><span style="text-decoration:underline;font-size:0.8rem">See this week's plan</span></div>
+            </div>
+          </div>
+          <div class="tell">
+            <div class="tell-name">11. Big rounded corners with heavy shadows</div>
+            <div class="tell-pair">
+              <div class="demo" data-label="Habit"><div style="background:#fff;border-radius:22px;box-shadow:0 10px 22px rgba(0,0,0,.16);padding:0.5rem 0.8rem;margin-bottom:0.35rem"><div class="t">Weight</div><div class="m">72.4 kg</div></div><div style="background:#fff;border-radius:22px;box-shadow:0 10px 22px rgba(0,0,0,.16);padding:0.5rem 0.8rem;margin-bottom:0.35rem"><div class="t">Sleep</div><div class="m">7 h 10 min</div></div></div>
+              <div class="demo" data-label="Plainer"><div style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid #e3ded6"><span>Weight</span><span class="m">72.4 kg</span></div><div style="display:flex;justify-content:space-between;padding:0.3rem 0;"><span>Sleep</span><span class="m">7 h 10 min</span></div></div>
+            </div>
+          </div>
         </div>
+        <p class="tells-note">Each pair shows the same content. The left side adds the decoration; the right side uses size, weight, spacing, or a hairline instead.</p>
+        <p>
+          What they share is that none of them comes from the content. Each is decoration added out of habit. The alternatives mostly use what's already on the page: type size and weight, spacing, a hairline divider, and words that say what the thing does. On the workout screen, a heavier title and a little more space between the four days separate them better than the bar did.
+        </p>
 
         <h2>Not a ban</h2>
         <p>
