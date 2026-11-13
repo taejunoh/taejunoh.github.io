@@ -33,3 +33,11 @@ The reasoning, numbers, and dates behind these rules live in the assistant's mem
 - Build hierarchy from what's already there first: type size and weight, spacing, alignment, a hairline divider, a quiet background tint on the whole block, and plain words that say what the thing does.
 - Use one of these patterns only when it carries meaning the alternatives can't (a side bar marking diff lines or a severity level, a badge for a real state), or when the project's design system or the user asks for it. Then say in one line which one and why.
 - A project's own design system wins over this list. Apply this to new work; don't restyle existing screens unasked, but point these patterns out in code you're already changing.
+
+## iOS Simulator
+
+- Before building or testing, run `xcrun simctl list devices booted`. If a booted device fits the project (platform and OS version), target it by UDID (`-destination 'id=<UDID>'`), not by name: a name or OS that doesn't match the booted device makes xcodebuild boot another one.
+- Run tests with `-parallel-testing-enabled NO` unless the user asks for parallel runs; parallel testing clones the simulator.
+- Boot a new device only when no booted one fits, or when tests on it would collide with other work; prefer running in sequence first.
+- Note which devices were booted before you started. When you finish or stop, shut down (`xcrun simctl shutdown <UDID>`) only the ones you booted. Don't shut down or restart a device that was already running without the user's yes, and never erase or delete a simulator without it.
+- If you couldn't confirm cleanup (for example the run was killed), say so in the final report.
