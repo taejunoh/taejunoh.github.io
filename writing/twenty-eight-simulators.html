@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twenty-eight simulators | Taejun Oh</title>
+  <meta name="description" content="New iOS simulators kept appearing on my Mac and eating CPU, memory and disk. The first explanation was reasonable and wrong. Counting two weeks of commands found the real one: sessions were making their own devices.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Twenty-eight simulators</h1>
+        <time class="post-date" datetime="2026-11-13" style="margin-bottom: 1.5rem; display: block;">November 13, 2026</time>
+
+        <p>
+          Most of my apps are iOS apps, and most of my sessions test them in the simulator. Lately every test seemed to start another one. A device was already running, and a new one would boot next to it. Each booted simulator runs its own copy of iOS, so they take CPU and memory while they're up, and every device keeps its own data folder on disk after it's shut down. My Mac kept getting slower, and I kept closing devices I hadn't opened.
+        </p>
+        <p>
+          So I asked the obvious question: why not use the one that's already on? And if that one won't do, why not restart it instead of making another?
+        </p>
+
+        <h2>The first answer</h2>
+        <p>
+          The assistant gave two likely causes, and both are real things that happen. If a test names its device (<code style="font-family: var(--font-mono); font-size: 0.9em;">name=iPhone 17 Pro</code>) and the booted one differs by name or OS version, xcodebuild boots the named one. And parallel testing clones the simulator, so one run can leave several "Clone 1 of…" devices behind. I had already written my own rules for this in Korean. It turned them into English, added commands for those two causes, and I published them.
+        </p>
+        <p>
+          It hadn't seen either cause happen. When I asked, no simulator was running and there were no clones to look at. It was a good explanation of how this usually goes wrong, not of how it went wrong for me.
+        </p>
+
+        <h2>What the commands show</h2>
+        <p>
+          When I asked for a post about it, the assistant went back and counted. Every session leaves a transcript, so it could pull out every simulator command the sessions actually ran:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">last 14 days · commands sessions ran</div><pre style="white-space: pre;">command                          times   sessions
+simctl create (new device)          28         13
+simctl delete                       19          6
+simctl boot                         65         23
+simctl shutdown                     42         18
+test destination by name             0          0
+test destination by UDID            46         21
+"Clone N of" in any output           0          0</pre></div>
+          <p class="explain-p">Neither guess shows up. Tests already pointed at a specific device, and nothing was cloned. The new devices were made on purpose: 28 times, sessions ran <code style="font-family: var(--font-mono); font-size: 0.9em;">simctl create</code> and named the device after the task, like a QA pass, a repro or a guard check.</p>
+        </div>
+        <p>
+          Each of those choices makes sense alone. A fresh device has no leftover state, and a session can't tell whether another session is using the device that's already running, so making its own looks like the safe option. Thirteen sessions making the same safe choice is how the pile builds up. Some cleaned up after themselves. Delete ran 19 times, and only in 6 sessions.
+        </p>
+
+        <h2>The rule</h2>
+        <p>
+          The rule now names the actual habit. This is the section as it stands in my <a href="../claude.md">claude.md</a>:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">claude.md · iOS Simulator</div><pre>- Before building or testing, run `xcrun simctl list devices booted`. If a booted device fits the project (platform and OS version), target it by UDID (`-destination 'id=&lt;UDID&gt;'`), not by name: a name or OS that doesn't match the booted device makes xcodebuild boot another one.
+- Run tests with `-parallel-testing-enabled NO` unless the user asks for parallel runs; parallel testing clones the simulator.
+- Don't create a simulator (`simctl create`) for a task or a check. If no booted device fits, boot an existing one that does. Create one only when no existing device has the device type or OS the work needs, and delete it (`xcrun simctl delete &lt;UDID&gt;`) when you're done. When tests would collide on one device, run them in sequence before adding another.
+- Note which devices were booted before you started. When you finish or stop, shut down (`xcrun simctl shutdown &lt;UDID&gt;`) only the ones you booted. Don't shut down or restart a device that was already running without the user's yes, and never erase or delete a simulator without it.
+- If you couldn't confirm cleanup (for example the run was killed), say so in the final report.</pre></div>
+          <p class="explain-p">The third line is the one the count added. The first two come from the first answer. They didn't cause this, but they cost nothing, so I kept them.</p>
+        </div>
+        <p>
+          The answer to my restart question is yes, with a limit. A session can shut down and boot a device with one command each, but a device that was running before the session started might belong to me or to another session. So the session doesn't restart that one on its own. It asks.
+        </p>
+        <p>
+          My own draft had one line I dropped: check whether another user or task is using a device before shutting it down. There's no reliable way for a session to check that. The rule says what it can actually do instead. It tells apart the devices that were running when it started from the ones it booted, and it only touches its own.
+        </p>
+
+        <h2>What I didn't measure</h2>
+        <p>
+          I don't have numbers for the CPU, memory or disk these devices used. By the time the assistant looked, the devices folder had been emptied earlier that day, so there was nothing left to measure. The count of <code style="font-family: var(--font-mono); font-size: 0.9em;">simctl create</code> calls is the number to watch. If the rule works, that column should be close to zero in two weeks.
+        </p>
+        <p>
+          This is the second time this month that counting turned up a different problem than the one I'd described. <a href="rules-it-couldnt-follow.html">Last time</a> it was a rule that had no moment to apply. This time it was a fix aimed at the wrong cause, written and published before anyone had checked.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

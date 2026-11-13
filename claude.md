@@ -38,6 +38,6 @@ The reasoning, numbers, and dates behind these rules live in the assistant's mem
 
 - Before building or testing, run `xcrun simctl list devices booted`. If a booted device fits the project (platform and OS version), target it by UDID (`-destination 'id=<UDID>'`), not by name: a name or OS that doesn't match the booted device makes xcodebuild boot another one.
 - Run tests with `-parallel-testing-enabled NO` unless the user asks for parallel runs; parallel testing clones the simulator.
-- Boot a new device only when no booted one fits, or when tests on it would collide with other work; prefer running in sequence first.
+- Don't create a simulator (`simctl create`) for a task or a check. If no booted device fits, boot an existing one that does. Create one only when no existing device has the device type or OS the work needs, and delete it (`xcrun simctl delete <UDID>`) when you're done. When tests would collide on one device, run them in sequence before adding another.
 - Note which devices were booted before you started. When you finish or stop, shut down (`xcrun simctl shutdown <UDID>`) only the ones you booted. Don't shut down or restart a device that was already running without the user's yes, and never erase or delete a simulator without it.
 - If you couldn't confirm cleanup (for example the run was killed), say so in the final report.
