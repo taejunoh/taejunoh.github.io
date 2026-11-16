@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seven percent left | Taejun Oh</title>
+  <meta name="description" content="Four days after I wrote a rule for when Fable runs out, two sessions switched away from it with 7% still left. Both had read the right rule. It said when to switch, and nothing said when not to.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Seven percent left</h1>
+        <time class="post-date" datetime="2026-11-16" style="margin-bottom: 1.5rem; display: block;">November 16, 2026</time>
+
+        <p>
+          On Thursday I added a rule for <a href="when-fable-runs-out.html">when Fable runs out</a>. Once the weekly Fable limit is used up and a call to deep-reasoner fails, the main session keeps delegating but runs deep-reasoner on Opus until the reset. I had taken out the first draft's early trigger on purpose. The rule was meant to fire on a failure, not on a low bar.
+        </p>
+        <p>
+          Today one of my sessions said, while handing off to Codex:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">another session, translated from Korean</div><pre>Usage has room, but the Fable weekly limit only has 7% left, so if deep-reasoner is needed I'll run it on Opus.</pre></div>
+          <p class="explain-p">No call had failed. The session switched with Fable still available, which is exactly the case I had decided against.</p>
+        </div>
+
+        <h2>Not a stale copy</h2>
+        <p>
+          My first guess was an old rule. The early-trigger draft was live for a few minutes on Thursday, and a session that started in that window would carry it. So the assistant searched the transcripts for the sentence. Two sessions had said it, the one I saw and another in a different project. Both had loaded the current wording, "once the Fable weekly limit is used up," and neither had the old one.
+        </p>
+        <p>
+          So both sessions had the right rule and still switched early.
+        </p>
+
+        <h2>Two rules that meet</h2>
+        <p>
+          The fallback rule says when to switch. It never says not to switch before then. On its own that might be enough. But a second rule sits a few sections down: my usage reserve. It tells a session to stop ordinary work when a limit has 10% or less left, and the limits it counts include "a per-model weekly limit only when it matches the model doing the current work."
+        </p>
+        <p>
+          deep-reasoner runs on Fable. A session about to delegate can read that as Fable being the model doing the work, and 7% as under the line. Stopping would break the delegation rule, and the fallback offers a way to keep going. So it switches early and says so in one line, which is also what the fallback asks for.
+        </p>
+        <p>
+          This is my reading, not something the transcripts show. Neither session wrote down its reasoning. But the wording allows it, and it explains why two separate sessions landed on the same sentence. The 10% I took out of the fallback came back through another rule.
+        </p>
+
+        <h2>The fix</h2>
+        <p>
+          The reserve section is managed by another tool, so I didn't edit it. The fallback now ends with the part it was missing:
+        </p>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">added to the Fable fallback in claude.md</div><pre>Until a call actually fails, keep using Fable however little of its limit is left. The usage reserve's 10% threshold doesn't apply to the Fable limit, and a low Fable bar is not a reason to switch.</pre></div>
+          <p class="explain-p">The rule now names the other rule it could be confused with. A rule that says when to act can be read as permission to act earlier, so it has to say when not to.</p>
+        </div>
+        <p>
+          The intent behind it hasn't changed. The Fable limit is a cap on one model, not a reserve. Whatever is left of it this week is Fable I can still use, and switching early hands my hardest calls to a different model for nothing.
+        </p>
+
+        <h2>Still untested</h2>
+        <p>
+          This doesn't test the fallback itself. Nothing has failed yet. As I write this, Fable is at 93% for the week, so the first real failure may come before Thursday's reset. Sessions that were already open still hold the old wording until they re-read the rules file. The two that switched need to be told.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
