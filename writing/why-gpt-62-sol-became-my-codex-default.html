@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why GPT-6.2 Sol became my Codex default | Taejun Oh</title>
+  <meta name="description" content="After GPT-6.2 launched, I compared Sol and Terra with the same task and workers. One CSV row changed my Codex default.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+<style>
+.chart{margin:1.8rem 0;padding:1.25rem;background:#faf8f1;border:1px solid #d9d2c0;border-radius:4px}.chart figcaption{font-weight:700;margin-bottom:1rem}.bar-row{display:grid;grid-template-columns:8rem minmax(3rem,1fr) 6.5rem;gap:.7rem;align-items:center;margin:.65rem 0;font-size:.9rem}.bar-row strong{text-align:right;font-variant-numeric:tabular-nums}.track{height:.8rem;background:#e4e0d5;border-radius:2px}.track i{display:block;height:100%;background:#557e77;border-radius:2px}.chart-note{font-size:.82rem;line-height:1.5;margin:.9rem 0 0!important;color:#595b55}@media(max-width:520px){.bar-row{grid-template-columns:1fr auto;gap:.25rem .6rem}.bar-row .track{grid-column:1 / -1;grid-row:2}.bar-row strong{grid-column:2;grid-row:1}.chart{padding:1rem}}
+.comparison-table { min-width: 0; }
+@media (max-width: 520px) {
+  .comparison-table th, .comparison-table td { padding: .55rem .45rem; }
+  .comparison-table tbody th { white-space: normal; }
+}
+</style>
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Why GPT-6.2 Sol became my Codex default</h1>
+        <time class="post-date" datetime="2026-11-17" style="margin-bottom:1.5rem;display:block">November 17, 2026</time>
+        <p>When OpenAI released GPT-6.2 Astra and Sol, I reopened my global <code>AGENTS.md</code>. My last comparison had put GPT-6.1 Terra at medium in charge of my Codex sessions. OpenAI described the new Sol as its everyday model and Astra as the model for its hardest work. In my setup, the main session divides the work, reviews what comes back, and decides when it’s ready. I wanted to see how the new Sol handled those responsibilities. <a href="https://openai.com/index/introducing-gpt-6-2-astra-sol/">OpenAI’s release notes</a></p>
+
+        <h2>Same task, same team</h2>
+        <p>I reused the small Python project from my <a href="tested-codex-orchestrator.html">earlier experiment</a>. The job was to finish a CSV parser, currency report, and command-line interface, while preserving the old API. Terra 6.1 and Sol 6.2 each ran at medium on a fresh copy, Terra first. Each lead got two fresh Luna workers at high and decided how to split the work.</p>
+        <p>Both assigned the parser to one worker and the report and CLI to the other. Sol’s handoffs specified the commands to run, named a few edge cases, and told workers what they could verify while the other files were still being written. Both leads inspected the code and ran their own checks after integration.</p>
+
+        <h2>The row the grader missed</h2>
+        <p>The project says to ignore cells beyond the header and skip blank records. Consider a row where the four recognized cells are empty and the fifth cell says <code>extra</code>. Once that fifth cell is ignored, the parser should skip the row and read the next transaction.</p>
+        <pre><code>id,category,currency,amount_minor
+,,,,extra
+x,food,USD,2</code></pre>
+        <p>During review, Sol spotted that the parser could treat the extra cell as evidence that the row contained data. It sent the parser back to its original worker for a fix and ran the checks again. I then ran the sample above against both finished CLIs in strict mode.</p>
+        <div class="comparison-table-wrap" role="region" aria-label="Integration check results" tabindex="0">
+          <table class="comparison-table">
+            <caption>Checks on each finished implementation</caption>
+            <thead><tr><th scope="col">Check</th><th scope="col">Terra 6.1</th><th scope="col">Sol 6.2</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Public tests</th><td>5 / 5</td><td>5 / 5</td></tr>
+              <tr><th scope="row">Independent grader</th><td>28 / 28</td><td>28 / 28</td></tr>
+              <tr><th scope="row">Extra-cell case</th><td>Exit 2, missing ID</td><td>Exit 0, USD 2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>I added the extra-cell check after reading Sol’s review, so it sits outside the 28 checks I had set in advance. I also ran two extreme-input checks from the earlier experiment. Both CLIs failed on a 4,501-digit amount and a 140,000-character field. Sol had independently checked and reported those Python limits in its own run.</p>
+
+        <h2>Time and tokens</h2>
+        <figure class="chart"><figcaption>Time to final report</figcaption>
+          <div class="bar-row"><span>Terra 6.1</span><div class="track" aria-hidden="true"><i style="width:95.40%"></i></div><strong>169.9 sec</strong></div>
+          <div class="bar-row"><span>Sol 6.2</span><div class="track" aria-hidden="true"><i style="width:100.00%"></i></div><strong>178.1 sec</strong></div>
+          <p class="chart-note">Includes coordination, fixes, and the lead’s own checks. Setup and independent grading took place outside this window.</p>
+        </figure>
+        <figure class="chart"><figcaption>Total tokens across the lead and two workers</figcaption>
+          <div class="bar-row"><span>Terra 6.1</span><div class="track" aria-hidden="true"><i style="width:76.37%"></i></div><strong>1,457,749</strong></div>
+          <div class="bar-row"><span>Sol 6.2</span><div class="track" aria-hidden="true"><i style="width:100.00%"></i></div><strong>1,908,817</strong></div>
+          <p class="chart-note">Totals include cached input across requests. Codex plan usage is measured separately.</p>
+        </figure>
+        <div class="comparison-table-wrap" role="region" aria-label="Token usage breakdown" tabindex="0">
+          <table class="comparison-table">
+            <caption>Token breakdown from the execution logs</caption>
+            <thead><tr><th scope="col">Measure</th><th scope="col">Terra 6.1</th><th scope="col">Sol 6.2</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Lead total</th><td>653,317</td><td>1,006,775</td></tr>
+              <tr><th scope="row">Workers total</th><td>804,432</td><td>902,042</td></tr>
+              <tr><th scope="row">Uncached input</th><td>86,110</td><td>85,503</td></tr>
+              <tr><th scope="row">Output</th><td>11,639</td><td>17,106</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Sol took 8.2 seconds longer and logged 31% more tokens. Most of that difference was cached input. Uncached input was close, and Sol produced about 47% more output tokens. These are measurements of two runs, including the workers’ responses and the time spent waiting for them.</p>
+
+        <h2>What I changed in Codex</h2>
+        <p>I set GPT-6.2 Sol at medium in both <code>AGENTS.md</code> and <code>config.toml</code>. The review caught a defect that would stop an otherwise usable import, and for the main session I value that kind of catch enough to pay the extra time I saw here. I ran one pair on one small project, so I’m treating the switch as a working preference.</p>
+        <p>I still prefer Sol at high for complex implementation and Astra at high for high-risk review. Those effort settings are provisional and were outside this comparison. I also added a rule for every model. Say what you checked directly, and name any required check you couldn’t run or confirm and why. When the lead reports back, I want to know which checks came from the workers and which it ran itself.</p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
