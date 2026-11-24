@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Only the gaps | Taejun Oh</title>
+  <meta name="description" content="Matt Pocock's skills repo has 39 skills. I took twelve. The ones I left out weren't worse. They did jobs my setup already had covered, and a second skill for the same job would have quietly turned off my own rules.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9998;</text></svg>">
+</head>
+<body>
+
+  <div class="notebook">
+
+    <header class="site-header">
+      <div class="site-header-left">
+        <a href="../" class="site-title">Taejun Oh</a>
+        <span class="site-subtitle">Software Engineer</span>
+      </div>
+      <nav class="site-nav">
+        <a href="../about.html">About</a>
+        <a href="../writing.html" class="active">Writing</a>
+        <a href="https://github.com/taejunoh" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <hr class="divider">
+
+    <main class="page-content">
+      <a href="../writing.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All writing
+      </a>
+
+      <article class="prose">
+        <h1 class="page-title">Only the gaps</h1>
+        <time class="post-date" datetime="2026-11-24" style="margin-bottom: 1.5rem; display: block;">November 24, 2026</time>
+
+        <p>
+          I asked my assistant whether <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener">Matt Pocock's skills</a> would work for me. It's a popular set of agent skills: interviews that sharpen a plan, a test-driven loop, a debugging loop, code review, hand-off notes, retrospectives. Installing all of it is one command. The answer was yes, but not all of it.
+        </p>
+
+        <h2>Two kinds of skill</h2>
+        <p>
+          The repo splits its skills by who can start them. Some only run when I type them, like <code style="font-family: var(--font-mono); font-size: 0.9em;">/grill-me</code>. Others the model can pick up on its own when a task looks like a match. That split decided almost everything.
+        </p>
+        <p>
+          A skill I have to type can't collide with anything. If I don't call it, it doesn't run. A skill the model picks for itself competes with every other skill whose description fits the same task. My setup already has a debugging skill from two different plugins, a test-driven skill and a code review command. One of those plugins also tells the model to use any skill that looks relevant. Adding a third debugging skill means each session picks one of three, and different sessions pick differently.
+        </p>
+        <p>
+          That matters more than it sounds, because my rules depend on which skill runs. A hook watches for my design and debugging skills by name. When one starts, it reminds the session to hand the hard part to deep-reasoner, the subagent that does my reasoning (I wrote about why that reminder exists in <a href="rules-it-couldnt-follow.html">Rules it couldn't follow</a>). A new debugging skill with a different name would start without the reminder. Nothing would break that I could see. The hand-off would just stop happening in some sessions.
+        </p>
+
+        <h2>What I took</h2>
+        <div class="rule-block">
+          <div class="code-panel"><div class="code-tab">mattpocock/skills · 39 skills</div><pre style="white-space: pre;">taken, typed by me (8)
+  grill-me, grill-with-docs     interview until every decision is settled
+  handoff                       write the notes for the next session
+  retro                         review a session for what to fix in the setup
+  improve-codebase-architecture survey a codebase for structural fixes
+  to-tickets, wayfinder         split big work into tickets
+  setup-matt-pocock-skills      one-time setup per repo
+
+taken because those call them (4)
+  grilling, domain-modeling, codebase-design, writing-for-agents
+
+left out, already covered (3)
+  diagnosing-bugs, tdd, code-review</pre></div>
+          <p class="explain-p">I skipped the other 24 for now. Eight are marked in progress by the author. Most of the rest serve workflows I don't have yet, like issue triage, course exercises or implementing from a ticket queue.</p>
+        </div>
+        <p>
+          The eight I took fill gaps rather than adding a second way to do something. My rules say a lot about which model does what. They say almost nothing about the parts between me and the assistant: agreeing on what to build, handing work to the next session, and looking back at what went wrong. Three skills cover those.
+        </p>
+        <p>
+          <strong>Grilling</strong> works through a plan as a tree of decisions. Each round asks every question that can be answered now, with a recommended answer for each, and it doesn't start work until every branch is settled. My current design skill asks one question at a time. That's the pattern where a session made small calls on its own and never handed the design to deep-reasoner.
+        </p>
+        <p>
+          <strong>Handoff</strong> gives the notes a shape. It points to commits and specs instead of copying them, strips secrets, and names the skills the next session should load. Last week a session wrote hand-off files for Codex from scratch.
+        </p>
+        <p>
+          <strong>Retro</strong> does on purpose what I've been doing by accident. The last two problems I fixed, <a href="twenty-eight-simulators.html">simulators piling up</a> and <a href="seven-percent-left.html">switching off Fable early</a>, surfaced because I noticed something odd and asked. Retro goes through a finished session with a fixed list: checks that could have caught a mistake, expensive tool calls, rules that don't change behavior.
+        </p>
+
+        <h2>Wiring them in</h2>
+        <p>
+          Two of the four supporting skills, grilling and codebase-design, are design work under another name. So the design hook now matches them too. A grilling session gets the same deep-reasoner reminder as my other design skills.
+        </p>
+        <p>
+          I copied the files at one commit instead of installing the plugin. The plugin updates itself, which also means the skill descriptions the model reads could change without my knowing. A copy only changes when I change it. The assistant read every file before copying. They're all plain instructions, with no scripts.
+        </p>
+        <p>
+          The copy itself went wrong the first time. A trailing slash in the copy command made macOS spill the files loose into my skills folder instead of into their own folders. That folder had only held folders before, so the stray files were easy to find and remove, and nothing else was touched.
+        </p>
+        <p>
+          One trap is specific to this site. The setup skill adds a section to a repo's <code style="font-family: var(--font-mono); font-size: 0.9em;">CLAUDE.md</code>. In this repo, that file is the <a href="../claude.md">claude.md</a> you can read here, because macOS ignores the difference in case. Running setup here would publish its notes on my site, so I won't run it in this repo.
+        </p>
+
+        <h2>Not used yet</h2>
+        <p>
+          All of this is from reading, not from use. I haven't run a grilling session or a retro yet. The case for them rests on gaps I've already seen, not on results. I'll try <code style="font-family: var(--font-mono); font-size: 0.9em;">/grill-me</code> on the next design and <code style="font-family: var(--font-mono); font-size: 0.9em;">/retro</code> after the next long session, and write down whether either one caught something I would have missed.
+        </p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <hr class="divider">
+      <div class="footer-inner">
+        <p class="footer-text">&copy; 2026 Taejun Oh</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
